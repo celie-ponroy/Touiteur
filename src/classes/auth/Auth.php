@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 namespace iutnc\deefy\auth;
-use  iutnc\touiteur\exception\AuthException;
 use  iutnc\touiteur\bd\ConnectionFactory as ConnectionFactory;
 use PDO;
 class Auth{
