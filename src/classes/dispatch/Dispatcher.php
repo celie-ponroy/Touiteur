@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace iutnc\deefy\dispatch;
+namespace iutnc\touiteur\dispatch;
 use iutnc\deefy\action\AddPlaylistAction;
 use iutnc\deefy\action\AddPodcastAction;
 use iutnc\deefy\action\AddUserAction;
