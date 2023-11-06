@@ -2,10 +2,10 @@
 declare(strict_types=1);
 
 namespace iutnc\touiteur\dispatch;
-use iutnc\deefy\action\AddPlaylistAction;
-use iutnc\deefy\action\AddPodcastAction;
-use iutnc\deefy\action\AddUserAction;
-use iutnc\deefy\action\SigninAction;
+
+use iutnc\touiteur\action\RechercheAction;
+use iutnc\touiteur\action\ConnectionAction;
+use iutnc\touiteur\action\InscriptionAction;
 
 class Dispatcher {
     private string $action;
@@ -20,21 +20,17 @@ class Dispatcher {
        
         $html = '';
         switch($this->action){
-            case 'add-user':
-                $addUserAction = new AddUserAction();
+            case 'connection':
+                $addUserAction = new ConnectionAction();
                 $html = $addUserAction->execute();
                 break;
-            case 'add-playlist':
-                $addPlaylist = new AddPlaylistAction();
+            case 'inscription':
+                $addPlaylist = new InscriptionAction();
                 $html = $addPlaylist->execute();
                 break;
-            case 'add-podcasttrack':
-                $addpodcast = new AddPodcastAction();
+            case 'recherche':
+                $addpodcast = new RechercheAction();
                 $html = $addpodcast->execute();
-                break;
-            case "signin":
-                $signin = new SigninAction();
-                $html = $signin->execute();
                 break;
             default:
                 echo 'bienvenue<br>';
@@ -45,15 +41,13 @@ class Dispatcher {
         echo "<!DOCTYPE html>
         <html lang = fr>
             <head>
-                <title> Titre </title>
+                <title> Touiter </title>
             </head>
             <body>
-            <a href = '?action=add-user'>inscription </a><br>
-            <a href = '?action=add-playlist'>ajout d'une playlist </a><br>
-            <a href = '?action=add-podcasttrack'>ajout d'une track </a><br>
-            <a href = '?action=signin'>signin </a><br>
-            $html
+                <a href = '?action=connection'> connection </a><br>
+                <a href = '?action=inscription'> inscription </a><br>
+                <a href = '?action=recherche'> recherche</a><br>
             </body>
-            </html>";
+        </html>";
     }
 }
