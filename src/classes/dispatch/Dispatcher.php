@@ -22,19 +22,19 @@ class Dispatcher {
         $html = '';
         switch($this->action){
             case 'connection':
-                $addUserAction = new ConnectionAction();
-                $html = $addUserAction->execute();
+                $connection = new ConnectionAction();
+                $html = $connection->execute();
                 break;
             case 'inscription':
-                $addPlaylist = new InscriptionAction();
-                $html = $addPlaylist->execute();
+                $inscription = new InscriptionAction();
+                $html = $inscription->execute();
                 break;
             case 'recherche':
-                $addpodcast = new RechercheAction();
-                $html = $addpodcast->execute();
+                $recherche = new RechercheAction();
+                $html = $recherche->execute();
                 break;
             default:
-                echo 'bienvenue<br>';
+                echo 'Bienvenue<br>';
                 break;
 
         }
@@ -45,9 +45,10 @@ class Dispatcher {
                 <title> Touiter </title>
             </head>
             <body>
-                <a href = '?action=connection'> connection </a><br>
-                <a href = '?action=inscription'> inscription </a><br>
-                <a href = '?action=recherche'> recherche</a><br>
+                <a href = '?action=connection'> Connection </a><br>
+                <a href = '?action=inscription'> Inscription </a><br>
+                <a href = '?action=recherche'> Recherche</a><br>
+                $html
             </body>
         </html>";
     }
