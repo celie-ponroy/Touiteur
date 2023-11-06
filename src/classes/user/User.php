@@ -9,11 +9,14 @@ class User{
 
     }
 
-    public function afficherTouites(){
 
+    public function getTouites(){
+
+
+//        return tab(touite)
     }
 
-    
+
 
  
 }
