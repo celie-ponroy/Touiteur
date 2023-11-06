@@ -2,7 +2,18 @@
 
 namespace iutnc\touiteur\user;
 
-abstract class User{
+class User{
+
+    public function __construct()
+    {
+
+    }
+
+    public function afficherTouites(){
+
+    }
+
+    
 
  
 }
@@ -10,7 +21,3 @@ abstract class User{
 
 
 
-
-
-
-?>
