@@ -2,6 +2,8 @@
 declare(strict_types= 1);
 
 namespace iutnc\touiter\touite;
+use iutnc\touiteur\user\User;
+
 class Commentaire extends Touite{
     private $touite;
     
