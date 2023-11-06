@@ -10,6 +10,7 @@ class RechercheAction extends Action {
     protected ?string $script_name = null;
    
     public function __construct(){
+        parent::__construct();
         $this->http_method = $_SERVER['REQUEST_METHOD'];
         $this->hostname = $_SERVER['HTTP_HOST'];
         $this->script_name = $_SERVER['SCRIPT_NAME'];
