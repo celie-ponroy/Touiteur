@@ -1,9 +1,9 @@
 <?php
 
 declare(strict_types=1);
-namespace iutnc\deefy\auth;
-use  iutnc\deefy\exception\AuthException;
-use  iutnc\deefy\db\ConnectionFactory as ConnectionFactory;
+namespace iutnc\touiteur\auth;
+//use  iutnc\touiteur\exception\AuthException;
+use  iutnc\touiteur\bd\ConnectionFactory;
 use PDO;
 class Auth{
     private ConnectionFactory $connection;
@@ -15,17 +15,26 @@ class Auth{
 
     public static function authenticate(string $email,string $passwd2check): bool {
         $db = ConnectionFactory::makeConnection();
-        $sql = "select passwd from User where email = ? ";
+        $sql = "select password from Users where email = ? ";
         $resultset = $db->prepare( $sql );
         $resultset->bindParam(1,$email);
         $resultset->execute();
        
         $ligne = $resultset->fetch(PDO::FETCH_ASSOC);
-        $hash = $ligne['passwd'];
-        print("1 : ".$hash."<br>2 : ".$passwd2check."<br>");
-
+        $hash = $ligne['password'];
+//        print("1 : ".$hash."<br>2 : ".$passwd2check."<br>");
+        echo "compare--------------";
+        var_dump($hash);
+        echo "-------------------";
+        var_dump($passwd2check);
+        echo "------------------";
+        var_dump(  password_hash($passwd2check, PASSWORD_DEFAULT, ['cost'=> 12]));
         return password_verify($passwd2check, $hash);
- }
-}
+    }
 
-?>
+    public static function deconnect(){
+        //TODO
+    }
+
+
+}

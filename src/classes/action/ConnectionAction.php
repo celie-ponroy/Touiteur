@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace iutnc\touiteur\action;
 use iutnc\touiteur\action\Action;
+use iutnc\touiteur\auth\Auth;
+use iutnc\touiteur\bd\ConnectionFactory;
 
 class ConnectionAction extends Action {
 
@@ -14,28 +16,37 @@ class ConnectionAction extends Action {
         $this->hostname = $_SERVER['HTTP_HOST'];
         $this->script_name = $_SERVER['SCRIPT_NAME'];
     }
-    
-    public function execute() : string{//a modifier
+
+    public function execute() : string{
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];
         if($methode ==='GET'){
-            $html =" <form id='f1' action='?action=add-user' method='post'>
-            <input type='text' placeholder='<nom>' name='nom'>
-            <input type='number' placeholder='<age>' name='age'>
+            $html =" <form id='f1' action='?action=connection' method='post'>
             <input type='email' placeholder='<email>' name='email'>
-            <input type='text' placeholder='<genre>'name='genre'>
+            <input type='text' placeholder='<mdp>' name='mdp'>
             <button type='submit'>Valider</button>
           </form>";
         }else if ($methode === 'POST') {
-            var_dump($_POST);
-            echo "<br>";
+
             $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
-            $age = filter_var($_POST['age'],FILTER_SANITIZE_NUMBER_INT);
-            $genre = filter_var($_POST['genre']);
-            $html = " ajout util traitement du formulaire<br> Email:".$email.", Age:".$age." ans, Genre musical:".$genre;}
-        
+            $mdp = $_POST['mdp'];
+
+            //Auth OK
+            if(Auth::authenticate($email, $mdp)){
+                $pdo = ConnectionFactory::makeConnection();
+                $query = 'SELECT role from Users Where email = ?';
+                $st = $pdo->prepare($query);
+                $st->execute([$email]);
+                $row = $st->fetchAll();
+
+                $_SESSION['email'] = $email;
+                $_SESSION['role'] = $row[0]['role'];
+                var_dump($_SESSION);
+                $html = "Auth OK";
+            } else{
+                $html = "Auth not ok";
+            }
+        }
         return $html;
     }
-    
 }
-?>

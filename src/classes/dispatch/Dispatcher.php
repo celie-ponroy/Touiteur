@@ -47,6 +47,7 @@ class Dispatcher {
                 <a href = '?action=connection'> connection </a><br>
                 <a href = '?action=inscription'> inscription </a><br>
                 <a href = '?action=recherche'> recherche</a><br>
+                $html
             </body>
         </html>";
     }
