@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil - Touiteur</title>
-    <link rel="stylesheet" type="text/css" href="css/index_style.css">
-</head>
+<?php
+declare(strict_types=1);
+session_start();
 
-<body>
-    <?php
-        require_once 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
-        use iutnc\touiteur\dispatch\Dispatcher;
-        use iutnc\touiteur\bd\ConnectionFactory;
+use iutnc\touiteur\dispatch\Dispatcher;
+use iutnc\touiteur\bd\ConnectionFactory;
+
+use iutnc\touiteur\user\UserAuthentifie;
+
+ConnectionFactory::setConfig('conf/conf.ini');
+
+(new Dispatcher())->run();
 
         $disp = new Dispatcher();
         $disp->run();
-    ?>
-
-</body>
+        //if (isset($_SESSION)) var_dump($_SESSION['User']->getTouites());
+?>
