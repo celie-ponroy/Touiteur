@@ -38,10 +38,10 @@ class ConnectionAction extends Action {
 
                 $usAuth = new UserAuthentifie($email);
                 $usAuth->connectUser();
-                $html = "Auth OK";
+                $html = "Vous êtes connecté.e ;)";
                 $_SESSION["email"]= $email;
             } else{
-                $html = "Auth not ok";
+                $html = "La connection a échoué, le mot de passe ou l'adresse mail est incorecte";
             }
         }
         return $html;

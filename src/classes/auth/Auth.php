@@ -22,8 +22,12 @@ class Auth{
         $resultset->execute();
       
         $ligne = $resultset->fetch(PDO::FETCH_ASSOC);
-        $hash = $ligne['password'];
-//        print("1 : ".$hash."<br>2 : ".$passwd2check."<br>");
-        return password_verify($passwd2check, $hash);
+        if(!isset($ligne['password'])){
+            return false;
+        }else{
+            $hash = $ligne['password'];
+            return password_verify($passwd2check, $hash);
+        }
+        
     }
 }

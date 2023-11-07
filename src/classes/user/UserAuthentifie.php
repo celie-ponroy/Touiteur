@@ -4,7 +4,6 @@
  * déclarations des namespaces
  */
 namespace iutnc\touiteur\user;
-use http\Encoding\Stream;
 use iutnc\touiteur\bd\ConnectionFactory;
 
 class UserAuthentifie extends User{

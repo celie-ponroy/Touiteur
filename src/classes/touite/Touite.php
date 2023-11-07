@@ -4,7 +4,6 @@ declare(strict_types= 1);
 namespace iutnc\touiteur\touite;
 use DateTime;
 use iutnc\touiteur\bd\ConnectionFactory;
-use iutnc\touiteur\user\User;
 use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
 /**

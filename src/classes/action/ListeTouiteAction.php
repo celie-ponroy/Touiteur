@@ -23,7 +23,7 @@ class ListeTouiteAction extends Action {
 
         $db = ConnectionFactory::makeConnection();
         
-        $sql ="SELECT * FROM Touite;";
+        $sql ="SELECT * FROM Touite order by Touite.datePublication;";
         $resultset = $db->prepare($sql);
         $resultset->execute();
         $html = "";
