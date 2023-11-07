@@ -45,6 +45,34 @@ class UserAuthentifie extends User{
         $this->role = $role;
     }
 
+    public static function inscription(string $nom , string $prenom , string $email, string $mdp){
+        $role = 1;
+
+            $pdo = ConnectionFactory::makeConnection();
+
+            $query = "INSERT INTO Utilisateur (nom, prenom, password, email, role) VALUES (:nom, :prenom, :mdp, :email, :role)";
+
+
+            $stmt = $pdo->prepare($query);
+
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':prenom', $prenom);
+
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':mdp', $mdp);
+            $stmt->bindParam(':role', $role);
+
+            if ($stmt->execute()) {
+                $html = " ajout user<br> Email:".$email.", Nom:".$nom." Prenom:".$prenom;
+            } else {
+                $html = "INSERT ERROR: " . $stmt->errorInfo()[2];
+            }
+
+            $stmt = null;
+
+            $pdo = null;
+    }
+
 
 
 
@@ -62,6 +90,7 @@ class UserAuthentifie extends User{
 
     public function connectUser(){
         $_SESSION['User'] = serialize($this);
+
     }
 
 }
