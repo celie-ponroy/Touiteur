@@ -19,12 +19,34 @@ class UserAuthentifie extends User{
      * Constructeur
      */
 
-    public function __construct(string $email, string $nom, string $prenom ,int $role){
+    public function __construct(string $email){
         $this->email = $email;
+
+        $pdo = ConnectionFactory::makeConnection();
+        $query = 'SELECT role from utilisateur Where email = ?';
+        $st = $pdo->prepare($query);
+        $st->execute([$email]);
+        $role = $st->fetch()['role'];
+
+        $query = 'SELECT nom from utilisateur Where email = ?';
+        $st = $pdo->prepare($query);
+        $st->execute([$email]);
+        $nom = $st->fetch()['nom'];
+
+        $query = 'SELECT prenom from utilisateur Where email = ?';
+        $st = $pdo->prepare($query);
+        $st->execute([$email]);
+        $prenom = $st->fetch()['prenom'];
+
+        $pdo=null;
+
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->role = $role;
     }
+
+
+
 
     public function getTouites(){
         $pdo = ConnectionFactory::makeConnection();
@@ -34,6 +56,13 @@ class UserAuthentifie extends User{
         $st->execute([$this->email]);
 
         return $st->fetchAll();
+    }
+
+
+
+    public static function connectUser($email){
+
+
     }
 
 }
