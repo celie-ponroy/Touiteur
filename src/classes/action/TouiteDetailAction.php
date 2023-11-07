@@ -102,5 +102,3 @@ $action = new TouiteDetailAction();
 
 // Exécutez l'action
 $html = $action->execute();
-
-?>

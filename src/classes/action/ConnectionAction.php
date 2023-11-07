@@ -35,19 +35,8 @@ class ConnectionAction extends Action {
 
             //Auth OK
             if(Auth::authenticate($email, $mdp)){
-                $pdo = ConnectionFactory::makeConnection();
-                $query = 'SELECT role from Users Where email = ?';
-                $st = $pdo->prepare($query);
-                $st->execute([$email]);
-                $role = $st->fetchAll();
-
-                $query = 'SELECT nom , prenom from Utilisateur Where email = ?';
-                $st = $pdo->prepare($query);
-                $st->execute([$email]);
-                $donees = $st->fetchAll();
-
-                $_SESSION['User'] = new UserAuthentifie($email, $donees[0]['nom'],$donees[0]['prenom'], $role[0]['role']);
-
+                $usAuth = new UserAuthentifie($email);
+                $usAuth->connectUser();
                 $html = "Auth OK";
                 session_start();
                 $_SESSION["email"]= $email;
