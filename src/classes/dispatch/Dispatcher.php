@@ -9,7 +9,6 @@ use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\TouiteDetailAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
-use iutnc\touiteur\action\TouiteDetailAction;
 
 class Dispatcher {
     private string $action;
