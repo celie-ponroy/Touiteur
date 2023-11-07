@@ -4,23 +4,24 @@ namespace iutnc\touiteur\action;
 use iutnc\touiteur\action\Action;
 use iutnc\touiteur\auth\Auth;
 use iutnc\touiteur\bd\ConnectionFactory;
+use iutnc\touiteur\user\UserAuthentifie;
 
 class ConnectionAction extends Action {
 
-    protected ?string $http_method = null;
-    protected ?string $hostname = null;
-    protected ?string $script_name = null;
-   
+
     public function __construct(){
         parent::__construct();
-        $this->http_method = $_SERVER['REQUEST_METHOD'];
-        $this->hostname = $_SERVER['HTTP_HOST'];
-        $this->script_name = $_SERVER['SCRIPT_NAME'];
+
     }
 
     public function execute() : string{
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];
+
+        if(isset($_SESSION['email'])){
+            return "Already auth";
+        }
+
         if($methode ==='GET'){
             $html =" <form id='f1' action='?action=connection' method='post'>
             <input type='email' placeholder='<email>' name='email'>
@@ -38,11 +39,15 @@ class ConnectionAction extends Action {
                 $query = 'SELECT role from Users Where email = ?';
                 $st = $pdo->prepare($query);
                 $st->execute([$email]);
-                $row = $st->fetchAll();
+                $role = $st->fetchAll();
 
-                $_SESSION['email'] = $email;
-                $_SESSION['role'] = $row[0]['role'];
-                var_dump($_SESSION);
+                $query = 'SELECT dateRegister from Users Where email = ?';
+                $st = $pdo->prepare($query);
+                $st->execute([$email]);
+                $date = $st->fetchAll();
+
+                $_SESSION['User'] = new UserAuthentifie($email, $date[0]['dateRegister'], $role[0]['role']);
+
                 $html = "Auth OK";
             } else{
                 $html = "Auth not ok";
