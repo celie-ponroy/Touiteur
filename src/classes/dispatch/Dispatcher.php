@@ -6,7 +6,8 @@ namespace iutnc\touiteur\dispatch;
 use iutnc\touiteur\action\RechercheAction;
 use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\InscriptionAction;
-
+use iutnc\touiteur\action\TouitePost;
+use iutnc\touiteur\action\ListeTouiteAction;
 
 class Dispatcher {
     private string $action;
@@ -36,6 +37,15 @@ class Dispatcher {
             case 'touite-en-detail':
                 $touiteEnDetail = new TouiteDetailAction();
                 $html = $touiteEnDetail->execute();
+
+            case 'touite-post':
+                $touitepost = new TouitePost();
+                $html = $touitepost->execute();
+                break;
+
+            case 'liste_touite':
+                $listeT = new ListeTouiteAction();
+                $html = $listeT->execute();
                 break;
             default:
                 echo 'Bienvenue<br>';
@@ -46,14 +56,26 @@ class Dispatcher {
         echo "<!DOCTYPE html>
         <html lang = fr>
             <head>
-                <title> Touiter </title>
+                <meta charset='UTF-8'>
+                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+                <meta name='viewport' content='width=device-width', initial-scale='1.0'>
+                <title>Accueil - Touiteur</title>
+                <link rel='stylesheet' type='text/css' href='css/index_stylecss'>
             </head>
             <body>
+            <header>
+                <h2 class='logo'><a href='index.php'>Touiteur</a></h2>
+            </header>
+            <nav class='navigation'>
                 <a href = '?action=connection'> Connection </a><br>
                 <a href = '?action=inscription'> Inscription </a><br>
                 <a href = '?action=recherche'> Recherche</a><br>
                 <a href = '?action=touite-en-detail'> Touite en détail</a><br>
                 $html
+                <a href = '?action=touite-post'> Poster un touite</a><br>
+            </nav>
+                <a href = '?action=liste_touite'> For u page</a><br>
+                $html       
             </body>
         </html>";
     }

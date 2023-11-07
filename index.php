@@ -1,10 +1,16 @@
 <?php
 declare(strict_types=1);
+session_start();
 
 require_once 'vendor/autoload.php';
 
 use iutnc\touiteur\dispatch\Dispatcher;
+use iutnc\touiteur\bd\ConnectionFactory;
 
-$disp = new Dispatcher();
-$disp->run();
-?>
+use iutnc\touiteur\user\UserAuthentifie;
+
+ConnectionFactory::setConfig('conf/conf.ini');
+
+(new Dispatcher())->run();
+
+//if (isset($_SESSION)) var_dump($_SESSION['User']->getTouites());

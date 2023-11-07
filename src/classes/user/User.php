@@ -9,16 +9,6 @@ class User{
 
     }
 
-
-    public function getTouites(){
-
-
-//        return tab(touite)
-    }
-
-
-
- 
 }
 
 

@@ -9,7 +9,8 @@ use iutnc\touiteur\user\User;
 class Touite{
     protected $texte;//contenu du touite
     protected $user ; //l'auteur
-    private $date;//date de publication du touite
+    protected $date;//date de publication du touite
+    protected $tags; // table de tags
     /**
      * contructeur
      */
@@ -25,6 +26,9 @@ class Touite{
     function __toString(){
         $res = "@".$this->user;
         return $res."<br>\n".$this-> texte;
+        //ajouter les tags
+        
+        
     }
 
 
