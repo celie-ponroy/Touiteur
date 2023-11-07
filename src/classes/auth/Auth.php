@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-namespace iutnc\touiter\auth;
-use  iutnc\touiter\exception\AuthException;
+namespace iutnc\touiteur\auth;
+//use  iutnc\touiter\exception\AuthException;
 use  iutnc\touiteur\bd\ConnectionFactory as ConnectionFactory;
 use PDO;
 class Auth{

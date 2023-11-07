@@ -7,9 +7,6 @@ require_once 'vendor/autoload.php';
 use iutnc\touiteur\dispatch\Dispatcher;
 use iutnc\touiteur\bd\ConnectionFactory;
 
-$disp = new Dispatcher();
-$disp->run();
-
 ConnectionFactory::setConfig('conf/conf.ini');
 
 (new Dispatcher())->run();

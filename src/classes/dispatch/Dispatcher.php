@@ -53,15 +53,15 @@ class Dispatcher {
         echo "<!DOCTYPE html>
         <html lang = fr>
             <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta charset='UTF-8'>
+                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+                <meta name='viewport' content='width=device-width', initial-scale='1.0'>
                 <title>Accueil - Touiteur</title>
-                <link rel="stylesheet" type="text/css" href="css/index_stylecss">
+                <link rel='stylesheet' type='text/css' href='css/index_stylecss'>
             </head>
             <body>
             <header>
-                <h2 class="logo"><a href='index.php'>Touiteur</a></h2>
+                <h2 class='logo'><a href='index.php'>Touiteur</a></h2>
             </header>
             <nav class='navigation'>
                 <a href = '?action=connection'> Connection </a><br>
