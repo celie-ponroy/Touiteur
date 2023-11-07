@@ -6,6 +6,7 @@ namespace iutnc\touiteur\dispatch;
 use iutnc\touiteur\action\AccueilAction;
 use iutnc\touiteur\action\RechercheAction;
 use iutnc\touiteur\action\ConnectionAction;
+use iutnc\touiteur\action\DeconnAction;
 use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
@@ -13,7 +14,7 @@ use iutnc\touiteur\action\ListeTouiteAction;
 use iutnc\touiteur\action\UserListeTouitesAction;
 
 use iutnc\touiteur\action\TouiteDetailAction;
-
+use iutnc\touiteur\user\UserAuthentifie;
 
 class Dispatcher {
     private string $action;
@@ -28,6 +29,10 @@ class Dispatcher {
 
         $html = '';
         switch($this->action){
+            case 'deconnection':
+                $deco = new DeconnAction();
+                $html = $deco->execute();
+                break;
             case 'connection':
                 $connection = new ConnectionAction();
                 $html = $connection->execute();
@@ -84,9 +89,13 @@ class Dispatcher {
             <div class='tableau'>
             
                 <nav class='navigation'>
-                    <h2 class='logo'><a href='index.php'><img src='mon_image.jpg' ></a></h2> 
-                   
-                    <a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>
+                    <h2 class='logo'><a href='index.php'><img src='mon_image.jpg' ></a></h2> ";
+                   if (UserAuthentifie::isUserConnected()){
+                        echo "<a class='action' href = '?action=deconnection'><img src='mon_image.jpg' > Deconnection </a><br>"; 
+                    }else{
+                        echo "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
+                    }
+                    echo"
                     <a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>
                     <a class='action' href = '?action=recherche'><img src='mon_image.jpg' > Explore</a><br>
                     <a class='action' href = '?action=touite-en-detail'><img src='mon_image.jpg' > Touite en détail</a><br>
@@ -94,7 +103,6 @@ class Dispatcher {
                     <a class='action' href = '?action=page_accueil'> <img src='mon_image.jpg' > Page d'accueil</a><br>
                     <a class='action' href = '?action=user_liste_touite'><img src='mon_image.jpg' > user_liste_touite</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
-                    <a class='action' href = '?action=tag1'> user_liste_touite</a><br>
 
                 </nav>
                 
