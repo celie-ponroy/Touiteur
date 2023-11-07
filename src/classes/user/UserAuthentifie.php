@@ -60,9 +60,8 @@ class UserAuthentifie extends User{
 
 
 
-    public static function connectUser($email){
-
-
+    public function connectUser(){
+        $_SESSION['User'] = serialize($this);
     }
 
 }

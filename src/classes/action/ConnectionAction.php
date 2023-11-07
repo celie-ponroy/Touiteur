@@ -35,14 +35,11 @@ class ConnectionAction extends Action {
 
             //Auth OK
             if(Auth::authenticate($email, $mdp)){
-                $pdo = ConnectionFactory::makeConnection();
-                $query = 'SELECT role from Utilisateur Where email = ?';
-                $st = $pdo->prepare($query);
-                $st->execute([$email]);
 
-                $_SESSION['User'] = serialize(new UserAuthentifie($email));
-
+                $usAuth = new UserAuthentifie($email);
+                $usAuth->connectUser();
                 $html = "Auth OK";
+                $_SESSION["email"]= $email;
             } else{
                 $html = "Auth not ok";
             }
