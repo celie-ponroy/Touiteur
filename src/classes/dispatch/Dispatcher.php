@@ -38,6 +38,7 @@ class Dispatcher {
             case 'touite-en-detail':
                 $touiteEnDetail = new TouiteDetailAction();
                 $html = $touiteEnDetail->execute();
+                break;
 
             case 'touite-post':
                 $touitepost = new TouitePost();
