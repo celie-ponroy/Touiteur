@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace iutnc\touiteur\action;
 use iutnc\touiteur\action\Action;
 use  iutnc\touiteur\bd\ConnectionFactory as ConnectionFactory;
+use PDO;
 
 class TouiteDetailAction extends Action {
     public function execute(): string {
