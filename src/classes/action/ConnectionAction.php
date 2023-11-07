@@ -35,9 +35,8 @@ class ConnectionAction extends Action {
 
             //Auth OK
             if(Auth::authenticate($email, $mdp)){
-
-                $_SESSION['User'] = serialize(new UserAuthentifie($email));
-
+                $usAuth = new UserAuthentifie($email);
+                $usAuth->connectUser();
                 $html = "Auth OK";
             } else{
                 $html = "Auth not ok";
