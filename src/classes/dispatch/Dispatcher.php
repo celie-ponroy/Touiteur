@@ -16,6 +16,7 @@ use iutnc\touiteur\action\UserListeTouitesAction;
 use iutnc\touiteur\action\TouiteDetailAction;
 use iutnc\touiteur\user\UserAuthentifie;
 
+
 class Dispatcher {
     private string $action;
     public function __construct( ){
@@ -65,8 +66,14 @@ class Dispatcher {
                 $html = $UlisteT->execute();
                 break;
             case 'page_accueil':
-                $pageA = new AccueilAction();
-                $html = $pageA->execute();
+                if(UserAuthentifie::isUserConnected()) {
+                    $pageA = new AccueilAction();
+                    $html = $pageA->execute();
+                }
+                else{
+                    $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
+                    $html.= "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
+                }
                 break;
             default:
                 echo 'Bienvenue<br>';
