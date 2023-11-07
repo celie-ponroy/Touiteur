@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace iutnc\touiteur\action;
 use iutnc\touiteur\action\Action;
 use  iutnc\touiteur\bd\ConnectionFactory as ConnectionFactory;
+use iutnc\touiteur\user\UserAuthentifie;
 
 class AccueilAction extends Action {
 
@@ -20,7 +21,7 @@ class AccueilAction extends Action {
     }
     
     public function execute() : string{
-
+        if(UserAuthentifie::isUserConnected()){
         $db = ConnectionFactory::makeConnection();
         
         $sql ="SELECT * FROM Touite 
@@ -35,8 +36,14 @@ class AccueilAction extends Action {
         foreach ($resultset->fetchAll() as $row) {
             $html.=("@".$row["email"]." : ".$row["texte"])."<br>";
         }
+        }else{
+
+            $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
+            $html.= "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
+
+        }
         return $html;
     }
-    
+        
 }
 ?>

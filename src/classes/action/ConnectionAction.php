@@ -11,7 +11,6 @@ class ConnectionAction extends Action {
 
     public function __construct(){
         parent::__construct();
-
     }
 
     public function execute() : string{
@@ -33,14 +32,15 @@ class ConnectionAction extends Action {
             $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
             $mdp = $_POST['mdp'];
 
-            //Auth OK
+            //verification de la connection
             if(Auth::authenticate($email, $mdp)){
-
+                //cas connecté
                 $usAuth = new UserAuthentifie($email);
                 $usAuth->connectUser();
                 $html = "Vous êtes connecté.e ;)";
                 $_SESSION["email"]= $email;
             } else{
+                //cas échec
                 $html = "La connection a échoué, le mot de passe ou l'adresse mail est incorecte";
             }
         }

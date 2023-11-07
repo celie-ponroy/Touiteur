@@ -71,25 +71,34 @@ class UserAuthentifie extends User{
 
             $pdo = null;
     }
+    /*
+     * Méthode qui permet de vérifier que l'utilisateur est authentifié
+     */
+    public static function isUserConnected(): bool
+    {
+        return isset($_SESSION['User']);
+    }
 
 
 
 
     public function getTouites(){
+
         $pdo = ConnectionFactory::makeConnection();
         $query = 'SELECT idTouite from Touite Where email = ?';
 
         $st = $pdo->prepare($query);
         $st->execute([$this->email]);
 
-        return $st->fetchAll();
+        $res = $st->fetchAll();
+        var_dump ($res);
+        return $res;
     }
 
 
 
     public function connectUser(){
         $_SESSION['User'] = serialize($this);
-
     }
 
 }

@@ -22,11 +22,14 @@ class ListeTouiteAction extends Action {
     public function execute() : string{
 
         $db = ConnectionFactory::makeConnection();
-        
+        //récupère les données des touites
         $sql ="SELECT * FROM Touite order by Touite.datePublication;";
         $resultset = $db->prepare($sql);
-        $resultset->execute();
+        //exécute la requète sql
+        $resultset->execute(); 
+        //initialise le html
         $html = "";
+        //affiche chaque Touite
         foreach ($resultset->fetchAll() as $row) {
             echo $row["idTouite"];
             $html.="   <a class='action' href = '?action=touite-en-detail&id=".$row["idTouite"]."'>@".$row["email"]." : ".$row["texte"]."</a><br>";
