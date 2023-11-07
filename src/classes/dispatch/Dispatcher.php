@@ -8,6 +8,7 @@ use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
+use iutnc\touiteur\action\UserListeTouitesAction;
 
 class Dispatcher {
     private string $action;
@@ -44,6 +45,10 @@ class Dispatcher {
                 $listeT = new ListeTouiteAction();
                 $html = $listeT->execute();
                 break;
+            case 'user_liste_touite':
+                $listeT = new UserListeTouitesAction();
+                $html = $listeT->execute();
+                break;
             default:
                 echo 'Bienvenue<br>';
                 break;
@@ -68,6 +73,7 @@ class Dispatcher {
                 <a href = '?action=inscription'> Inscription </a><br>
                 <a href = '?action=recherche'> Recherche</a><br>
                 <a href = '?action=touite-post'> Poster un touite</a><br>
+                <a href = '?action=user_liste_touite'> Poster un touite</a><br>
             </nav>
                 <a href = '?action=liste_touite'> For u page</a><br>
                 $html       

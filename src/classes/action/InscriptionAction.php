@@ -17,6 +17,7 @@ class InscriptionAction extends Action {
         if($methode ==='GET'){
             $html =" <form id='f1' action='?action=inscription' method='post'>
             <input type='text' placeholder='<nom>' name='nom'>
+            <input type='text' placeholder='<prenom>' name='prenom'>
             <input type='email' placeholder='<email>' name='email'>
             <input type='text' placeholder='<pass>' name='pass'>
             <button type='submit'>Valider</button>
@@ -25,26 +26,25 @@ class InscriptionAction extends Action {
             var_dump($_POST);
             echo "<br>";
             $nom = filter_var($_POST['nom'],FILTER_SANITIZE_STRING);
+            $prenom = filter_var($_POST['prenom'],FILTER_SANITIZE_STRING);
             $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
             $mdp = password_hash($_POST['pass'], PASSWORD_DEFAULT, ['cost'=> 12]);
-            $date = (new \DateTime())->format('Y-m-d');
-            var_dump($date);
             $role = 1;
 
             $pdo = ConnectionFactory::makeConnection();
 
-            $query = "INSERT INTO USERS (name, email, password, dateRegister, role) VALUES (:nom, :email, :mdp, :date, :role)";
+            $query = "INSERT INTO Utilisateur (nom, prenom, password, email, role) VALUES (:nom, :prenom, :mdp, :email, :role)";
 
             $stmt = $pdo->prepare($query);
 
             $stmt->bindParam(':nom', $nom);
-            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':prenom', $prenom);
             $stmt->bindParam(':mdp', $mdp);
-            $stmt->bindParam(':date', $date);
+            $stmt->bindParam(':email', $email);
             $stmt->bindParam(':role', $role);
 
             if ($stmt->execute()) {
-                $html = " ajout user<br> Email:".$email.", Nom:".$nom.", Date: ".$date;
+                $html = " ajout user<br> Email:".$email.", Nom:".$nom;
             } else {
                 $html = "INSERT ERROR: " . $stmt->errorInfo()[2];
             }

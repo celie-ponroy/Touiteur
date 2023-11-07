@@ -4,6 +4,7 @@
  * déclarations des namespaces
  */
 namespace iutnc\touiteur\user;
+use http\Encoding\Stream;
 use iutnc\touiteur\bd\ConnectionFactory;
 
 class UserAuthentifie extends User{
@@ -11,26 +12,27 @@ class UserAuthentifie extends User{
     /**
      * déclarations des attributs
      */
-    protected string $login, $date;
+    protected string $email, $nom, $prenom;
     protected int $role;
 
     /**
      * Constructeur
      */
-    public function __construct(string $login, string $date, int $role){
-        $this->login = $login;
-        $this->date = $date;
+    //оставить только емейл остальное брать с бд
+    public function __construct(string $email, string $nom, string $prenom,int $role){
+        $this->email = $email;
+        $this->nom = $nom;
+        $this->prenom = $prenom;
         $this->role = $role;
     }
 
     public function getTouites(){
         $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT message, pictureFile from touite Where email = ?';
+        $query = 'SELECT idTouite from Touite Where email = ?';
         $st = $pdo->prepare($query);
-        $st->execute([$this->login]);
+        $st->execute([$this->email]);
 
         return $st->fetchAll();
     }
-
 
 }

@@ -8,22 +8,26 @@ class UserListeTouitesAction extends Action
 {
     private UserAuthentifie $user;
 
-    public function __construct($user=null)
+    // заменить для любого юзера
+    public function __construct()
     {
         parent::__construct();
+        $user = unserialize($_SESSION['User']);
+        var_dump($user);
         $this->user = $user;
     }
 
-//    public function execute(): string
-//    {
-//        $html = '';
-//        if (isset($this->user)){
-//            $touites = $this->user->getTouites();
-//            foreach ($touites as $t){
-//                $t
-//                    $html .= "$t['message'] " . "$t";
-//            }
-//        }
-//        return $html;
-//    }
+    public function execute(): string
+    {
+        $html = '';
+        if (isset($this->user)){
+            $touites = $this->user->getTouites();
+            var_dump($touites);
+            foreach ($touites as $t){
+                    //affichage (id)
+                    $html .= $t[0] . "<br>";
+            }
+        }
+        return $html;
+    }
 }
