@@ -13,4 +13,7 @@ ConnectionFactory::setConfig('conf/conf.ini');
 
 (new Dispatcher())->run();
 
-//if (isset($_SESSION)) var_dump($_SESSION['User']->getTouites());
+        $disp = new Dispatcher();
+        $disp->run();
+        //if (isset($_SESSION)) var_dump($_SESSION['User']->getTouites());
+?>
