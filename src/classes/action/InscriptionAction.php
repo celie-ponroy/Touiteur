@@ -6,13 +6,9 @@ use iutnc\touiteur\bd\ConnectionFactory;
 
 class InscriptionAction extends Action {
 
-    protected ?string $http_method = null;
-    protected ?string $hostname = null;
-    protected ?string $script_name = null;
     public function __construct(){
-        $this->http_method = $_SERVER['REQUEST_METHOD'];
-        $this->hostname = $_SERVER['HTTP_HOST'];
-        $this->script_name = $_SERVER['SCRIPT_NAME'];
+        parent::__construct();
+
     }
     public function execute() : string{
         $html = "";
@@ -27,20 +23,23 @@ class InscriptionAction extends Action {
           </form>";
         }else if ($methode === 'POST') {
             echo "<br>";
-            $nom = filter_var($_POST['nom']);
-            $prenom = filter_var($_POST['prenom']);
+            $nom = filter_var($_POST['nom'],FILTER_SANITIZE_STRING);
+            $prenom = filter_var($_POST['prenom'],FILTER_SANITIZE_STRING);
+
             $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
             $mdp = password_hash($_POST['pass'], PASSWORD_DEFAULT, ['cost'=> 12]);
             $role = 1;
 
             $pdo = ConnectionFactory::makeConnection();
 
-            $query = "INSERT INTO Utilisateur (nom , prenom, email, password, role) VALUES (:nom,:prenom, :email, :mdp , :role)";
+            $query = "INSERT INTO Utilisateur (nom, prenom, password, email, role) VALUES (:nom, :prenom, :mdp, :email, :role)";
+
 
             $stmt = $pdo->prepare($query);
 
             $stmt->bindParam(':nom', $nom);
             $stmt->bindParam(':prenom', $prenom);
+
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':mdp', $mdp);
             $stmt->bindParam(':role', $role);

@@ -41,12 +41,7 @@ class ConnectionAction extends Action {
                 $st->execute([$email]);
                 $role = $st->fetchAll();
 
-                $query = 'SELECT nom , prenom from Utilisateur Where email = ?';
-                $st = $pdo->prepare($query);
-                $st->execute([$email]);
-                $donees = $st->fetchAll();
-
-                $_SESSION['User'] = new UserAuthentifie($email, $donees[0]['nom'],$donees[0]['prenom'], $role[0]['role']);
+                $_SESSION['User'] = serialize(new UserAuthentifie($email));
 
                 $html = "Auth OK";
             } else{

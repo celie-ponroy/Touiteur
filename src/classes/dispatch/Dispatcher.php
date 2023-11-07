@@ -8,7 +8,11 @@ use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
+
+use iutnc\touiteur\action\UserListeTouitesAction;
+
 use iutnc\touiteur\action\TouiteDetailAction;
+
 
 class Dispatcher {
     private string $action;
@@ -48,6 +52,15 @@ class Dispatcher {
                 $listeT = new ListeTouiteAction();
                 $html = $listeT->execute();
                 break;
+
+            case 'user_liste_touite':
+                $listeT = new UserListeTouitesAction();
+                $html = $listeT->execute();
+                break;
+            default:
+                echo 'Bienvenue<br>';
+                break;
+
         }
 
         echo "<!DOCTYPE html>
@@ -61,6 +74,7 @@ class Dispatcher {
             </head>
             <body>
 
+
             <div class='tableau'>
             
                 <nav class='navigation'>
@@ -72,6 +86,7 @@ class Dispatcher {
                     <a class='action' href = '?action=touite-en-detail'><img src='mon_image.jpg' > Touite en détail</a><br>
                     <a class='action' href = '?action=liste_touite'> <img src='mon_image.jpg' > Liste Touite</a><br>
                     <a class='action' href = '?action=page_accueil'> <img src='mon_image.jpg' > Page d'accueil</a><br>
+                    <a class='action' href = '?action=user_liste_touite'> user_liste_touite</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
                    
 
