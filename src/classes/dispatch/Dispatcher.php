@@ -8,7 +8,11 @@ use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
+
 use iutnc\touiteur\action\UserListeTouitesAction;
+
+use iutnc\touiteur\action\TouiteDetailAction;
+
 
 class Dispatcher {
     private string $action;
@@ -20,7 +24,7 @@ class Dispatcher {
         }
     }
     public function run( ): void {//a modifier
-       
+
         $html = '';
         switch($this->action){
             case 'connection':
@@ -35,6 +39,9 @@ class Dispatcher {
                 $recherche = new RechercheAction();
                 $html = $recherche->execute();
                 break;
+            case 'touite-en-detail':
+                $touiteEnDetail = new TouiteDetailAction();
+                $html = $touiteEnDetail->execute();
 
             case 'touite-post':
                 $touitepost = new TouitePost();
@@ -45,6 +52,7 @@ class Dispatcher {
                 $listeT = new ListeTouiteAction();
                 $html = $listeT->execute();
                 break;
+
             case 'user_liste_touite':
                 $listeT = new UserListeTouitesAction();
                 $html = $listeT->execute();
@@ -62,21 +70,47 @@ class Dispatcher {
                 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
                 <meta name='viewport' content='width=device-width', initial-scale='1.0'>
                 <title>Accueil - Touiteur</title>
-                <link rel='stylesheet' type='text/css' href='css/index_stylecss'>
+                <link rel='stylesheet' type='text/css' href='css/index_style.css'>
             </head>
             <body>
-            <header>
-                <h2 class='logo'><a href='index.php'>Touiteur</a></h2>
-            </header>
-            <nav class='navigation'>
-                <a href = '?action=connection'> Connection </a><br>
-                <a href = '?action=inscription'> Inscription </a><br>
-                <a href = '?action=recherche'> Recherche</a><br>
-                <a href = '?action=touite-post'> Poster un touite</a><br>
-                <a href = '?action=user_liste_touite'> Poster un touite</a><br>
-            </nav>
-                <a href = '?action=liste_touite'> For u page</a><br>
-                $html       
+
+
+            <div class='tableau'>
+            
+                <nav class='navigation'>
+                    <h2 class='logo'><a href='index.php'><img src='mon_image.jpg' ></a></h2> 
+                   
+                    <a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>
+                    <a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>
+                    <a class='action' href = '?action=recherche'><img src='mon_image.jpg' > Explore</a><br>
+                    <a class='action' href = '?action=touite-en-detail'><img src='mon_image.jpg' > Touite en détail</a><br>
+                    <a class='action' href = '?action=liste_touite'> <img src='mon_image.jpg' >For u page</a><br>
+                    <a href = '?action=user_liste_touite'> user_liste_touite</a><br>
+                    <a class='action-post' href = '?action=touite-post'> Post</a><br>
+                   
+
+                </nav>
+                
+                <div class='content'>
+                    $html
+                </div>
+
+
+                <div class='foruser'>
+
+                    <div class='research'>
+
+                    </div>
+
+                    <div class='research'>
+                        <a class='research' href = '?action=recherche'> Recherche</a><br>
+                    </div>
+
+                    <div class='research'>
+                    </div>
+
+                </div>
+            </div>
             </body>
         </html>";
     }

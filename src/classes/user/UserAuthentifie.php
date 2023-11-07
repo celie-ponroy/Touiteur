@@ -18,8 +18,8 @@ class UserAuthentifie extends User{
     /**
      * Constructeur
      */
-    //оставить только емейл остальное брать с бд
-    public function __construct(string $email, string $nom, string $prenom,int $role){
+
+    public function __construct(string $email, string $nom, string $prenom ,int $role){
         $this->email = $email;
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -29,6 +29,7 @@ class UserAuthentifie extends User{
     public function getTouites(){
         $pdo = ConnectionFactory::makeConnection();
         $query = 'SELECT idTouite from Touite Where email = ?';
+
         $st = $pdo->prepare($query);
         $st->execute([$this->email]);
 

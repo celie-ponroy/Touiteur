@@ -20,16 +20,16 @@ class TouitePost extends Action {
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];
         if($methode ==='GET'){
-            $html ="    <form id='f1' action='?action=touite-post' method='post'>
-                        <input type='text' placeholder='<touite>' name='touite'>
+            $html ="    <form class='Touite' action='?action=touite-post' method='post'>
+                        <input type='textarea' placeholder='What is happening?!' name='touite'autocomplete='off'>
+                       
                         <input type='file' placeholder='<choose file>' name='image'>
-                        <button type='submit'>Valider</button>
+                        <button type='submit'>Post</button>
                         </form>";
 
         }else if ($methode === 'POST') {
             $touite = filter_var($_POST['touite'], FILTER_SANITIZE_STRING); 
             if(!empty($touite)){
-                echo "<br>";          
                 $html .= "<h3>Touite : " . $touite . "</h3>";
             }else{
                 echo "<h3>Vous n'avez selectionnez ni une image, ni saisi un texte</h3>";
@@ -41,4 +41,3 @@ class TouitePost extends Action {
     }
     
 }
-?>

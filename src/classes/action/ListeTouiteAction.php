@@ -28,7 +28,7 @@ class ListeTouiteAction extends Action {
         $resultset->execute();
         $html = "";
         foreach ($resultset->fetchAll() as $row) {
-            $html.=("->".$row["email"]." : ".$row["message"])."<br>";
+            $html.=("@".$row["email"]." : ".$row["texte"])."<br>";
         }
         return $html;
     }

@@ -1,0 +1,133 @@
+*{
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: aliceblue;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+}
+
+
+.tableau {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* Trois colonnes égales. */
+    grid-gap: 10px; /* Espace entre les colonnes. */
+}
+
+
+/*logo*/
+.logo{
+    font-size: 3em;
+}
+
+/*colonne navigation*/
+
+.navigation{
+    margin-left:28%;
+    padding: 20px;
+    margin-right: 5%;
+}
+
+
+.action{
+    display: flex;
+    align-items: center;
+    font-size: 2em;
+ 
+    height: 50px;
+}
+
+.action:hover{
+    background-color:rgb(22, 24, 28) ;
+    height: 50px;
+    width: auto;
+    border-radius:50px
+}
+
+.action-post{
+    background-color: rgb(29, 155, 240);
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5em;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 250px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/*colonne content*/
+.content{
+    color: red;
+    border-right: 1px solid rgb(127, 127, 127);
+    border-left: 1px solid rgb(127, 127, 127);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 750px;
+    width: 600px;
+}
+
+
+/*colonne foruser*/
+
+.foruser div{
+    background-color:rgb(22, 24, 28) ;
+}
+
+
+/*affichage du formulaire d'un Touite*/
+
+/* Style général */
+.Touite {
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px white;
+    width: 550px;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  /* Style du champ de texte */
+  .Touite input[type="textarea"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    padding-bottom:80px ;
+  }
+
+  .Touite input[type="textarea"]:focus {
+    outline: none; /* Supprime la bordure de focus par défaut */
+    border: none; /* Supprime la bordure au focus */
+  }
+  
+  /* Style du champ de téléchargement d'image */
+  .Touite input[type="file"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  /* Style du bouton Valider */
+  .Touite button[type="submit"] {
+    
+    background-color: #1da1f2;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 50px;
+    width: 70px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .Touite button[type="submit"]:hover {
+    background-color: #0b7ec2;
+  }
+  

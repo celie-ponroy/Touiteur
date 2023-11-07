@@ -19,6 +19,7 @@ class Touite{
         $this->user = $user;
         $date = new \DateTime();
     }
+
     /**
      * toString 
      */
@@ -29,6 +30,8 @@ class Touite{
         
         
     }
+
+
 }
 
 ?>
