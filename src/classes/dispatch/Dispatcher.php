@@ -18,7 +18,7 @@ class Dispatcher {
         }
     }
     public function run( ): void {//a modifier
-       
+
         $html = '';
         switch($this->action){
             case 'connection':
@@ -32,6 +32,10 @@ class Dispatcher {
             case 'recherche':
                 $recherche = new RechercheAction();
                 $html = $recherche->execute();
+                break;
+            case 'touite-en-detail':
+                $touiteEnDetail = new TouiteDetailAction();
+                $html = $touiteEnDetail->execute();
                 break;
             default:
                 echo 'Bienvenue<br>';
@@ -48,6 +52,7 @@ class Dispatcher {
                 <a href = '?action=connection'> Connection </a><br>
                 <a href = '?action=inscription'> Inscription </a><br>
                 <a href = '?action=recherche'> Recherche</a><br>
+                <a href = '?action=touite-en-detail'> Touite en détail</a><br>
                 $html
             </body>
         </html>";

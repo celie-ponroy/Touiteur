@@ -18,14 +18,16 @@ class Touite{
         $this->user = $user;
         $date = new \DateTime();
     }
+
     /**
      * toString 
      */
     function __toString(){
         $res = "@".$this->user;
         return $res."<br>\n".$this-> texte;
-        
     }
+
+
 }
 
 ?>
