@@ -36,7 +36,7 @@ class ConnectionAction extends Action {
             //Auth OK
             if(Auth::authenticate($email, $mdp)){
                 $pdo = ConnectionFactory::makeConnection();
-                $query = 'SELECT role from Users Where email = ?';
+                $query = 'SELECT role from Utilisateur Where email = ?';
                 $st = $pdo->prepare($query);
                 $st->execute([$email]);
                 $role = $st->fetchAll();
