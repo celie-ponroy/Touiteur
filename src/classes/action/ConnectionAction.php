@@ -39,7 +39,6 @@ class ConnectionAction extends Action {
                 $query = 'SELECT role from Utilisateur Where email = ?';
                 $st = $pdo->prepare($query);
                 $st->execute([$email]);
-                $role = $st->fetchAll();
 
                 $_SESSION['User'] = serialize(new UserAuthentifie($email));
 

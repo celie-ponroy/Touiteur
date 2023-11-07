@@ -23,17 +23,17 @@ class UserAuthentifie extends User{
         $this->email = $email;
 
         $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT role from utilisateur Where email = ?';
+        $query = 'SELECT role from Utilisateur Where email = ?';
         $st = $pdo->prepare($query);
         $st->execute([$email]);
         $role = $st->fetch()['role'];
 
-        $query = 'SELECT nom from utilisateur Where email = ?';
+        $query = 'SELECT nom from Utilisateur Where email = ?';
         $st = $pdo->prepare($query);
         $st->execute([$email]);
         $nom = $st->fetch()['nom'];
 
-        $query = 'SELECT prenom from utilisateur Where email = ?';
+        $query = 'SELECT prenom from Utilisateur Where email = ?';
         $st = $pdo->prepare($query);
         $st->execute([$email]);
         $prenom = $st->fetch()['prenom'];

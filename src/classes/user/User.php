@@ -9,6 +9,15 @@ class User{
 
     }
 
+
+    public function __get($name): mixed{
+        if(property_exists($this, $name)){
+            return $this->$name;
+        }else{
+            echo "Get invalide";
+            return null;
+        }
+    }
 }
 
 

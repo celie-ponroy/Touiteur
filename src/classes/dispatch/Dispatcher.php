@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace iutnc\touiteur\dispatch;
 
+use iutnc\touiteur\action\AccueilAction;
 use iutnc\touiteur\action\RechercheAction;
 use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\InscriptionAction;
@@ -54,8 +55,12 @@ class Dispatcher {
                 break;
 
             case 'user_liste_touite':
-                $listeT = new UserListeTouitesAction();
-                $html = $listeT->execute();
+                $UlisteT = new UserListeTouitesAction();
+                $html = $UlisteT->execute();
+                break;
+            case 'page_accueil':
+                $pageA = new AccueilAction();
+                $html = $pageA->execute();
                 break;
             default:
                 echo 'Bienvenue<br>';

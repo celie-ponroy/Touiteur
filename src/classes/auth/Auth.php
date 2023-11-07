@@ -20,7 +20,7 @@ class Auth{
         $resultset = $db->prepare( $sql );
         $resultset->bindParam(1,$email);
         $resultset->execute();
-       
+      
         $ligne = $resultset->fetch(PDO::FETCH_ASSOC);
         $hash = $ligne['password'];
 //        print("1 : ".$hash."<br>2 : ".$passwd2check."<br>");
