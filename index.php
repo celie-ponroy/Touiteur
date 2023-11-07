@@ -11,6 +11,7 @@ use iutnc\touiteur\user\UserAuthentifie;
 
 ConnectionFactory::setConfig('conf/conf.ini');
 
+
         $disp = new Dispatcher();
         $disp->run();
         //if (isset($_SESSION)) var_dump($_SESSION['User']->getTouites());
