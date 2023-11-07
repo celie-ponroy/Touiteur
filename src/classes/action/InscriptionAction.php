@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace iutnc\touiteur\action;
 use iutnc\touiteur\action\Action;
-use iutnc\touiteur\auth\Auth;
 use iutnc\touiteur\bd\ConnectionFactory;
 
 class InscriptionAction extends Action {
@@ -23,7 +22,6 @@ class InscriptionAction extends Action {
             <button type='submit'>Valider</button>
           </form>";
         }else if ($methode === 'POST') {
-            var_dump($_POST);
             echo "<br>";
             $nom = filter_var($_POST['nom'],FILTER_SANITIZE_STRING);
             $prenom = filter_var($_POST['prenom'],FILTER_SANITIZE_STRING);
