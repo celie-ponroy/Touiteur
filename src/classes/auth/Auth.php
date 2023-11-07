@@ -1,9 +1,9 @@
 <?php
 
 declare(strict_types=1);
-namespace iutnc\deefy\auth;
-use  iutnc\deefy\exception\AuthException;
-use  iutnc\deefy\db\ConnectionFactory as ConnectionFactory;
+namespace iutnc\touiter\auth;
+use  iutnc\touiter\exception\AuthException;
+use  iutnc\touiteur\bd\ConnectionFactory as ConnectionFactory;
 use PDO;
 class Auth{
     private ConnectionFactory $connection;
