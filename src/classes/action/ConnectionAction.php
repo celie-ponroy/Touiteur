@@ -41,12 +41,12 @@ class ConnectionAction extends Action {
                 $st->execute([$email]);
                 $role = $st->fetchAll();
 
-                $query = 'SELECT dateRegister from Users Where email = ?';
+                $query = 'SELECT nom , prenom from Utilisateur Where email = ?';
                 $st = $pdo->prepare($query);
                 $st->execute([$email]);
-                $date = $st->fetchAll();
+                $donees = $st->fetchAll();
 
-                $_SESSION['User'] = new UserAuthentifie($email, $date[0]['dateRegister'], $role[0]['role']);
+                $_SESSION['User'] = new UserAuthentifie($email, $donees[0]['nom'],$donees[0]['prenom'], $role[0]['role']);
 
                 $html = "Auth OK";
             } else{
