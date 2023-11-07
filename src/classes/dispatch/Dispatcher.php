@@ -38,6 +38,7 @@ class Dispatcher {
             case 'touite-en-detail':
                 $touiteEnDetail = new TouiteDetailAction();
                 $html = $touiteEnDetail->execute();
+                break;
 
             case 'touite-post':
                 $touitepost = new TouitePost();
@@ -48,10 +49,6 @@ class Dispatcher {
                 $listeT = new ListeTouiteAction();
                 $html = $listeT->execute();
                 break;
-            default:
-                echo 'Bienvenue<br>';
-                break;
-
         }
 
         echo "<!DOCTYPE html>
@@ -74,8 +71,9 @@ class Dispatcher {
                     <a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>
                     <a class='action' href = '?action=recherche'><img src='mon_image.jpg' > Explore</a><br>
                     <a class='action' href = '?action=touite-en-detail'><img src='mon_image.jpg' > Touite en détail</a><br>
+                    <a class='action' href = '?action=liste_touite'> <img src='mon_image.jpg' >For u page</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
-                    <a href = '?action=liste_touite'> For u page</a><br>
+                   
 
                 </nav>
                 
