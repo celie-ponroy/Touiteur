@@ -28,7 +28,8 @@ class ListeTouiteAction extends Action {
         $resultset->execute();
         $html = "";
         foreach ($resultset->fetchAll() as $row) {
-            $html.=("@".$row["email"]." : ".$row["texte"])."<br>";
+            echo $row["idTouite"];
+            $html.="   <a class='action' href = '?action=touite-en-detail&id=".$row["idTouite"]."'>@".$row["email"]." : ".$row["texte"]."</a><br>";
         }
         return $html;
     }

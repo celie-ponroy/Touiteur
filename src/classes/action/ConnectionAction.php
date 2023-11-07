@@ -49,6 +49,8 @@ class ConnectionAction extends Action {
                 $_SESSION['User'] = new UserAuthentifie($email, $donees[0]['nom'],$donees[0]['prenom'], $role[0]['role']);
 
                 $html = "Auth OK";
+                session_start();
+                $_SESSION["email"]= $email;
             } else{
                 $html = "Auth not ok";
             }
