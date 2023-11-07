@@ -6,6 +6,7 @@ namespace iutnc\touiteur\dispatch;
 use iutnc\touiteur\action\RechercheAction;
 use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\InscriptionAction;
+use iutnc\touiteur\action\TouitePost;
 
 
 class Dispatcher {
@@ -33,6 +34,9 @@ class Dispatcher {
                 $recherche = new RechercheAction();
                 $html = $recherche->execute();
                 break;
+            case 'touite-post':
+                $touitepost = new TouitePost();
+                $html = $touitepost->execute();
             default:
                 echo 'Bienvenue<br>';
                 break;
@@ -45,9 +49,12 @@ class Dispatcher {
                 <title> Touiter </title>
             </head>
             <body>
+            <nav class='navigation'>
                 <a href = '?action=connection'> Connection </a><br>
                 <a href = '?action=inscription'> Inscription </a><br>
                 <a href = '?action=recherche'> Recherche</a><br>
+                <a href = '?action=touite-post'> Poster un touite de batard</a><br>
+            </nav>
                 $html
             </body>
         </html>";
