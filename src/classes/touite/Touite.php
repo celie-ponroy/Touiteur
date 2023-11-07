@@ -1,7 +1,7 @@
 <?php
 declare(strict_types= 1);
 
-namespace iutnc\touiter\touite;
+namespace iutnc\touiteur\touite;
 use DateTime;
 use iutnc\touiteur\bd\ConnectionFactory;
 use iutnc\touiteur\user\User;
@@ -41,14 +41,14 @@ class Touite{
 
         $db = ConnectionFactory::makeConnection();
 
-        $sql2 = "SELECT max(idTouite) as maxid
-        FROM Utilisateur;";
+        $sql2 = "SELECT max(idTouite) as maxid FROM Touite;";
 
         $idimage = $db->prepare($sql2);
         $idimage->execute();
         $resimage = $idimage->fetch();
 
         $idpicture = $resimage["maxid"]+1;
+        echo"<h1>".$idpicture."</h1>";
 
         /*maj de l'image*/
         $sql ="Insert into Image values(?,null,?);";
@@ -60,7 +60,7 @@ class Touite{
         /*maj du Touite */
             
         $sql2 = "SELECT max(idTouite) as maxid
-                    FROM Utilisateur;";
+                    FROM Touite;";
 
         $id = $db->prepare($sql2);
         $id->execute();
@@ -69,7 +69,7 @@ class Touite{
 
         $idtouite=$res["maxid"]+1;
         $texte=$this->texte;
-        $datePublication=$this->date;
+        $datePublication=$this->date->format('Y-m-d H:i:s');
         $email=$this->user->__get("email");
         
         $sql ="Insert into Touite values(?,?,?,?,?);";

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 namespace iutnc\touiteur\action;
-use iutnc\touiter\touite\Touite;
+use iutnc\touiteur\touite\Touite;
 use iutnc\touiteur\action\Action;
 use iutnc\touiteur\bd\ConnectionFactory;
 use iutnc\touiteur\user\UserAuthentifie;
@@ -38,7 +38,7 @@ class TouitePost extends Action {
             //email nom prenom role texte path tag
             $tags= array('');
 
-            $touiteobject=new Touite(new UserAuthentifie($_SESSION["email"],"","",1),$touite,$_POST['image'],$tags);
+            $touiteobject=new Touite(new UserAuthentifie($_SESSION["email"]),$touite,$_POST['image'],$tags);
             $touiteobject->publierTouite();
             if(!empty($touite)){
                 $html .= "<h3>Touite : " . $touite . "</h3>";

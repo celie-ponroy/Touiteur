@@ -38,7 +38,6 @@ class ConnectionAction extends Action {
                 $usAuth = new UserAuthentifie($email);
                 $usAuth->connectUser();
                 $html = "Auth OK";
-                session_start();
                 $_SESSION["email"]= $email;
             } else{
                 $html = "Auth not ok";
