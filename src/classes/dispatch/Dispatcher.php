@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace iutnc\touiteur\dispatch;
 
+use iutnc\touiteur\action\AccueilAction;
 use iutnc\touiteur\action\RechercheAction;
 use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\InscriptionAction;
@@ -42,6 +43,7 @@ class Dispatcher {
             case 'touite-en-detail':
                 $touiteEnDetail = new TouiteDetailAction();
                 $html = $touiteEnDetail->execute();
+                break;
 
             case 'touite-post':
                 $touitepost = new TouitePost();
@@ -54,8 +56,12 @@ class Dispatcher {
                 break;
 
             case 'user_liste_touite':
-                $listeT = new UserListeTouitesAction();
-                $html = $listeT->execute();
+                $UlisteT = new UserListeTouitesAction();
+                $html = $UlisteT->execute();
+                break;
+            case 'page_accueil':
+                $pageA = new AccueilAction();
+                $html = $pageA->execute();
                 break;
             default:
                 echo 'Bienvenue<br>';
@@ -86,7 +92,7 @@ class Dispatcher {
                     <a class='action' href = '?action=touite-en-detail'><img src='mon_image.jpg' > Touite en détail</a><br>
                     <a class='action' href = '?action=liste_touite'> <img src='mon_image.jpg' > Liste Touite</a><br>
                     <a class='action' href = '?action=page_accueil'> <img src='mon_image.jpg' > Page d'accueil</a><br>
-                    <a class='action' href = '?action=user_liste_touite'> user_liste_touite</a><br>
+                    <a class='action' href = '?action=user_liste_touite'><img src='mon_image.jpg' > user_liste_touite</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
                     <a class='action' href = '?action=tag1'> user_liste_touite</a><br>
 

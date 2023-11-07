@@ -4,7 +4,7 @@ namespace iutnc\touiteur\action;
 use iutnc\touiteur\action\Action;
 use  iutnc\touiteur\bd\ConnectionFactory as ConnectionFactory;
 
-class ListeTouiteAction extends Action {
+class AccueilAction extends Action {
 
     protected ?string $http_method = null;
     protected ?string $hostname = null;
@@ -23,13 +23,17 @@ class ListeTouiteAction extends Action {
 
         $db = ConnectionFactory::makeConnection();
         
-        $sql ="SELECT * FROM Touite order by Touite.datePublication;";
+        $sql ="SELECT * FROM Touite 
+        right join Abonnement on Touite.email = Abonnement.idSuivi
+        where idAbonné = :email
+        order by Touite.datePublication;";
         $resultset = $db->prepare($sql);
+        $user = unserialize($_SESSION['User']);
+        $resultset->bindParam(':email', $user->email);
         $resultset->execute();
         $html = "";
         foreach ($resultset->fetchAll() as $row) {
-            echo $row["idTouite"];
-            $html.="   <a class='action' href = '?action=touite-en-detail&id=".$row["idTouite"]."'>@".$row["email"]." : ".$row["texte"]."</a><br>";
+            $html.=("@".$row["email"]." : ".$row["texte"])."<br>";
         }
         return $html;
     }
