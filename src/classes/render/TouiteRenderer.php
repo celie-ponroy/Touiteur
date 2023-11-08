@@ -43,8 +43,11 @@ class TouiteRenderer implements Renderer{
                 $res .= '<p class="text">' . htmlspecialchars($this->touite->__get('texte'), ENT_QUOTES) . '</p>';
 
                 $res.='<div class=trend-container>';
-                foreach ($this->touite->__get('tags') as &$t) {
-                    $res .= '<a class="trend" href="?action=????????????">#' . $t . '</a>';
+                $tags=$this->touite->__get('tags');
+                if(isset($tags)){
+                    foreach ($tags as &$t) {
+                        $res .= '<a class="trend" href="?action=????????????">#' . $t . '</a>';
+                    }
                 }
                 $res.='</div>';
                 // Fermez la balise <a> avec ID "compact" ici

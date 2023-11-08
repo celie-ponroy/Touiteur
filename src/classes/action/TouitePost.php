@@ -30,9 +30,10 @@ class TouitePost extends Action {
 
             //email nom prenom role texte path tag
             $tags= array('');
+            $user = unserialize($_SESSION['User']);
+            Touite::publierTouite($user,$touite,null,$_POST['image']);//cree un touite //ajouter image et tags
+            //$touiteobject = new Touite($user,$id); //ajouter image ///-,$_POST['image'],$tags
             
-            $touiteobject=new Touite(new UserAuthentifie($_SESSION["email"]),$touite,$_POST['image'],$tags); //ajouter image
-            $touiteobject->publierTouite();
             if(!empty($touite)){
                 $html .= "<h3>Touite x: " . $touite . "</h3>";
             }else{

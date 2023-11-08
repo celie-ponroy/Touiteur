@@ -88,7 +88,7 @@ class TouiteDetailAction extends Action {
                     $nbdislike= $row['nb_dislikes'];
                 }
                 
-                $touiteRenderlong = new TouiteRenderer(new Touite(new UserAuthentifie($email),$texte, $imagepath, $tags, intval($id_touite)));
+                $touiteRenderlong = new TouiteRenderer(new Touite(new UserAuthentifie($email),$texte));//---, $imagepath, $tags, intval($id_touite)
                 $html.=$touiteRenderlong->render(Renderer::LONG);
             }
         }

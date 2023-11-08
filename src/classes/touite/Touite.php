@@ -17,7 +17,7 @@ class Touite{
     protected ?string $pathpicture;//contenu du touite
     protected UserAuthentifie $user ; //l'auteur
     protected DateTime $date;//date de publication du touite
-    protected array $tags; // table de tags
+    protected ?array $tags; // table de tags
 
 
     protected ?int $idtouite;
@@ -26,15 +26,138 @@ class Touite{
     /**
      * contructeur
      */
-    function __construct(UserAuthentifie $user, string $texte,  array $tag,?string $pathpicture="",?int $id=null){
-        $this->texte = $texte;
+    function __construct(UserAuthentifie $user , int $id ){
+        $this->idtouite = $id;
         $this->user = $user;
-        $this->date = new \DateTime();
-        $this->tags = $tag;
-        $this->pathpicture = $pathpicture;
+        $db = ConnectionFactory::makeConnection();
+        $query = 'SELECT texte, idIm , datePublication 
+                FROM Touite
+                WHERE idTouite = ?';
+        $resultset = $db->prepare($query);
+        $resultset->bindParam(1,$id, PDO::PARAM_INT);
+        $resultset->execute();
+        $fetch = $resultset->fetch();
+        $this->texte = $fetch['texte'];
+        $date=date_create_from_format('Y-m-d H:i:s', $fetch['datePublication']);
+        if($date===false){
+            $this->date = new \DateTime();
+        }else{$this->date = $date ;}
+        
+        $idIm = $fetch['idIm'];
+        $db = ConnectionFactory::makeConnection();
+        $query = 'SELECT cheminFichier 
+                FROM Image
+                WHERE idIm = ?';
+        $resultset = $db->prepare($query);
+        $resultset->bindParam(1,$idIm, PDO::PARAM_INT);
+        $resultset->execute();
+        $this->pathpicture = $resultset->fetch()['cheminFichier'] ;
+        
+        ///////////////////////////////////recuperer les tags
+        $this->tags = null;
+        
+        
+        //array tag
 
-        if($id !== null)
-            $this->idtouite = $id;
+    }
+    public static function publierTouite(UserAuthentifie $user, string $texte,  ?array $tag=null,?string $pathpicture=""){
+        $db = ConnectionFactory::makeConnection();
+
+        $date = new \DateTime();
+        
+
+        $sql2 = "SELECT max(idIm) as maxid FROM Image;";
+        $idpicture = null;
+
+        if($pathpicture!=""){
+
+            //sql pour ajouter image dans Image
+            $idimage = $db->prepare($sql2);
+            $idimage->execute();
+            $resimage = $idimage->fetch();
+
+            $idpicture = $resimage["maxid"]+1;
+            echo"<h1>".$idpicture."</h1>";
+            echo $idpicture;
+
+            /*maj de l'image*/
+            $sql ="Insert into Image values(?,null,?);";
+            $resultset = $db->prepare($sql);
+            $resultset->bindParam(1,$idpicture, PDO::PARAM_INT);
+            $resultset->bindParam(2,$pathpicture, PDO::PARAM_STR);
+            $resultset->execute();
+        }
+        
+        /*maj du Touite */
+            
+        $sql2 = "SELECT max(idTouite) as maxid FROM Touite;";
+
+        $id = $db->prepare($sql2);
+        $id->execute();
+        $res = $id->fetch();
+
+
+        $idtouite=$res["maxid"]+1;
+        $datePublication=$date->format('Y-m-d H:i:s');
+        $email = $user->__get("email");
+        
+        $sql = "INSERT INTO Touite (idTouite,texte,email,idIm, datePublication) 
+                VALUES (:idTouite,:texte,:email,:idIm,:datePubi)";
+        $resultset = $db->prepare($sql);
+        $resultset->bindParam(':idTouite',$idtouite, PDO::PARAM_INT);
+        $resultset->bindParam(':texte',$texte, PDO::PARAM_STR);
+        $resultset->bindParam(':datePubi',$datePublication, PDO::PARAM_STR);
+        $resultset->bindParam(':email',$email, PDO::PARAM_STR);
+        $resultset->bindParam(':idIm',$idpicture, PDO::PARAM_INT);
+        
+        
+        
+        //sql pour insert le touite
+        
+        if ($resultset->execute()) {
+            $html ="touite publié";
+        } else {
+            $html = "INSERT ERROR: " . $resultset->errorInfo()[2];
+        }
+        
+        if(isset($tag)){
+            foreach ($tag as $t) {
+                $lib=$t;
+                //chercher si le tag existe 
+                $sql = "SELECT COUNT(*) FROM Tag WHERE libelle = ?";
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam(1, $lib);
+                $stmt->execute();
+                
+                if($stmt->fetch()->rowCount()==0){  
+                    $sql = "SELECT max(idTag) FROM Tag";
+                    $stmt = $db->prepare($sql);
+                    $stmt->execute();
+                    $tab = $stmt->fetch();
+                    $idTag = $tab['idTag'] ;
+                    //sql pour ajouter les tags dans Tag
+                    $insert = "INSERT INTO Tag(idTag, description , libelle) VALUES (:idTag, :descr, :lib)";
+                    $stmt = $db->prepare($insert);
+                    $stmt->bindParam(':idTag', $idTag);
+                    $stmt->bindParam(':descr', $lib);
+                    $stmt->bindParam(':lib', $lib);
+                }else{
+                    $sql = "SELECT idTag FROM Tag WHERE libelle = ?";
+                    $stmt = $db->prepare($sql);
+                    $stmt->bindParam(1, $lib);
+                    $stmt->execute();
+                    $tab = $stmt->fetch();
+                    $idTag = $tab['idTag'] ;
+                }
+                //sql pour ajouter tag dans Tag2Touite
+                $insertT2T = "INSERT INTO Tag2Touite (idTag, idTouite) VALUES(?,?);";
+                $stmt = $db->prepare($insertT2T);
+                $stmt->bindParam(1, $idTag);
+                $stmt->bindParam(2, $id);
+            }
+            
+        }
+            
 
     }
 
@@ -48,50 +171,6 @@ class Touite{
         }
     }
 
-    public function publierTouite(){
-
-        $db = ConnectionFactory::makeConnection();
-
-        $sql2 = "SELECT max(idTouite) as maxid FROM Touite;";
-
-        $idimage = $db->prepare($sql2);
-        $idimage->execute();
-        $resimage = $idimage->fetch();
-
-        $idpicture = $resimage["maxid"]+1;
-        echo"<h1>".$idpicture."</h1>";
-
-        /*maj de l'image*/
-        $sql ="Insert into Image values(?,null,?);";
-        $resultset = $db->prepare($sql);
-        $resultset->bindParam(1,$idpicture, PDO::PARAM_INT);
-        $resultset->bindParam(2,$this->pathpicture, PDO::PARAM_STR);
-        $resultset->execute();
-        
-        /*maj du Touite */
-            
-        $sql2 = "SELECT max(idTouite) as maxid
-                    FROM Touite;";
-
-        $id = $db->prepare($sql2);
-        $id->execute();
-        $res = $id->fetch();
-
-
-        $idtouite=$res["maxid"]+1;
-        $texte=$this->texte;
-        $datePublication=$this->date->format('Y-m-d H:i:s');
-        $email=$this->user->__get("email");
-        
-        $sql ="Insert into Touite values(?,?,?,?,?);";
-        $resultset = $db->prepare($sql);
-        $resultset->bindParam(1,$idtouite, PDO::PARAM_INT);
-        $resultset->bindParam(2,$texte, PDO::PARAM_STR);
-        $resultset->bindParam(3,$datePublication, PDO::PARAM_STR);
-        $resultset->bindParam(4,$email, PDO::PARAM_STR);
-        $resultset->bindParam(5,$idpicture, PDO::PARAM_INT);
-        $resultset->execute();
-    }
 
     /**
      * toString 
