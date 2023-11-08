@@ -1,30 +1,41 @@
 <?php
 declare(strict_types= 1);
 
-namespace iutnc\touiter\touite;
+namespace iutnc\touiteur\touite;
+
 use DateTime;
 use iutnc\touiteur\bd\ConnectionFactory;
-use iutnc\touiteur\user\User;
 use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
+
 /**
  * class Touite
  */
 class Touite{
 
-    protected string $texte, $pathpicture;//contenu du touite
+    protected string $texte;
+    protected ?string $pathpicture;//contenu du touite
     protected UserAuthentifie $user ; //l'auteur
     protected DateTime $date;//date de publication du touite
     protected array $tags; // table de tags
+
+
+    protected ?int $idtouite;
+
+    protected int $nblikes, $nbdislike;
     /**
      * contructeur
      */
-    function __construct(UserAuthentifie $user, string $texte, string $pathpicture, array $tags){
+    function __construct(UserAuthentifie $user, string $texte, ?string $pathpicture="", array $tags,?int $id=null){
         $this->texte = $texte;
         $this->user = $user;
         $this->date = new \DateTime();
         $this->tags = $tags;
         $this->pathpicture = $pathpicture;
+
+        if($id !== null)
+            $this->idtouite = $id;
+
     }
 
 
@@ -41,14 +52,14 @@ class Touite{
 
         $db = ConnectionFactory::makeConnection();
 
-        $sql2 = "SELECT max(idTouite) as maxid
-        FROM Utilisateur;";
+        $sql2 = "SELECT max(idTouite) as maxid FROM Touite;";
 
         $idimage = $db->prepare($sql2);
         $idimage->execute();
         $resimage = $idimage->fetch();
 
         $idpicture = $resimage["maxid"]+1;
+        echo"<h1>".$idpicture."</h1>";
 
         /*maj de l'image*/
         $sql ="Insert into Image values(?,null,?);";
@@ -60,7 +71,7 @@ class Touite{
         /*maj du Touite */
             
         $sql2 = "SELECT max(idTouite) as maxid
-                    FROM Utilisateur;";
+                    FROM Touite;";
 
         $id = $db->prepare($sql2);
         $id->execute();
@@ -69,7 +80,7 @@ class Touite{
 
         $idtouite=$res["maxid"]+1;
         $texte=$this->texte;
-        $datePublication=$this->date;
+        $datePublication=$this->date->format('Y-m-d H:i:s');
         $email=$this->user->__get("email");
         
         $sql ="Insert into Touite values(?,?,?,?,?);";
@@ -87,13 +98,24 @@ class Touite{
      */
     function __toString(){
         $res = "@".$this->user;
-        return $res."<br>\n".$this-> texte;
+      
         //ajouter les tags
-        
-        
+        foreach ($this->tags as &$t) {
+            $res .= $t;
+        }
+        return $res."<br>\n".$this-> texte;
     }
 
+    public function findTaggedTw(){
+        $pdo = ConnectionFactory::makeConnection();
+        $query = 'SELECT idTouite from Touite 
+                    inner join Tag2Touite on Touite.idTouite = Tag2Touite.idTouite  
+                    inner join Tag on Tag.idTag = Tag2Touite.idTag
+                    Where tags = ?';
 
+        $st = $pdo->prepare($query);
+        $st->execute([$this->email]);
+
+        return $st->fetchAll();
+    }
 }
-
-?>

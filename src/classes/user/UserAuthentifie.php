@@ -4,7 +4,6 @@
  * déclarations des namespaces
  */
 namespace iutnc\touiteur\user;
-use http\Encoding\Stream;
 use iutnc\touiteur\bd\ConnectionFactory;
 
 class UserAuthentifie extends User{
@@ -23,17 +22,17 @@ class UserAuthentifie extends User{
         $this->email = $email;
 
         $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT role from utilisateur Where email = ?';
+        $query = 'SELECT role from Utilisateur Where email = ?';
         $st = $pdo->prepare($query);
         $st->execute([$email]);
         $role = $st->fetch()['role'];
 
-        $query = 'SELECT nom from utilisateur Where email = ?';
+        $query = 'SELECT nom from Utilisateur Where email = ?';
         $st = $pdo->prepare($query);
         $st->execute([$email]);
         $nom = $st->fetch()['nom'];
 
-        $query = 'SELECT prenom from utilisateur Where email = ?';
+        $query = 'SELECT prenom from Utilisateur Where email = ?';
         $st = $pdo->prepare($query);
         $st->execute([$email]);
         $prenom = $st->fetch()['prenom'];
@@ -45,19 +44,57 @@ class UserAuthentifie extends User{
         $this->role = $role;
     }
 
+    public static function inscription(string $nom , string $prenom , string $email, string $mdp){
+        $role = 1;
+
+            $pdo = ConnectionFactory::makeConnection();
+
+            $query = "INSERT INTO Utilisateur (nom, prenom, password, email, role) VALUES (:nom, :prenom, :mdp, :email, :role)";
+
+
+            $stmt = $pdo->prepare($query);
+
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':prenom', $prenom);
+
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':mdp', $mdp);
+            $stmt->bindParam(':role', $role);
+
+            if ($stmt->execute()) {
+                $html = " ajout user<br> Email:".$email.", Nom:".$nom." Prenom:".$prenom;
+            } else {
+                $html = "INSERT ERROR: " . $stmt->errorInfo()[2];
+            }
+
+            $stmt = null;
+
+            $pdo = null;
+    }
+    /*
+     * Méthode qui permet de vérifier que l'utilisateur est authentifié
+     */
+    public static function isUserConnected(): bool
+    {
+        return isset($_SESSION['User']);
+    }
+
 
 /*
  * Méthode qui permet de récupérer les touites d'un utilisateur
  */
 
     public function getTouites(){
+
         $pdo = ConnectionFactory::makeConnection();
         $query = 'SELECT idTouite from Touite Where email = ?';
 
         $st = $pdo->prepare($query);
         $st->execute([$this->email]);
 
-        return $st->fetchAll();
+        $res = $st->fetchAll();
+        var_dump ($res);
+        return $res;
     }
 
 

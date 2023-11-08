@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace iutnc\touiteur\dispatch;
 
+use iutnc\touiteur\action\AccueilAction;
 use iutnc\touiteur\action\RechercheAction;
 use iutnc\touiteur\action\ConnectionAction;
+use iutnc\touiteur\action\DeconnAction;
 use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\SuivreAction;
 use iutnc\touiteur\action\TouitePost;
@@ -13,6 +15,7 @@ use iutnc\touiteur\action\ListeTouiteAction;
 use iutnc\touiteur\action\UserListeTouitesAction;
 
 use iutnc\touiteur\action\TouiteDetailAction;
+use iutnc\touiteur\user\UserAuthentifie;
 
 
 class Dispatcher {
@@ -28,6 +31,10 @@ class Dispatcher {
 
         $html = '';
         switch($this->action){
+            case 'deconnection':
+                $deco = new DeconnAction();
+                $html = $deco->execute();
+                break;
             case 'connection':
                 $connection = new ConnectionAction();
                 $html = $connection->execute();
@@ -44,6 +51,7 @@ class Dispatcher {
                 $touiteEnDetail = new TouiteDetailAction();
                 $html = $touiteEnDetail->execute();
                 break;
+
             case 'touite-post':
                 $touitepost = new TouitePost();
                 $html = $touitepost->execute();
@@ -55,17 +63,28 @@ class Dispatcher {
                 break;
 
             case 'user_liste_touite':
-                $listeT = new UserListeTouitesAction();
-                $html = $listeT->execute();
+                $UlisteT = new UserListeTouitesAction();
+                $html = $UlisteT->execute();
                 break;
+
             case 'suivre_user':
                 $followUser = new SuivreAction();
                 $html = $followUser->execute();
                 break;
             default:
                 echo 'Bienvenue<br>';
-                break;
 
+            case 'page_accueil':
+                if(UserAuthentifie::isUserConnected()) {
+                    $pageA = new AccueilAction();
+                    $html = $pageA->execute();
+                }
+                else{
+                    $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
+                    $html.= "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
+                }
+
+                break;
         }
 
         echo "<!DOCTYPE html>
@@ -83,17 +102,25 @@ class Dispatcher {
             <div class='tableau'>
             
                 <nav class='navigation'>
+
                     <h2 class='logo'><a href='index.php'><img src='mon_image.jpg' ></a></h2> 
-                   
-                    <a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>
-                    <a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>
-                    <a class='action' href = '?action=recherche'><img src='mon_image.jpg' > Explore</a><br>
+                    <div class='container-action-button'>";
+                   if (UserAuthentifie::isUserConnected()){
+                        echo "<a class='action' href = '?action=deconnection'><img src='mon_image.jpg' > Deconnection </a><br>"; 
+                    }else{
+                        echo "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>
+                        <a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>";
+                    }
+                    echo"
+                    <a class='action' href = '?action=recherche'><img class='img-action' src='image/loupe.png' > Explore</a><br>
                     <a class='action' href = '?action=touite-en-detail'><img src='mon_image.jpg' > Touite en détail</a><br>
                     <a class='action' href = '?action=liste_touite'> <img src='mon_image.jpg' > Liste Touite</a><br>
-                    <a class='action' href = '?action=page_accueil'> <img src='mon_image.jpg' > Page d'accueil</a><br>
+                    <a class='action' href = '?action=page_accueil'> <img class='img-action' src='image/home.png' > Home</a><br>
                     <a class='action' href = '?action=user_liste_touite'> user_liste_touite</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
+                    </div>
                    
+
 
                 </nav>
                 
