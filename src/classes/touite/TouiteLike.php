@@ -19,25 +19,25 @@ class TouiteLike
 
         $query = "SELECT note FROM Note WHERE idTouite = :idTouite AND email = :email";
         $stmt = $pdo->prepare($query);
-        $stmt->execute(['idTouite' => $this->touite->getId(), 'email' => $email]);
+        $stmt->execute(['idTouite' => $this->touite->__get('id'), 'email' => $email]);
         $existingNote = $stmt->fetch();
 
         if ($existingNote) {
             if ((int)$existingNote['note'] === $note) {
                 $query = "DELETE FROM Note WHERE idTouite = :idTouite AND email = :email";
                 $stmt = $pdo->prepare($query);
-                $stmt->execute(['idTouite' => $this->touite->getId(), 'email' => $email]);
+                $stmt->execute(['idTouite' => $this->touite->__get('id'), 'email' => $email]);
             } else {
 
                 $query = "UPDATE Note SET note = :note WHERE idTouite = :idTouite AND email = :email";
                 $stmt = $pdo->prepare($query);
-                $stmt->execute(['note' => $note, 'idTouite' => $this->touite->getId(), 'email' => $email]);
+                $stmt->execute(['note' => $note, 'idTouite' => $this->touite->__get('id'), 'email' => $email]);
             }
         } else {
 
             $query = "INSERT INTO Note (idTouite, email, note) VALUES (:idTouite, :email, :note)";
             $stmt = $pdo->prepare($query);
-            $stmt->execute(['idTouite' => $this->touite->getId(), 'email' => $email, 'note' => $note]);
+            $stmt->execute(['idTouite' => $this->touite->__get('id'), 'email' => $email, 'note' => $note]);
         }
         $pdo=null;
     }

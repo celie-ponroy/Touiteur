@@ -8,11 +8,10 @@ use iutnc\touiteur\action\RechercheAction;
 use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\DeconnAction;
 use iutnc\touiteur\action\InscriptionAction;
+use iutnc\touiteur\action\SuivreAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
-
 use iutnc\touiteur\action\UserListeTouitesAction;
-
 use iutnc\touiteur\action\TouiteDetailAction;
 use iutnc\touiteur\user\UserAuthentifie;
 
@@ -66,6 +65,14 @@ class Dispatcher {
                 $UlisteT = new UserListeTouitesAction();
                 $html = $UlisteT->execute();
                 break;
+
+            case 'suivre_user':
+                $followUser = new SuivreAction();
+                $html = $followUser->execute();
+                break;
+            default:
+                echo 'Bienvenue<br>';
+
             case 'page_accueil':
                 if(UserAuthentifie::isUserConnected()) {
                     $pageA = new AccueilAction();
@@ -75,6 +82,7 @@ class Dispatcher {
                     $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
                     $html.= "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
                 }
+
                 break;
         }
 
@@ -100,6 +108,7 @@ class Dispatcher {
                    if (UserAuthentifie::isUserConnected()){
                         echo "<a class='action' href = '?action=deconnection'> Deconnection </a><br>"; 
                     }else{
+
                         echo "<a class='action' href = '?action=connection'> Connection </a><br>";
                     }
                     echo"
