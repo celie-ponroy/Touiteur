@@ -18,6 +18,7 @@ class UserAuthentifie extends User{
 
     /**
      * Constructeur
+     * on récupère les informations de la base de donées pour initialiser les attributs
      */
 
     public function __construct(string $email){
@@ -45,33 +46,35 @@ class UserAuthentifie extends User{
         $this->prenom = $prenom;
         $this->role = $role;
     }
-
+    /**
+     * Methode permetant d'inscrire un User dans la base de données 
+     */
     public static function inscription(string $nom , string $prenom , string $email, string $mdp){
-        $role = 1;
+        $role = 1;//le User n'est pas admin par défault
 
-            $pdo = ConnectionFactory::makeConnection();
+        $pdo = ConnectionFactory::makeConnection();
 
-            $query = "INSERT INTO Utilisateur (nom, prenom, password, email, role) VALUES (:nom, :prenom, :mdp, :email, :role)";
+        $query = "INSERT INTO Utilisateur (nom, prenom, password, email, role) VALUES (:nom, :prenom, :mdp, :email, :role)";
 
 
-            $stmt = $pdo->prepare($query);
+        $stmt = $pdo->prepare($query);
 
-            $stmt->bindParam(':nom', $nom);
-            $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':prenom', $prenom);
 
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':mdp', $mdp);
-            $stmt->bindParam(':role', $role);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':mdp', $mdp);
+        $stmt->bindParam(':role', $role);
 
-            if ($stmt->execute()) {
-                $html = " ajout user<br> Email:".$email.", Nom:".$nom." Prenom:".$prenom;
-            } else {
-                $html = "INSERT ERROR: " . $stmt->errorInfo()[2];
-            }
+        if ($stmt->execute()) {
+            $html = " ajout user<br> Email:".$email.", Nom:".$nom." Prenom:".$prenom;
+        } else {
+            $html = "INSERT ERROR: " . $stmt->errorInfo()[2];
+        }
 
-            $stmt = null;
+        $stmt = null;
 
-            $pdo = null;
+        $pdo = null;
     }
     /*
      * Méthode qui permet de vérifier que l'utilisateur est authentifié
@@ -89,13 +92,14 @@ class UserAuthentifie extends User{
  /*     Left join Tag2Touite on Tag2Touite.idTouite=Touite.idTouite
                     Left join Tag on Tag.idTag=Tag2Touite.idTag */
     public function getTouites(){
-
+        //connexion a la base de donées
         $pdo = ConnectionFactory::makeConnection();
         /*creation array tag */
         $query = 'SELECT * from Tag
         Left join Tag2Touite on Tag2Touite.idTag=Tag.idTag
         Left join Touite on Touite.idTouite=Tag2Touite.idTouite
         Where email = ?';
+
 
         $st = $pdo->prepare($query);
         $st->execute([$this->email]);
@@ -114,7 +118,6 @@ class UserAuthentifie extends User{
         foreach($st->fetchAll() as $row){
             array_push($res,new Touite(new UserAuthentifie($row["email"]),$row["texte"],$tags,$row["cheminFichier"],$row["idTouite"]));
         }
-
         return $res;
     }
 
@@ -171,7 +174,9 @@ class UserAuthentifie extends User{
         }
 
     }
-
+    /**
+     * Methode qui permet de suivre un Tag
+     */
     public function followTag(int $idTag) {
         // si l'utilisateur est identifié
         if (self::isUserConnected()) {
@@ -190,7 +195,7 @@ class UserAuthentifie extends User{
 
             // Si la requête renvoie 0, cela signifie que la relation de suivi n'existe pas encore, l'utilisateur va follow
             if ($stmt->fetchColumn() == 0) {
-                $sql = "INSERT INTO AbonnementTag (email, idTag) VALUES (:idTag, :email)";
+                $sql = "INSERT INTO AbonnementTag (idTag,email) VALUES (:idTag, :email)";
             }else{
                 // La relation de suivi existe déjà, l'utilisateur va unfollow:
                 $sql = "DELETE FROM AbonnementTag
