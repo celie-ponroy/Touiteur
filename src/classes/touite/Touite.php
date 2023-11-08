@@ -106,16 +106,5 @@ class Touite{
         return $res."<br>\n".$this-> texte;
     }
 
-    public function findTaggedTw(){
-        $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT idTouite from Touite 
-                    inner join Tag2Touite on Touite.idTouite = Tag2Touite.idTouite  
-                    inner join Tag on Tag.idTag = Tag2Touite.idTag
-                    Where tags = ?';
 
-        $st = $pdo->prepare($query);
-        $st->execute([$this->email]);
-
-        return $st->fetchAll();
-    }
 }

@@ -40,16 +40,17 @@ class UserAuthentifie extends User{
         $st->execute([$email]);
         $prenom = $st->fetch()['prenom'];
 
-        $pdo=null;
+
 
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->role = $role;
     }
+
     /**
      * Methode permetant d'inscrire un User dans la base de données 
      */
-    public static function inscription(string $nom , string $prenom , string $email, string $mdp){
+    public static function inscription(string $nom , string $prenom , string $email, string $mdp):string {
         $role = 1;//le User n'est pas admin par défault
 
         $pdo = ConnectionFactory::makeConnection();
@@ -71,11 +72,9 @@ class UserAuthentifie extends User{
         } else {
             $html = "INSERT ERROR: " . $stmt->errorInfo()[2];
         }
-
-        $stmt = null;
-
-        $pdo = null;
+        return $html;
     }
+
     /*
      * Méthode qui permet de vérifier que l'utilisateur est authentifié
      */
@@ -216,6 +215,4 @@ class UserAuthentifie extends User{
             }
         }
     }
-
-
 }
