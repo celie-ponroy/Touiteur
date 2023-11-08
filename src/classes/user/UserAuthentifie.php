@@ -40,16 +40,17 @@ class UserAuthentifie extends User{
         $st->execute([$email]);
         $prenom = $st->fetch()['prenom'];
 
-        $pdo=null;
+
 
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->role = $role;
     }
+
     /**
      * Methode permetant d'inscrire un User dans la base de données 
      */
-    public static function inscription(string $nom , string $prenom , string $email, string $mdp){
+    public static function inscription(string $nom , string $prenom , string $email, string $mdp):string {
         $role = 1;//le User n'est pas admin par défault
 
         $pdo = ConnectionFactory::makeConnection();
@@ -71,11 +72,9 @@ class UserAuthentifie extends User{
         } else {
             $html = "INSERT ERROR: " . $stmt->errorInfo()[2];
         }
-
-        $stmt = null;
-
-        $pdo = null;
+        return $html;
     }
+
     /*
      * Méthode qui permet de vérifier que l'utilisateur est authentifié
      */
@@ -89,17 +88,36 @@ class UserAuthentifie extends User{
  * Méthode qui permet de récupérer les touites d'un utilisateur
  */
 
+ /*     Left join Tag2Touite on Tag2Touite.idTouite=Touite.idTouite
+                    Left join Tag on Tag.idTag=Tag2Touite.idTag */
     public function getTouites(){
         //connexion a la base de donées
         $pdo = ConnectionFactory::makeConnection();
-        //on récupère les touite du User
-        $query = 'SELECT idTouite from Touite Where email = ?';
+        /*creation array tag */
+        $query = 'SELECT * from Tag
+        Left join Tag2Touite on Tag2Touite.idTag=Tag.idTag
+        Left join Touite on Touite.idTouite=Tag2Touite.idTouite
+        Where email = ?';
+
 
         $st = $pdo->prepare($query);
         $st->execute([$this->email]);
+        $tags = array();
+        foreach($st->fetchAll() as $row){
+        array_push($tags,$row["libelle"]);
+        }
+        /*creation du touite */
+        $query = 'SELECT * from Touite
+                    Left join Image on Touite.idIm=Image.idIm
+                    Where email = ?';
 
-        $res = $st->fetchAll();
-        //on les retourne        
+        $st = $pdo->prepare($query);
+        $st->execute([$this->email]);
+        $res = array();
+        $user = unserialize($_SESSION['User']);
+        foreach($st->fetchAll() as $row){
+            array_push($res,new Touite($user,intval($row["idTouite"])));
+        }
         return $res;
     }
 
@@ -198,6 +216,4 @@ class UserAuthentifie extends User{
             }
         }
     }
-
-
 }

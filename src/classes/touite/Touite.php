@@ -26,8 +26,10 @@ class Touite{
     /**
      * contructeur
      */
+
     function __construct(UserAuthentifie $user , int $id ){
         $this->idtouite = $id;
+
         $this->user = $user;
         $db = ConnectionFactory::makeConnection();
         $query = 'SELECT texte, idIm , datePublication 
@@ -44,14 +46,23 @@ class Touite{
         }else{$this->date = $date ;}
         
         $idIm = $fetch['idIm'];
-        $db = ConnectionFactory::makeConnection();
-        $query = 'SELECT cheminFichier 
-                FROM Image
-                WHERE idIm = ?';
-        $resultset = $db->prepare($query);
-        $resultset->bindParam(1,$idIm, PDO::PARAM_INT);
-        $resultset->execute();
-        $this->pathpicture = $resultset->fetch()['cheminFichier'] ;
+        if($idIm!=null){
+            $db = ConnectionFactory::makeConnection();
+            $query = 'SELECT cheminFichier 
+                    FROM Image
+                    WHERE idIm = ?';
+            $resultset = $db->prepare($query);
+            $resultset->bindParam(1,$idIm, PDO::PARAM_INT);
+            $resultset->execute();
+
+            $fich=$resultset->fetch();
+        
+            $this->pathpicture=$fich['cheminFichier'];
+        
+        }else{
+            $this->pathpicture="";
+        }
+        
         
         ///////////////////////////////////recuperer les tags
         $this->tags = null;
@@ -163,7 +174,7 @@ class Touite{
 
 
     public function __get($name): mixed{
-        if(property_exists($this, $name)){
+      if(property_exists($this, $name)){
             return $this->$name;
         }else{
             echo "Get invalide";
@@ -185,16 +196,5 @@ class Touite{
         return $res."<br>\n".$this-> texte;
     }
 
-    public function findTaggedTw(){
-        $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT idTouite from Touite 
-                    inner join Tag2Touite on Touite.idTouite = Tag2Touite.idTouite  
-                    inner join Tag on Tag.idTag = Tag2Touite.idTag
-                    Where tags = ?';
 
-        $st = $pdo->prepare($query);
-        $st->execute([$this->email]);
-
-        return $st->fetchAll();
-    }
 }

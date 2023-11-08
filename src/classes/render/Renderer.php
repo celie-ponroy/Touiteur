@@ -7,4 +7,3 @@ interface Renderer {
 
     public function render($selector):string;
 }
-?>

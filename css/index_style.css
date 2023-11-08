@@ -175,6 +175,16 @@ body {
     display: flex;
     flex-direction: column;
     margin-left: 10px;
+    
+}
+
+div.touite-container{
+  border-bottom: 1px solid rgb(113,118,123);
+  width: 601px
+}
+
+div.touite-container#text{
+  width: 601px
 }
   
   .TouiteShow{
@@ -200,6 +210,7 @@ body {
     height: auto;
     margin-bottom: 30px;
     margin-left: 10px;
+    text-align: justify;
    
   }
 
@@ -299,4 +310,9 @@ body {
     padding: 10px;
     height: 450px; /*modifier*/
     border-radius: 10px;
+  }
+
+  .touite-image{
+    width: 50%;
+    margin-left: 25%;
   }

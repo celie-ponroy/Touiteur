@@ -70,9 +70,6 @@ class Dispatcher {
                 $followUser = new SuivreAction();
                 $html = $followUser->execute();
                 break;
-            default:
-                echo 'Bienvenue<br>';
-
             case 'page_accueil':
                 if(UserAuthentifie::isUserConnected()) {
                     $pageA = new AccueilAction();
@@ -102,7 +99,7 @@ class Dispatcher {
             
                 <nav class='navigation'>
 
-                    <h2 class='logo'><a href='index.php'><img src='mon_image.jpg' ></a></h2> 
+                    <h2 class='logo'><a href='index.php'><img src='mon_image.jpg' >Touiteur</a></h2> 
                     <div class='container-action-button'>
                     <div class='connexion'>";
                    if (UserAuthentifie::isUserConnected()){
@@ -110,17 +107,15 @@ class Dispatcher {
                     }else{
 
                         echo "<a class='action' href = '?action=connection'> Connection </a><br>";
+                        echo"<a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>";
                     }
                     echo"
 
                     </div>
 
-                    <a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>
-                    <a class='action' href = '?action=recherche'><img class='img-action' src='image/loupe.png' > Explore</a><br>
-                    <a class='action' href = '?action=touite-en-detail'><img src='mon_image.jpg' > Touite en détail</a><br>
-                    <a class='action' href = '?action=liste_touite'> <img src='mon_image.jpg' > Liste Touite</a><br>
-                    <a class='action' href = '?action=page_accueil'> <img class='img-action' src='image/home.png' > Home</a><br>
-                    <a class='action' href = '?action=user_liste_touite'> user_liste_touite</a><br>
+                    <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.png' > Explore</a><br>
+                    <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.png' > Home</a><br>
+                    <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/????????' >  Mes Touites</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
                     </div>
                    

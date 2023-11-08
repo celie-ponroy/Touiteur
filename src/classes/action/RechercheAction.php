@@ -19,8 +19,7 @@ class RechercheAction extends Action {
             $html='<p>'.$recherche.'</p>';
     }
     return $html;
-   
-    
+
+    }
 }
-}
-?>
+

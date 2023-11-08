@@ -48,11 +48,11 @@ class ListeTouiteAction extends Action {
                     array_push($tags,$row2['libelle']);
                 }
             }
-            $touiteobject=new TouiteRenderer(new Touite(new UserAuthentifie($row["email"]),$row["idTouite"]));//--$tags,$row["cheminFichier"],$row["idTouite"]
+            $idt = intval($row["idTouite"]);
+            $touiteobject=new TouiteRenderer(new Touite(new UserAuthentifie($row['email']),$idt));//--$tags,$row["cheminFichier"],$row["idTouite"]
             $html.=$touiteobject->render(Renderer::COMPACT);
         }
         return $html;
     }
     
 }
-?>
