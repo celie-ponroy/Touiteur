@@ -11,9 +11,7 @@ use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\SuivreAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
-
 use iutnc\touiteur\action\UserListeTouitesAction;
-
 use iutnc\touiteur\action\TouiteDetailAction;
 use iutnc\touiteur\user\UserAuthentifie;
 

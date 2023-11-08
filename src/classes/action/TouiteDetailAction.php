@@ -19,8 +19,8 @@ class TouiteDetailAction extends Action {
 
             // Récupère les informations du touite
             $sql = "SELECT t.texte, t.datePublication, t.email, u.nom, u.prenom
-                    FROM touite t
-                    inner JOIN utilisateur u ON t.email = u.email
+                    FROM Touite t
+                    inner JOIN Utilisateur u ON t.email = u.email
                     WHERE t.idTouite = :id_touite";
 
             $touiteDetails = $db->prepare($sql);
@@ -39,8 +39,8 @@ class TouiteDetailAction extends Action {
 
                 // Affiche les hashtags si il y en a
                 $sql1 = "SELECT t.libelle
-                        FROM tag t
-                        JOIN tag2touite t2t ON t.idTag = t2t.idTag
+                        FROM Tag t
+                        JOIN Tag2Touite t2t ON t.idTag = t2t.idTag
                         WHERE t2t.idTouite = :id_touite";
 
                 $hashtags = $db->prepare($sql1);
@@ -56,12 +56,12 @@ class TouiteDetailAction extends Action {
 
                 //Affiche le nombre de likes
                 $sql2 = "SELECT COUNT(*) AS nb_likes
-                        FROM note n
+                        FROM Note n
                         WHERE idTouite = :id_touite and n.note = 1";
 
                 //Affiche le nombre de dislikes
                 $sql3 = "SELECT COUNT(*) AS nb_dislikes
-                        FROM note n
+                        FROM Note n
                         WHERE idTouite = :id_touite and n.note = -1";
 
                 $likes = $db->prepare($sql2);
@@ -76,7 +76,7 @@ class TouiteDetailAction extends Action {
 
                 //Affiche le nombre de dislikes
                 $sql3 = "SELECT COUNT(*) AS nb_dislikes
-                        FROM note n
+                        FROM Note n
                         WHERE idTouite = :id_touite and n.note = -1";
 
                 $likes = $db->prepare($sql3);

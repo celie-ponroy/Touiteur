@@ -106,6 +106,8 @@ class UserAuthentifie extends User{
         $_SESSION['User'] = serialize($this);
     }
 
+
+
     /*
      * Méthode qui permet de suivre un utilisateur entré en paramètre
      */
@@ -118,8 +120,8 @@ class UserAuthentifie extends User{
             // Vérifiez d'abord si la relation de suivi n'existe pas déjà
             $sql = "SELECT COUNT(*) FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonné = :idAbonné";
             $stmt = $db->prepare($sql);
-            $stmt->bindParam(':idSuivi', $userToFollow->getId());
-            $stmt->bindParam(':idAbonné', $this->getId());
+            $stmt->bindParam(':idSuivi', $userToFollow->__get('id'));
+            $stmt->bindParam(':idAbonné', $this->__get('id'));
             $stmt->execute();
 
             // Si la requête renvoie 0, cela signifie que la relation de suivi n'existe pas encore
@@ -127,8 +129,8 @@ class UserAuthentifie extends User{
                 // La relation de suivi n'existe pas encore, nous pouvons donc l'ajouter
                 $sql = "INSERT INTO Abonnement (idSuivi, idAbonné) VALUES (:idSuivi, :idAbonné)";
                 $stmt = $db->prepare($sql);
-                $stmt->bindParam(':idSuivi', $userToFollow->getId());
-                $stmt->bindParam(':idAbonné', $this->getId());
+                $stmt->bindParam(':idSuivi', $userToFollow->__get('id'));
+                $stmt->bindParam(':idAbonné', $this->__get('id'));
 
                 if ($stmt->execute()) {
                     // Suivi réussi
