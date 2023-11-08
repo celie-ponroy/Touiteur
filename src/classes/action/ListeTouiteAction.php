@@ -33,8 +33,8 @@ class ListeTouiteAction extends Action {
             
             // Affiche les hashtags si il y en a
             $sql1 = "SELECT t.libelle
-            FROM tag t
-            JOIN tag2touite t2t ON t.idTag = t2t.idTag
+            FROM Tag t
+            JOIN Tag2Touite t2t ON t.idTag = t2t.idTag
             WHERE t2t.idTouite = :id_touite";
 
             $hashtags = $db->prepare($sql1);

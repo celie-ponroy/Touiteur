@@ -98,11 +98,10 @@ class Dispatcher {
                    if (UserAuthentifie::isUserConnected()){
                         echo "<a class='action' href = '?action=deconnection'><img src='mon_image.jpg' > Deconnection </a><br>"; 
                     }else{
-                        echo "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
+                        echo "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>
+                        <a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>";
                     }
                     echo"
-
-                    <a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>
                     <a class='action' href = '?action=recherche'><img class='img-action' src='image/loupe.png' > Explore</a><br>
                     <a class='action' href = '?action=touite-en-detail'><img src='mon_image.jpg' > Touite en détail</a><br>
                     <a class='action' href = '?action=liste_touite'> <img src='mon_image.jpg' > Liste Touite</a><br>
