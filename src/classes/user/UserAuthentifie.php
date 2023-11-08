@@ -86,16 +86,35 @@ class UserAuthentifie extends User{
  * Méthode qui permet de récupérer les touites d'un utilisateur
  */
 
+ /*     Left join Tag2Touite on Tag2Touite.idTouite=Touite.idTouite
+                    Left join Tag on Tag.idTag=Tag2Touite.idTag */
     public function getTouites(){
 
         $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT idTouite from Touite Where email = ?';
+        /*creation array tag */
+        $query = 'SELECT * from Tag
+        Left join Tag2Touite on Tag2Touite.idTag=Tag.idTag
+        Left join Touite on Touite.idTouite=Tag2Touite.idTouite
+        Where email = ?';
 
         $st = $pdo->prepare($query);
         $st->execute([$this->email]);
+        $tags = array();
+        foreach($st->fetchAll() as $row){
+        array_push($tags,$row["libelle"]);
+        }
+        /*creation du touite */
+        $query = 'SELECT * from Touite
+                    Left join Image on Touite.idIm=Image.idIm
+                    Where email = ?';
 
-        $res = $st->fetchAll();
-        var_dump ($res);
+        $st = $pdo->prepare($query);
+        $st->execute([$this->email]);
+        $res = array();
+        foreach($st->fetchAll() as $row){
+            array_push($res,new Touite(new UserAuthentifie($row["email"]),$row["texte"],$tags,$row["cheminFichier"],$row["idTouite"]));
+        }
+
         return $res;
     }
 
