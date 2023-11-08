@@ -32,8 +32,11 @@ class ListeTouiteAction extends Action {
         $sql ="SELECT * FROM Touite
         left join Image on Image.idIm=Touite.idIm;";
         $resultset = $db->prepare($sql);
-        $resultset->execute();
+        //exécute la requète sql
+        $resultset->execute(); 
+        //initialise le html
         $html = "";
+        //affiche chaque Touite
         foreach ($resultset->fetchAll() as $row) {
             
             // Affiche les hashtags si il y en a

@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace iutnc\touiteur\action;
 use iutnc\touiteur\action\Action;
 use iutnc\touiteur\bd\ConnectionFactory;
+use iutnc\touiteur\user\UserAuthentifie;
 
 class InscriptionAction extends Action {
 
@@ -28,31 +29,7 @@ class InscriptionAction extends Action {
 
             $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
             $mdp = password_hash($_POST['pass'], PASSWORD_DEFAULT, ['cost'=> 12]);
-            $role = 1;
-
-            $pdo = ConnectionFactory::makeConnection();
-
-            $query = "INSERT INTO Utilisateur (nom, prenom, password, email, role) VALUES (:nom, :prenom, :mdp, :email, :role)";
-
-
-            $stmt = $pdo->prepare($query);
-
-            $stmt->bindParam(':nom', $nom);
-            $stmt->bindParam(':prenom', $prenom);
-
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':mdp', $mdp);
-            $stmt->bindParam(':role', $role);
-
-            if ($stmt->execute()) {
-                $html = " ajout user<br> Email:".$email.", Nom:".$nom." Prenom:".$prenom;
-            } else {
-                $html = "INSERT ERROR: " . $stmt->errorInfo()[2];
-            }
-
-            $stmt = null;
-
-            $pdo = null;
+            UserAuthentifie::inscription($nom,$prenom,$email,$mdp);
         }
         return $html;
     }

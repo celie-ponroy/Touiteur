@@ -2,11 +2,12 @@
 declare(strict_types= 1);
 
 namespace iutnc\touiteur\touite;
+
 use DateTime;
 use iutnc\touiteur\bd\ConnectionFactory;
-use iutnc\touiteur\user\User;
 use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
+
 /**
  * class Touite
  */
@@ -17,6 +18,7 @@ class Touite{
     protected UserAuthentifie $user ; //l'auteur
     protected DateTime $date;//date de publication du touite
     protected array $tags; // table de tags
+
 
     protected ?int $idtouite;
 
@@ -30,8 +32,10 @@ class Touite{
         $this->date = new \DateTime();
         $this->tags = $tags;
         $this->pathpicture = $pathpicture;
+
         if($id !== null)
             $this->idtouite = $id;
+
     }
 
 
@@ -102,7 +106,16 @@ class Touite{
         return $res."<br>\n".$this-> texte;
     }
 
+    public function findTaggedTw(){
+        $pdo = ConnectionFactory::makeConnection();
+        $query = 'SELECT idTouite from Touite 
+                    inner join Tag2Touite on Touite.idTouite = Tag2Touite.idTouite  
+                    inner join Tag on Tag.idTag = Tag2Touite.idTag
+                    Where tags = ?';
 
+        $st = $pdo->prepare($query);
+        $st->execute([$this->email]);
+
+        return $st->fetchAll();
+    }
 }
-
-?>
