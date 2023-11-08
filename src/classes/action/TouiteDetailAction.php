@@ -3,6 +3,10 @@ declare(strict_types=1);
 namespace iutnc\touiteur\action;
 use iutnc\touiteur\action\Action;
 use  iutnc\touiteur\bd\ConnectionFactory as ConnectionFactory;
+use iutnc\touiteur\render\Renderer;
+use iutnc\touiteur\render\TouiteRenderer;
+use iutnc\touiteur\touite\Touite;
+use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
 
 class TouiteDetailAction extends Action {
@@ -25,14 +29,12 @@ class TouiteDetailAction extends Action {
 
             if ($touiteDetails->rowCount() > 0) {
                 $row = $touiteDetails->fetch(PDO::FETCH_ASSOC);
-                $html.= "<h1>Touite de " . $row['prenom'] . " " . $row['nom'] . "</h1>";
-                $html.= "<p>Date : " . $row['datePublication'] . "</p>";
-                $html.= "<p>Texte : " . $row['texte'] . "</p>";
-
-
+                $email=$row['email'];
+                $texte=$row['texte'];
+                $imagepath=null;
                 // Affiche l'image si elle existe en utilisant la classe d'image
                 if (!empty($row['ImagePath'])) {
-                    $html.= '<div class="TouiteImage"><img src="' . $row['ImagePath'] . '" alt="Image du touite"></div>'; //A VERIFIER
+                    $imagepath=$row['ImagePath'];
                 }
 
                 // Affiche les hashtags si il y en a
@@ -46,11 +48,10 @@ class TouiteDetailAction extends Action {
                 $hashtags->execute();
 
                 if ($hashtags->rowCount() > 0) {
-                    $html.= "<p>Hashtags : ";
+                    $tags=array();
                     while ($row = $hashtags->fetch(PDO::FETCH_ASSOC)) {
-                        $html.= "#" . $row['libelle'] . " ";
+                        array_push($tags,$row['libelle']);
                     }
-                    $html.= "</p>";
                 }
 
                 //Affiche le nombre de likes
@@ -69,8 +70,7 @@ class TouiteDetailAction extends Action {
 
                 if ($likes->rowCount() > 0) {
                     $row = $likes->fetch(PDO::FETCH_ASSOC);
-                    $html.= "<p>Nombre de likes : " . $row['nb_likes'] . "</p>";
-                 
+                    $nblike=$row['nb_likes'];
                 }
 
 
@@ -85,11 +85,11 @@ class TouiteDetailAction extends Action {
 
                 if ($likes->rowCount() > 0) {
                     $row = $likes->fetch(PDO::FETCH_ASSOC);
-                    $html.= "<p>Nombre de dislikes : " . $row['nb_dislikes'] . "</p>";
+                    $nbdislike= $row['nb_dislikes'];
                 }
-
-            } else {
-                $html = "Touite non trouvé.";
+                
+                $touiteRenderlong = new TouiteRenderer(new Touite(new UserAuthentifie($email),$texte, $imagepath, $tags, intval($id_touite)));
+                $html.=$touiteRenderlong->render(Renderer::LONG);
             }
         }
 

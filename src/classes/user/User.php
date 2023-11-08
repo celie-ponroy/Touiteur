@@ -19,6 +19,11 @@ class User{
         }
     }
 
+
+    function __toString(){
+        return $this->email;
+    }
+
 }
 
 

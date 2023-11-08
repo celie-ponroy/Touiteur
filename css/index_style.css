@@ -7,6 +7,18 @@
     text-decoration: none;
 }
 
+/* Barre de défilement principale */
+.content::-webkit-scrollbar {
+    width: 12px;
+    background-color:black; /* Couleur de fond de la barre de défilement */
+}
+
+/* Bouton de la barre de défilement */
+.content::-webkit-scrollbar-thumb {
+    background-color: rgb(191, 196, 200); /* Couleur du bouton de la barre de défilement */
+    border-radius: 6px; /* Forme du bouton de la barre de défilement */
+}
+
 
 .tableau {
     display: grid;
@@ -28,13 +40,24 @@
     margin-right: 5%;
 }
 
+.container-action-button{
+    display: flex;
+    flex-direction:column;
+}
 
 .action{
     display: flex;
     align-items: center;
-    font-size: 2em;
- 
+    font-size: 1.7em;
     height: 50px;
+    width: auto;
+}
+
+.img-action{
+    background-color: transparent;
+    width: 28px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 .action:hover{
@@ -61,15 +84,15 @@
 /*colonne content*/
 .content{
     color: red;
-    border-right: 1px solid rgb(127, 127, 127);
-    border-left: 1px solid rgb(127, 127, 127);
-    padding: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     height: 750px;
     width: 600px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-left: 2px solid rgb(113,118,123);
+    border-right: 2px solid rgb(113,118,123);
 }
 
 
@@ -85,11 +108,10 @@
 /* Style général */
 .Touite {
     margin: 0 auto;
-    border: 1px solid #ccc;
-    box-shadow: 1px 1px 1px white;
+    border-bottom: 1px solid #ccc;
     width: 550px;
     padding: 20px;
-    border-radius: 8px;
+   
   }
   
   /* Style du champ de texte */
@@ -131,3 +153,86 @@
     background-color: #0b7ec2;
   }
   
+  /*Affichage d'un Touite*/
+
+
+.touite-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+  
+  .TouiteShow{
+    text-align: center;
+  }
+  
+  .touite-container #compact:hover{
+    text-decoration: underline;
+  }
+
+  .touite-container .arobase{
+    color: rgb(203, 203, 203);
+  }
+
+  header{
+    width: 95%;
+    background-color: none;
+  }
+
+  .text{
+    margin-top: 30px;
+    width: 95%;
+    height: auto;
+    margin-bottom: 30px;
+    margin-left: 10px;
+   
+  }
+
+  .nomuser{
+    margin-left: 10px;
+
+  }
+  .nomuser:hover{
+    text-decoration: underline;
+  }
+
+  .underline{
+    border-bottom: 1px solid rgb(113,118,123);
+    width: 601px;
+    margin-top: 10px;
+  }
+
+
+  .trend-container{
+    display: flex;
+    flex-direction: none;
+  }
+  .trend {
+    display: flex;
+    border: 1px solid rgb(29, 155, 240);
+    color: rgb(29, 155, 240);
+    border-radius: 50px;
+    padding: 5px;
+    font-size: 0.8em;
+    margin-left: 10px;
+    width: auto; /* Définissez la largeur automatique ici */
+}
+
+.trend:hover {
+    border: 1px solid rgb(29, 155, 240);
+    border-radius: 50px;
+    background-color: rgb(29, 155, 240);
+    color: black;
+    padding: 5px;
+    font-size: 0.8em;
+}
+
+
+  .date{
+    color: rgb(113,118,123);
+    font-weight:normal;
+  }
+
+  i{
+    color: rgb(29, 155, 240);
+  }
