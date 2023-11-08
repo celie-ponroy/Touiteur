@@ -37,39 +37,37 @@ class UserAuthentifie extends User{
         $st->execute([$email]);
         $prenom = $st->fetch()['prenom'];
 
-        $pdo=null;
+
 
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->role = $role;
     }
 
-    public static function inscription(string $nom , string $prenom , string $email, string $mdp){
+    public static function inscription(string $nom , string $prenom , string $email, string $mdp): string
+    {
         $role = 1;
+        $html = "";
+        $pdo = ConnectionFactory::makeConnection();
 
-            $pdo = ConnectionFactory::makeConnection();
-
-            $query = "INSERT INTO Utilisateur (nom, prenom, password, email, role) VALUES (:nom, :prenom, :mdp, :email, :role)";
+        $query = "INSERT INTO Utilisateur (nom, prenom, password, email, role) VALUES (:nom, :prenom, :mdp, :email, :role)";
 
 
-            $stmt = $pdo->prepare($query);
+        $stmt = $pdo->prepare($query);
 
-            $stmt->bindParam(':nom', $nom);
-            $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':prenom', $prenom);
 
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':mdp', $mdp);
-            $stmt->bindParam(':role', $role);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':mdp', $mdp);
+        $stmt->bindParam(':role', $role);
 
-            if ($stmt->execute()) {
-                $html = " ajout user<br> Email:".$email.", Nom:".$nom." Prenom:".$prenom;
-            } else {
-                $html = "INSERT ERROR: " . $stmt->errorInfo()[2];
-            }
-
-            $stmt = null;
-
-            $pdo = null;
+        if ($stmt->execute()) {
+            $html = " ajout user<br> Email:".$email.", Nom:".$nom." Prenom:".$prenom;
+        } else {
+            $html = "INSERT ERROR: " . $stmt->errorInfo()[2];
+        }
+        return $html;
     }
     /*
      * Méthode qui permet de vérifier que l'utilisateur est authentifié
