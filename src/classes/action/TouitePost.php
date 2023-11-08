@@ -22,7 +22,7 @@ class TouitePost extends Action {
                         <input type='textarea' placeholder='What is happening?!' name='touite'autocomplete='off'>
                        
                         <input type='file' placeholder='<choose file>' name='image'>
-                        <button type='submit'>Post</button>
+                        <button type='submit'>Poster</button>
                         </form>";
 
         }else if ($methode === 'POST') {
@@ -30,11 +30,11 @@ class TouitePost extends Action {
 
             //email nom prenom role texte path tag
             $tags= array('');
-
-            $touiteobject=new Touite(new UserAuthentifie($_SESSION["email"]),$touite,$_POST['image'],$tags);
+            
+            $touiteobject=new Touite(new UserAuthentifie($_SESSION["email"]),$touite,$_POST['image'],$tags); //ajouter image
             $touiteobject->publierTouite();
             if(!empty($touite)){
-                $html .= "<h3>Touite : " . $touite . "</h3>";
+                $html .= "<h3>Touite x: " . $touite . "</h3>";
             }else{
                 echo "<h3>Vous n'avez selectionnez ni une image, ni saisi un texte</h3>";
             }

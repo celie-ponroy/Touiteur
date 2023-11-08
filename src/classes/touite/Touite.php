@@ -12,23 +12,30 @@ use PDO;
  * class Touite
  */
 class Touite{
+
     protected string $texte;
     protected ?string $pathpicture;//contenu du touite
     protected UserAuthentifie $user ; //l'auteur
     protected DateTime $date;//date de publication du touite
     protected array $tags; // table de tags
 
-    protected int $idtouite, $nblikes, $nbdislike;
+
+    protected ?int $idtouite;
+
+    protected int $nblikes, $nbdislike;
     /**
      * contructeur
      */
-    function __construct(UserAuthentifie $user, string $texte, ?string $pathpicture="", array $tags,int $id){
+    function __construct(UserAuthentifie $user, string $texte, ?string $pathpicture="", array $tags,?int $id=null){
         $this->texte = $texte;
         $this->user = $user;
         $this->date = new \DateTime();
         $this->tags = $tags;
         $this->pathpicture = $pathpicture;
-        $this->idtouite = $id;
+
+        if($id !== null)
+            $this->idtouite = $id;
+
     }
 
 
@@ -91,10 +98,12 @@ class Touite{
      */
     function __toString(){
         $res = "@".$this->user;
-        return $res."<br>\n".$this-> texte;
+      
         //ajouter les tags
-        
-        
+        foreach ($this->tags as &$t) {
+            $res .= $t;
+        }
+        return $res."<br>\n".$this-> texte;
     }
 
     public function findTaggedTw(){
