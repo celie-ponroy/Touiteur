@@ -26,11 +26,11 @@ class Touite{
     /**
      * contructeur
      */
-    function __construct(UserAuthentifie $user, string $texte, ?string $pathpicture="", array $tags,?int $id=null){
+    function __construct(UserAuthentifie $user, string $texte,  array $tag,?string $pathpicture="",?int $id=null){
         $this->texte = $texte;
         $this->user = $user;
         $this->date = new \DateTime();
-        $this->tags = $tags;
+        $this->tags = $tag;
         $this->pathpicture = $pathpicture;
 
         if($id !== null)

@@ -28,6 +28,7 @@ class Dispatcher {
     public function run( ): void {//a modifier
 
         $html = '';
+        $html_recherche='';
         switch($this->action){
             case 'deconnection':
                 $deco = new DeconnAction();
@@ -43,7 +44,7 @@ class Dispatcher {
                 break;
             case 'recherche':
                 $recherche = new RechercheAction();
-                $html = $recherche->execute();
+                $html_recherche = $recherche->execute();
                 break;
             case 'touite-en-detail':
                 $touiteEnDetail = new TouiteDetailAction();
@@ -69,9 +70,6 @@ class Dispatcher {
                 $followUser = new SuivreAction();
                 $html = $followUser->execute();
                 break;
-            default:
-                echo 'Bienvenue<br>';
-
             case 'page_accueil':
                 if(UserAuthentifie::isUserConnected()) {
                     $pageA = new AccueilAction();
@@ -101,20 +99,23 @@ class Dispatcher {
             
                 <nav class='navigation'>
 
-                    <h2 class='logo'><a href='index.php'><img src='mon_image.jpg' ></a></h2> 
-                    <div class='container-action-button'>";
+                    <h2 class='logo'><a href='index.php'><img src='mon_image.jpg' >Touiteur</a></h2> 
+                    <div class='container-action-button'>
+                    <div class='connexion'>";
                    if (UserAuthentifie::isUserConnected()){
-                        echo "<a class='action' href = '?action=deconnection'><img src='mon_image.jpg' > Deconnection </a><br>"; 
+                        echo "<a class='action' href = '?action=deconnection'> Deconnection </a><br>"; 
                     }else{
-                        echo "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>
-                        <a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>";
+
+                        echo "<a class='action' href = '?action=connection'> Connection </a><br>";
+                        echo"<a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>";
                     }
                     echo"
-                    <a class='action' href = '?action=recherche'><img class='img-action' src='image/loupe.png' > Explore</a><br>
-                    <a class='action' href = '?action=touite-en-detail'><img src='mon_image.jpg' > Touite en détail</a><br>
-                    <a class='action' href = '?action=liste_touite'> <img src='mon_image.jpg' > Liste Touite</a><br>
-                    <a class='action' href = '?action=page_accueil'> <img class='img-action' src='image/home.png' > Home</a><br>
-                    <a class='action' href = '?action=user_liste_touite'> user_liste_touite</a><br>
+
+                    </div>
+
+                    <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.png' > Explore</a><br>
+                    <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.png' > Home</a><br>
+                    <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/????????' >  Mes Touites</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
                     </div>
                    
@@ -129,15 +130,24 @@ class Dispatcher {
 
                 <div class='foruser'>
 
+                    
+
                     <div class='research'>
+
+                        <form  action='?action=recherche' method='post'>
+                        <input type='textarea' placeholder='Chercher' name='research'>
+                        </form>
+
+                        $html_recherche
 
                     </div>
 
-                    <div class='research'>
-                        <a class='research' href = '?action=recherche'> Recherche</a><br>
+                    <div class='list-trends'>
+                        <p>Tendances</p>
                     </div>
 
-                    <div class='research'>
+                    <div class='other'>
+                        <p>Other</p>
                     </div>
 
                 </div>

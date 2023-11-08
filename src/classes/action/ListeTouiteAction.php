@@ -48,7 +48,7 @@ class ListeTouiteAction extends Action {
                     array_push($tags,$row2['libelle']);
                 }
             }
-            $touiteobject=new TouiteRenderer(new Touite(new UserAuthentifie($row["email"]),$row["texte"],$row["cheminFichier"],$tags,$row["idTouite"]));
+            $touiteobject=new TouiteRenderer(new Touite(new UserAuthentifie($row["email"]),$row["texte"],$tags,$row["cheminFichier"],$row["idTouite"]));
             $html.=$touiteobject->render(Renderer::COMPACT);
         }
         return $html;
