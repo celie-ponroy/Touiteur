@@ -6,6 +6,7 @@ namespace iutnc\touiteur\dispatch;
 use iutnc\touiteur\action\RechercheAction;
 use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\InscriptionAction;
+use iutnc\touiteur\action\SuivreAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
 
@@ -42,7 +43,7 @@ class Dispatcher {
             case 'touite-en-detail':
                 $touiteEnDetail = new TouiteDetailAction();
                 $html = $touiteEnDetail->execute();
-
+                break;
             case 'touite-post':
                 $touitepost = new TouitePost();
                 $html = $touitepost->execute();
@@ -56,6 +57,10 @@ class Dispatcher {
             case 'user_liste_touite':
                 $listeT = new UserListeTouitesAction();
                 $html = $listeT->execute();
+                break;
+            case 'suivre_user':
+                $followUser = new SuivreAction();
+                $html = $followUser->execute();
                 break;
             default:
                 echo 'Bienvenue<br>';
