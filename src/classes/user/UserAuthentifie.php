@@ -107,14 +107,6 @@ class UserAuthentifie extends User{
     }
 
     /*
-     * Méthode qui permet de vérifier que l'utilisateur est authentifié
-     */
-    public static function isUserConnected(): bool
-    {
-        return isset($_SESSION['User']);
-    }
-
-    /*
      * Méthode qui permet de suivre un utilisateur entré en paramètre
      */
     public function followUser(User $userToFollow) {
