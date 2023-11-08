@@ -64,7 +64,7 @@ class TouiteRenderer implements Renderer{
     public static function renderListe(array $touites):string{
         $html = '';
         foreach ($touites as $t){
-            $html.=$t->render(Renderer::COMPACT);
+            $html.= (new TouiteRenderer($t))->render(Renderer::COMPACT);
         }
         return $html;
     }

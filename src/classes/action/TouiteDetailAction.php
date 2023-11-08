@@ -87,12 +87,10 @@ class TouiteDetailAction extends Action {
                     $row = $likes->fetch(PDO::FETCH_ASSOC);
                     $nbdislike= $row['nb_dislikes'];
                 }
-                
-                $touiteRenderlong = new TouiteRenderer(new Touite(new UserAuthentifie($email),$texte, $imagepath, $tags, intval($id_touite)));
+                $touiteRenderlong = new TouiteRenderer(new Touite(new UserAuthentifie($email),$texte, $tags, $imagepath, intval($id_touite)));
                 $html.=$touiteRenderlong->render(Renderer::LONG);
             }
         }
-
         return $html;
     }
 }
