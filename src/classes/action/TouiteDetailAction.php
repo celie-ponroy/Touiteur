@@ -14,6 +14,7 @@ class TouiteDetailAction extends Action {
         $db = ConnectionFactory::makeConnection();
 
         $html = "";
+        $tags=array();
         if (isset($_GET['id'])) {
             $id_touite = $_GET['id'];
 
@@ -31,7 +32,7 @@ class TouiteDetailAction extends Action {
                 $row = $touiteDetails->fetch(PDO::FETCH_ASSOC);
                 $email=$row['email'];
                 $texte=$row['texte'];
-                $imagepath=null;
+               
                 // Affiche l'image si elle existe en utilisant la classe d'image
                 if (!empty($row['ImagePath'])) {
                     $imagepath=$row['ImagePath'];
@@ -48,7 +49,7 @@ class TouiteDetailAction extends Action {
                 $hashtags->execute();
 
                 if ($hashtags->rowCount() > 0) {
-                    $tags=array();
+                  
                     while ($row = $hashtags->fetch(PDO::FETCH_ASSOC)) {
                         array_push($tags,$row['libelle']);
                     }
@@ -87,7 +88,23 @@ class TouiteDetailAction extends Action {
                     $row = $likes->fetch(PDO::FETCH_ASSOC);
                     $nbdislike= $row['nb_dislikes'];
                 }
-                $touiteRenderlong = new TouiteRenderer(new Touite(new UserAuthentifie($email),$texte, $tags, $imagepath, intval($id_touite)));
+
+
+                $sql = "SELECT cheminFichier 
+                FROM Image
+                left join Touite on Touite.idIm=Image.idIm
+                where email=? and idTouite=?;";
+                $idtouite=intval($id_touite);
+                $resultset = $db->prepare($sql);
+                $resultset->bindParam(1,$email, PDO::PARAM_STR);
+                $resultset->bindParam(2,$id_touite, PDO::PARAM_INT);
+                $resultset->execute();
+                $res = $resultset->fetch();
+
+                
+                $user = unserialize($_SESSION['User']);
+                $touiteRenderlong = new TouiteRenderer(new Touite($user,$idtouite));//---, $imagepath, $tags, intval($id_touite)
+
                 $html.=$touiteRenderlong->render(Renderer::LONG);
             }
         }
