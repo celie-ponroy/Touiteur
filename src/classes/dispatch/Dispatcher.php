@@ -29,6 +29,7 @@ class Dispatcher {
     public function run( ): void {//a modifier
 
         $html = '';
+        $html_recherche='';
         switch($this->action){
             case 'deconnection':
                 $deco = new DeconnAction();
@@ -44,7 +45,7 @@ class Dispatcher {
                 break;
             case 'recherche':
                 $recherche = new RechercheAction();
-                $html = $recherche->execute();
+                $html_recherche = $recherche->execute();
                 break;
             case 'touite-en-detail':
                 $touiteEnDetail = new TouiteDetailAction();
@@ -94,13 +95,16 @@ class Dispatcher {
                 <nav class='navigation'>
 
                     <h2 class='logo'><a href='index.php'><img src='mon_image.jpg' ></a></h2> 
-                    <div class='container-action-button'>";
+                    <div class='container-action-button'>
+                    <div class='connexion'>";
                    if (UserAuthentifie::isUserConnected()){
-                        echo "<a class='action' href = '?action=deconnection'><img src='mon_image.jpg' > Deconnection </a><br>"; 
+                        echo "<a class='action' href = '?action=deconnection'> Deconnection </a><br>"; 
                     }else{
-                        echo "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
+                        echo "<a class='action' href = '?action=connection'> Connection </a><br>";
                     }
                     echo"
+
+                    </div>
 
                     <a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>
                     <a class='action' href = '?action=recherche'><img class='img-action' src='image/loupe.png' > Explore</a><br>
@@ -122,15 +126,24 @@ class Dispatcher {
 
                 <div class='foruser'>
 
+                    
+
                     <div class='research'>
+
+                        <form  action='?action=recherche' method='post'>
+                        <input type='textarea' placeholder='Chercher' name='research'>
+                        </form>
+
+                        $html_recherche
 
                     </div>
 
-                    <div class='research'>
-                        <a class='research' href = '?action=recherche'> Recherche</a><br>
+                    <div class='list-trends'>
+                        <p>Tendances</p>
                     </div>
 
-                    <div class='research'>
+                    <div class='other'>
+                        <p>Other</p>
                     </div>
 
                 </div>
