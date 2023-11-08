@@ -22,7 +22,8 @@ class AccueilAction extends Action {
         order by Touite.datePublication;";
         $resultset = $db->prepare($sql);
         $user = unserialize($_SESSION['User']);
-        $resultset->bindParam(':email', $user->email);
+        $email=$user->__get('email');
+        $resultset->bindParam(':email',$email );
         $resultset->execute();
         $html = "";
         foreach ($resultset->fetchAll() as $row) {
