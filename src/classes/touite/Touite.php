@@ -40,8 +40,12 @@ class Touite{
         $resultset->execute();
         $fetch = $resultset->fetch();
         $this->texte = $fetch['texte'];
-        $date=date_create_from_format('Y-m-d H:i:s', $fetch['datePublication']);
+        $format = "Y-m-d H:i:s";
+        var_dump($fetch['datePublication']);
+        $date = DateTime::createFromFormat($format, $fetch['datePublication']);
+        var_dump($date);
         if($date===false){
+            echo 'date aujourdhui';
             $this->date = new \DateTime();
         }else{$this->date = $date ;}
         

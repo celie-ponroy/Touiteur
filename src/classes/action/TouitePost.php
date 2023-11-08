@@ -29,6 +29,9 @@ class TouitePost extends Action {
     } else if ($methode === 'POST') {
         // Vérifier si le fichier a été téléchargé avec succès
             $touite = filter_var($_POST['touite'], FILTER_SANITIZE_STRING);
+           
+            $touite= explode('#', $touite);
+            
             
             // Gestion de l'image
             $uploadDir = "image/"; // Remplacez par le chemin réel de votre répertoire
@@ -39,21 +42,21 @@ class TouitePost extends Action {
             
             // Email, nom, prénom, rôle, texte, path, tag
             $tags= array('');
+            if($pathfile==='image/'){
+                $imm = "";
+            }else{
+                $imm = $pathfile; 
+            }
             $user = unserialize($_SESSION['User']);
-            
-            Touite::publierTouite($user,$touite,null,$pathfile);//cree un touite //ajouter image et tags
-            //$touiteobject = new Touite($user,$id); //ajouter image ///-,$_POST['image'],$tags
+            Touite::publierTouite($user,$touite[0],null,$imm);//cree un touite //ajouter image et tags
             
             if (!empty($touite)) {
-                $html .= "<h3>Touite x: " . $touite . "</h3>";
+                $html .= "<h3>Touite x: " . $touite[0] . "</h3>";
             } else {
                 $html .= "<h3>Vous n'avez sélectionné ni une image, ni saisi de texte</h3>";
             }
         
     }
-    
-            
-        
         
         return $html;
     }
