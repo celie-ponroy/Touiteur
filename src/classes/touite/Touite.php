@@ -17,7 +17,7 @@ class Touite{
     protected ?string $pathpicture;//contenu du touite
     protected UserAuthentifie $user ; //l'auteur
     protected DateTime $date;//date de publication du touite
-    protected array $tags; // table de tags
+    protected ?array $tags; // table de tags
 
 
     protected ?int $idtouite;
@@ -26,7 +26,7 @@ class Touite{
     /**
      * contructeur
      */
-    function __construct(UserAuthentifie $user, string $texte,  array $tag,?string $pathpicture="",?int $id=null){
+    function __construct(UserAuthentifie $user, string $texte,  ?array $tag,?string $pathpicture,?int $id=null){
         $this->texte = $texte;
         $this->user = $user;
         $this->date = new \DateTime();
@@ -40,7 +40,7 @@ class Touite{
 
 
     public function __get($name): mixed{
-        if(property_exists($this, $name)){
+      if(property_exists($this, $name)){
             return $this->$name;
         }else{
             echo "Get invalide";

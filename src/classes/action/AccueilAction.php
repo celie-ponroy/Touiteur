@@ -18,9 +18,6 @@ class AccueilAction extends Action {
         
         $sql ="SELECT * FROM Touite 
             right join Abonnement on Touite.email = Abonnement.idSuivi
-            inner join TouitetoTag on TouitetoTag.idTouite = idTag
-            inner join Tag on TouitetoTag.idTouite = Tag.idTag
-            right join AbonnementTag on Tag.idTag = AbonnementTag.idTag
             where idAbonné = :email
             order by Touite.datePublication;";
         $resultset = $db->prepare($sql);
