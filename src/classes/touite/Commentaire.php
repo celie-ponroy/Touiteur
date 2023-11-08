@@ -2,7 +2,9 @@
 declare(strict_types= 1);
 
 namespace iutnc\touiter\touite;
+use iutnc\touiteur\touite\Touite;
 use iutnc\touiteur\user\User;
+use iutnc\touiteur\user\UserAuthentifie;
 
 /**
  * class Comentaire
@@ -13,8 +15,8 @@ class Commentaire extends Touite{
     /**
      * constructeur
      */
-    public function __construct(String $texte ,Touite $touite, User $user){
-        parent::__construct($texte, $user);
+    public function __construct(int $id ,Touite $touite, UserAuthentifie $user){
+        parent::__construct($user,$id);
         $this->touite = $touite;   
     }
 
