@@ -162,19 +162,10 @@ class UserAuthentifie extends User{
             $db = ConnectionFactory::makeConnection();
 
             //on regarde si this suis déjà l'utilisateur
-            $sql = "SELECT COUNT(*) FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonné = :idAbonné";
-            //préparation des données 
-            $stmt = $db->prepare($sql);
-            $idsuiv =  $userToFollow->__get('id');
-            $idabo = $this->__get('id');
-            //attribution des paramètres
-            $stmt->bindParam(':idSuivi', $idsuiv);
-            $stmt->bindParam(':idAbonné', $idabo);
-            //exécution
-            $stmt->execute();
+            $res = $this->etreAbonneUser($userToFollow);
 
             // Si la requête renvoie 0, cela signifie que la relation de suivi n'existe pas encore, l'utilisateur va follow
-            if ($stmt->fetchColumn() == 0) {
+            if (!$res) {
                 // La relation de suivi n'existe pas encore, nous pouvons donc l'ajouter
                 $sql = "INSERT INTO Abonnement (idSuivi, idAbonné) VALUES (:idSuivi, :idAbonné)";
             } else {//unfollow
