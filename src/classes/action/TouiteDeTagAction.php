@@ -19,7 +19,7 @@ class TouiteDeTagAction extends Action
     public function execute(): string
     {
         $html = "";
-        $tag = new Tag($this->tag);
+        $tag = new Tag(null, $this->tag);
         $tList = $tag->findTaggedTw();
         var_dump($tList);
         $html = (new ListTouite($tList))->afficher();

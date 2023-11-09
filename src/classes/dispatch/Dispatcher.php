@@ -44,8 +44,11 @@ class Dispatcher {
                 $html = $inscription->execute();
                 break;
             case 'recherche':
+                $_SESSION['pageCour']=0;
                 $recherche = new RechercheAction();
-                $html_recherche = $recherche->execute();
+                $html = $recherche->execute();
+                $_SESSION['ListAaff'] = serialize($recherche);
+
                 break;
             case 'touite-en-detail':
                 $touiteEnDetail = new TouiteDetailAction();
@@ -100,7 +103,9 @@ class Dispatcher {
             case 'page':
                 $_SESSION['pageCour'] =  $_GET['page_num']-1;
                 $listeT = unserialize($_SESSION['ListAaff']);
+                var_dump($listeT);
                 $html = $listeT->execute();
+
 
                 break;
 
@@ -151,7 +156,6 @@ class Dispatcher {
                         <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.png' > Explore</a><br>
                         <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.png' > Home</a><br>
                         <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/????????' >  Mes Touites</a><br>
-                        <a class='action' href = '?action=tag_liste_touite'><img class='img-action' src='image/????????' >  tag Technologie Touites</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
                     </div>
                    

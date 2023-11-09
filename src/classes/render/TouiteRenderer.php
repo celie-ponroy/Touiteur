@@ -50,7 +50,11 @@ class TouiteRenderer implements Renderer{
             $res.='</div>';
         }
         // Fermez la balise <a> avec ID "compact" ici
-        $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">voir plus</a><p class="underline"></p></div><br>';
+        $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">voir plus</a>';
+        if($_SESSION['CurrentPage']==='MesT'){
+            $res .= '<a href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">delete post</a>';
+        }
+        $res .=    '<p class="underline"></p></div><br>';
 
         return $res;
 

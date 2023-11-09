@@ -11,15 +11,22 @@ class Tag{
     private $libelle;
     private $desciption;
     
-    function __construct(string $id){
+    function __construct(?string $libelle=null, ?string $id=null){
 
         $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT libelle from tag Where idTag = ?';
-        $st = $pdo->prepare($query);
-        $st->execute([$id]);
-        $libelle = $st->fetch()['libelle'];
-
-        $query = 'SELECT description from tag Where idTag = ?';
+        if ($libelle !== null){
+            $query = 'SELECT idTag from Tag Where libelle = ?';
+            $st = $pdo->prepare($query);
+            $st->execute([$libelle]);
+            $id = $st->fetch()['idTag'];
+        }
+        else {
+            $query = 'SELECT libelle from Tag Where idTag = ?';
+            $st = $pdo->prepare($query);
+            $st->execute([$id]);
+            $libelle = $st->fetch()['libelle'];
+        }
+        $query = 'SELECT description from Tag Where idTag = ?';
         $st = $pdo->prepare($query);
         $st->execute([$id]);
         $desciption = $st->fetch()['description'];
