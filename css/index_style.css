@@ -1,7 +1,7 @@
 *{
     margin: 0;
     padding: 0;
-    background-color: black;
+    background-color: transparent;
     color: aliceblue;
     font-family: 'Roboto', sans-serif;
     text-decoration: none;
@@ -10,6 +10,7 @@
 
 body {
     height: 100vh; /* La hauteur de la page occupera 100% de la hauteur de la fenêtre */
+    background-color: black;
 }
 /* Barre de défilement principale */
 .content::-webkit-scrollbar {
@@ -97,6 +98,7 @@ body {
     overflow-x: hidden;
     border-left: 2px solid rgb(113,118,123);
     border-right: 2px solid rgb(113,118,123);
+    background-color: black;
 }
 
 
@@ -205,10 +207,10 @@ div.touite-container#text{
   }
 
   .text{
-    margin-top: 30px;
+    margin-top: 15px;
     width: 95%;
     height: auto;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     margin-left: 10px;
     text-align: justify;
    
@@ -316,3 +318,18 @@ div.touite-container#text{
     width: 50%;
     margin-left: 25%;
   }
+
+  div.fonctions{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+  }
+
+  div.fonctions button{
+   border:none;
+  }
+
+  div.fonctions button:hover{
+    color:#1da1f2;
+   }
+
