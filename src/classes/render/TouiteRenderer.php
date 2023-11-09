@@ -33,7 +33,8 @@ class TouiteRenderer implements Renderer{
     public function renderCompact():string {
         // Code HTML pour l'affichage compact
         $methode = $_SERVER['REQUEST_METHOD'];
-                
+        $actionUrl = $_GET['action'];
+    
         //entete
         $res= '<div class="touite-container"><header class="entete">' .
                 '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
@@ -78,9 +79,9 @@ class TouiteRenderer implements Renderer{
 
         //fonctions du touite
         if($methode === 'GET'){
-
+            
         $res.=' <div class="fonctions">
-        <form method="post" action="?action=liste_touite">
+        <form method="post" action="?action='.$actionUrl.'">
             <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
             '<p>'.$this->touite->__get('nblikes').'</p>' .
             '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
@@ -98,7 +99,7 @@ class TouiteRenderer implements Renderer{
              }
 
             $res.=' <div class="fonctions">
-            <form method="post" action="?action=liste_touite">
+            <form method="post" action="?action='.$actionUrl.'">
             <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
             '<p>';
           
@@ -144,6 +145,8 @@ class TouiteRenderer implements Renderer{
     public function renderLong():string {
         // Code HTML pour l'affichage en mode long
         $methode = $_SERVER['REQUEST_METHOD'];
+        $actionUrl = $_GET['action'];
+
         $res= '<div class="touite-container"><header class="entete">' .
         '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
         '<i> @' . $this->touite->__get('user')->__get('nom') . '</i>' . //identifiant
@@ -171,7 +174,7 @@ class TouiteRenderer implements Renderer{
         if($methode === 'GET'){
 
         $res.=' <div class="fonctions">
-        <form method="post" action="?action=liste_touite">
+        <form method="post" action="?action='.$actionUrl.'&id='.$this->touite->__get('idtouite').'">
             <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
             '<p>'.$this->touite->__get('nblikes').'</p>' .
             '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
@@ -184,18 +187,20 @@ class TouiteRenderer implements Renderer{
             $noteUser=-8;
             if ($action === 'like'.$this->touite->__get('idtouite')){
                 $noteUser=1;
+                
              }elseif ($action === 'dislike'.$this->touite->__get('idtouite')) {
                 $noteUser=(-1);
              }
+             echo'<p>'.$noteUser.'</p>';
 
             $res.=' <div class="fonctions">
-            <form method="post" action="?action=liste_touite">
+            <form method="post" action="?action='.$actionUrl.'&id='.$this->touite->__get('idtouite').'">
             <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
             '<p>';
           
             $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
+           
             $res.=$arraynote[0];
-            //echo $this->touite->__get('idtouite');
            
             $res.='</p>';
 
