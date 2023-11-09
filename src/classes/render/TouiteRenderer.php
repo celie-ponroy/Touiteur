@@ -2,6 +2,8 @@
 namespace iutnc\touiteur\render;
 
 use iutnc\touiteur\touite\Touite;
+use iutnc\touiteur\user\UserAuthentifie;
+
 class TouiteRenderer implements Renderer{
 
     //déclarations des attributs
@@ -36,8 +38,28 @@ class TouiteRenderer implements Renderer{
                 '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
                 '<i> @' . $this->touite->__get('user')->__get('nom') . '</i>' . //identifiant
                 '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
-                '<br> ' .
-                '</header>';
+                '<br> ';
+
+        // Bouton Follow/Unfollow
+        $user = UserAuthentifie::getUser();
+        $userToFollow = $this->touite->__get('user');
+        $followText = 'Follow';
+
+        //ne rentre jamais dans la boucle : $userToFollow est toujours null MODIFIER
+        if ($user !== null && $user->getId() !== $userToFollow->getId()) {
+            if ($user->etreAbonne($userToFollow)) {
+                $followText = 'Unfollow';
+            }
+
+            $formAction = $followText === 'Follow' ? 'Follow' : 'Unfollow';
+
+            $res .= '<form class="follow-form" action="?action=liste_touite" method="post">
+              
+                <button type="submit">' . $followText . '</button>
+            </form>';
+        }
+
+        $res .= '</header>';
 
 
         $res .= '<p class="text">' . htmlspecialchars($this->touite->__get('texte'), ENT_QUOTES) . '</p>';
