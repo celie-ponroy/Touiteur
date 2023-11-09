@@ -4,6 +4,7 @@ namespace iutnc\touiteur\render;
 use iutnc\touiteur\touite\Note;
 use iutnc\touiteur\touite\Touite;
 use iutnc\touiteur\user\UserAuthentifie;
+
 class TouiteRenderer implements Renderer{
 
     //déclarations des attributs
@@ -38,8 +39,28 @@ class TouiteRenderer implements Renderer{
                 '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
                 '<i> @' . $this->touite->__get('user')->__get('nom') . '</i>' . //identifiant
                 '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
-                '<br> ' .
-                '</header>';
+                '<br> ';
+
+        // Bouton Follow/Unfollow
+        $user = UserAuthentifie::getUser();
+        $userToFollow = $this->touite->__get('user');
+        $followText = 'Follow';
+
+        //ne rentre jamais dans la boucle : $userToFollow est toujours null MODIFIER
+        if ($user !== null && $user->getId() !== $userToFollow->getId()) {
+            if ($user->etreAbonneUser($userToFollow)) {
+                $followText = 'Unfollow';
+            }
+
+            $formAction = $followText === 'Follow' ? 'Follow' : 'Unfollow';
+
+            $res .= '<form class="follow-form" action="?action=liste_touite" method="post">
+              
+                <button type="submit">' . $followText . '</button>
+            </form>';
+        }
+
+        $res .= '</header>';
 
 
         $res .= '<p class="text">' . htmlspecialchars($this->touite->__get('texte'), ENT_QUOTES) . '</p>';
@@ -122,6 +143,7 @@ class TouiteRenderer implements Renderer{
      */
     public function renderLong():string {
         // Code HTML pour l'affichage en mode long
+        $methode = $_SERVER['REQUEST_METHOD'];
         $res= '<div class="touite-container"><header class="entete">' .
         '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
         '<i> @' . $this->touite->__get('user')->__get('nom') . '</i>' . //identifiant
@@ -139,7 +161,61 @@ class TouiteRenderer implements Renderer{
                 $res .= '<a class="trend" href="?action=????????????">#' . $t . '</a>';
             }
             $res.='</div>';
-        }   
+        }
+
+        $user=unserialize($_SESSION["User"]);
+
+        $noter=new Note($user);
+
+        //fonctions du touite
+        if($methode === 'GET'){
+
+        $res.=' <div class="fonctions">
+        <form method="post" action="?action=liste_touite">
+            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
+            '<p>'.$this->touite->__get('nblikes').'</p>' .
+            '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
+            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
+        .'</div>';
+            
+        }elseif ($methode === 'POST') {
+            $action = isset($_POST['action']) ? $_POST['action'] : '';
+            
+            $noteUser=-8;
+            if ($action === 'like'.$this->touite->__get('idtouite')){
+                $noteUser=1;
+             }elseif ($action === 'dislike'.$this->touite->__get('idtouite')) {
+                $noteUser=(-1);
+             }
+
+            $res.=' <div class="fonctions">
+            <form method="post" action="?action=liste_touite">
+            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
+            '<p>';
+          
+            $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
+            $res.=$arraynote[0];
+            //echo $this->touite->__get('idtouite');
+           
+            $res.='</p>';
+
+
+
+
+            $res.='<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
+            '<p>';
+            $res.=$arraynote[1];
+            //echo $this->touite->__get('idtouite');
+            
+            
+            $res.='</p> </form>'
+
+
+
+
+        .'</div>';
+           
+        }
 
 
         // Fermez la balise <a> avec ID "compact" ici
@@ -151,7 +227,7 @@ class TouiteRenderer implements Renderer{
     public static function renderListe(array $touites):string{
         $html = '';
         foreach ($touites as $t){
-            $html.=$t->render(Renderer::COMPACT);
+            $html.= (new TouiteRenderer($t))->render(Renderer::COMPACT);
         }
         return $html;
     }

@@ -16,7 +16,7 @@ class Auth{
 
     public static function authenticate(string $email,string $passwd2check): bool {
         $db = ConnectionFactory::makeConnection();
-        $sql = "select password from Utilisateur where email = ? ";
+        $sql = "SELECT password FROM Utilisateur WHERE email = ? ";
         $resultset = $db->prepare( $sql );
         $resultset->bindParam(1,$email);
         $resultset->execute();

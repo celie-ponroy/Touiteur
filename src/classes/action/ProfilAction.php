@@ -1,6 +1,8 @@
 <?php
 
 namespace iutnc\touiteur\action;
+use iutnc\touiteur\auth\Auth;
+use iutnc\touiteur\user\UserAuthentifie;
 
 /*
  * Classe ProfilAction qui permet d'accéder au profil d'un utilisateur et de pouvoir s'abonner à

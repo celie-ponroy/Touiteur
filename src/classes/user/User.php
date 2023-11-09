@@ -15,6 +15,7 @@ class User{
             return $this->$name;
         }else{
             echo "Get invalide";
+            echo"$name";
             return null;
         }
     }

@@ -17,7 +17,7 @@ class ConnectionAction extends Action {
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];
 
-        if(isset($_SESSION['email'])){
+        if(isset($_SESSION['User'])){
             return "Already auth";
         }
 

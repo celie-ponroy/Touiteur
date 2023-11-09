@@ -7,7 +7,7 @@ use iutnc\touiteur\touite\Touite;
 class PaginerTouitesRender
 {
 
-    public const TOUITE_MAX_COUNT = 10;
+    public const TOUITE_MAX_COUNT = 4;
     public array $touites;
 
     public function __construct(array $touites)
@@ -26,7 +26,7 @@ class PaginerTouitesRender
         $arrT = array();
         foreach ($this->touites as $t){
             //count = 1 element
-            if ($count<=$numpage*self::TOUITE_MAX_COUNT){
+            if ($count<$numpage*self::TOUITE_MAX_COUNT){
                 $count++;
                 continue;
             }
@@ -34,9 +34,10 @@ class PaginerTouitesRender
             array_push($arrT, $t);
 
             //end if count == MAX
-            if ((++$count)-($numpage*10) === self::TOUITE_MAX_COUNT){
+            if (($count++)-($numpage*self::TOUITE_MAX_COUNT) >= self::TOUITE_MAX_COUNT-1){
                 break;
             }
+
         }
         $html = TouiteRenderer::renderListe($arrT);
         return $html;

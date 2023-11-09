@@ -1,13 +1,9 @@
 <?php
 declare(strict_types=1);
 namespace iutnc\touiteur\action;
-use iutnc\touiteur\render\Renderer;
-use iutnc\touiteur\render\TouiteRenderer;
 use iutnc\touiteur\touite\Touite;
 use iutnc\touiteur\action\Action;
-use iutnc\touiteur\bd\ConnectionFactory;
-use iutnc\touiteur\user\UserAuthentifie;
-use PDO;
+
 
 class TouitePost extends Action {
    
@@ -30,8 +26,20 @@ class TouitePost extends Action {
         // Vérifier si le fichier a été téléchargé avec succès
             $touite = filter_var($_POST['touite'], FILTER_SANITIZE_STRING);
            
-            $touite= explode('#', $touite);
-            
+
+            // Diviser la chaîne en un tableau en utilisant le dièse comme délimiteur
+            $elements =explode('#', $touite);
+
+
+            // Utiliser preg_match_all pour trouver toutes les occurrences de motifs commençant par #
+            preg_match_all('/#(\w+)/', $touite, $matches);
+
+            // Enlever les dièses (#) de chaque élément de l'Array
+            $hashtags = array_map(function($match) {
+                return trim($match, '#');
+            }, $matches[0]);
+
+                        
             
             // Gestion de l'image
             $uploadDir = "image/"; // Remplacez par le chemin réel de votre répertoire
@@ -48,10 +56,10 @@ class TouitePost extends Action {
                 $imm = $pathfile; 
             }
             $user = unserialize($_SESSION['User']);
-            Touite::publierTouite($user,$touite[0],null,$imm);//cree un touite //ajouter image et tags
+            Touite::publierTouite($user,$touite,$hashtags,$imm);//cree un touite //ajouter image et tags
             
             if (!empty($touite)) {
-                $html .= "<h3>Touite x: " . $touite[0] . "</h3>";
+                $html .= "<h3>Touite x: " . $touite . "</h3>";
             } else {
                 $html .= "<h3>Vous n'avez sélectionné ni une image, ni saisi de texte</h3>";
             }

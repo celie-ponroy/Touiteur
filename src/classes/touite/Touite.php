@@ -15,7 +15,7 @@ class Touite{
 
     protected string $texte;
     protected ?string $pathpicture;//contenu du touite
-    protected UserAuthentifie $user ; //l'auteur
+    protected  $user ; //l'auteur
     protected DateTime $date;//date de publication du touite
     protected ?array $tags; // table de tags
 
@@ -27,12 +27,11 @@ class Touite{
      * contructeur
      */
 
-    function __construct(UserAuthentifie $user , int $id ){
+    function __construct(int $id){
         $this->idtouite = $id;
 
-        $this->user = $user;
         $db = ConnectionFactory::makeConnection();
-        $query = 'SELECT texte, idIm , datePublication 
+        $query = 'SELECT texte, idIm , datePublication, email
                 FROM Touite
                 WHERE idTouite = ?';
         $resultset = $db->prepare($query);
@@ -40,17 +39,18 @@ class Touite{
         $resultset->execute();
         $fetch = $resultset->fetch();
         $this->texte = $fetch['texte'];
+        $this->user = new UserAuthentifie($fetch['email']);
         $format = "Y-m-d H:i:s";
+
         
         $date = DateTime::createFromFormat($format, $fetch['datePublication']);
       
         if($date===false){
-  
             $this->date = new \DateTime();
         }else{$this->date = $date ;}
         
         $idIm = $fetch['idIm'];
-        if($idIm!=null){
+        if($idIm!==NULL){
             $db = ConnectionFactory::makeConnection();
             $query = 'SELECT cheminFichier 
                     FROM Image
@@ -67,10 +67,20 @@ class Touite{
             $this->pathpicture="";
         }
         
+        $sqltag="SELECT libelle FROM Tag2Touite INNER JOIN  Tag on Tag.idTag = Tag2Touite.idTag WHERE idTouite = ?";
+        $resultset = $db->prepare($sqltag);
+        $resultset->bindParam(1,$id);
+        $resultset->execute();
         
-        ///////////////////////////////////recuperer les tags
-        $this->tags = null;
-        
+        $idtags=$resultset->fetchAll();
+        if($idtags!==false){
+            $this->tags  = array();
+            foreach($idtags as $idt){
+                array_push($this->tags,$idt['libelle']);
+            }
+        }else{
+            $this->tags=null;
+        }
 
         //note
         $query = 'SELECT count(*) as nbnote
@@ -102,6 +112,7 @@ class Touite{
         
         //array tag
 
+
     }
     public static function publierTouite(UserAuthentifie $user, string $texte,  ?array $tag=null,?string $pathpicture=""){
         $db = ConnectionFactory::makeConnection();
@@ -120,8 +131,6 @@ class Touite{
             $resimage = $idimage->fetch();
 
             $idpicture = $resimage["maxid"]+1;
-    
-
 
             /*maj de l'image*/
             $sql ="Insert into Image values(?,null,?);";
@@ -167,23 +176,26 @@ class Touite{
             foreach ($tag as $t) {
                 $lib=$t;
                 //chercher si le tag existe 
-                $sql = "SELECT COUNT(*) FROM Tag WHERE libelle = ?";
+                $sql = "SELECT COUNT(*) as compte  FROM Tag WHERE libelle = ?";
                 $stmt = $db->prepare($sql);
                 $stmt->bindParam(1, $lib);
                 $stmt->execute();
-                
-                if($stmt->fetch()->rowCount()==0){  
-                    $sql = "SELECT max(idTag) FROM Tag";
+                $tmp = $stmt->fetch();
+                $idTag = 0;
+                //si il existe pas 
+                if($tmp['compte']==0){  
+                    $sql = "SELECT max(idTag) as max FROM Tag";
                     $stmt = $db->prepare($sql);
                     $stmt->execute();
                     $tab = $stmt->fetch();
-                    $idTag = $tab['idTag'] ;
+                    $idTag = $tab['max'] +1;
                     //sql pour ajouter les tags dans Tag
                     $insert = "INSERT INTO Tag(idTag, description , libelle) VALUES (:idTag, :descr, :lib)";
                     $stmt = $db->prepare($insert);
                     $stmt->bindParam(':idTag', $idTag);
                     $stmt->bindParam(':descr', $lib);
                     $stmt->bindParam(':lib', $lib);
+                    $stmt->execute();
                 }else{
                     $sql = "SELECT idTag FROM Tag WHERE libelle = ?";
                     $stmt = $db->prepare($sql);
@@ -195,8 +207,9 @@ class Touite{
                 //sql pour ajouter tag dans Tag2Touite
                 $insertT2T = "INSERT INTO Tag2Touite (idTag, idTouite) VALUES(?,?);";
                 $stmt = $db->prepare($insertT2T);
-                $stmt->bindParam(1, $idTag);
-                $stmt->bindParam(2, $id);
+                $stmt->bindParam(1, $idTag, PDO::PARAM_INT);
+                $stmt->bindParam(2, $idtouite, PDO::PARAM_INT);
+                $stmt->execute();
             }
             
         }

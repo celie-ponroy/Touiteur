@@ -114,9 +114,10 @@ class UserAuthentifie extends User{
         $st = $pdo->prepare($query);
         $st->execute([$this->email]);
         $res = array();
+
         $user = unserialize($_SESSION['User']);
         foreach($st->fetchAll() as $row){
-            array_push($res,new Touite($user,intval($row["idTouite"])));
+            array_push($res,new Touite(intval($row["idTouite"])));
         }
         return $res;
     }
@@ -131,6 +132,25 @@ class UserAuthentifie extends User{
     }
 
 
+    /*
+     * Méthode qui permmet de récupérer l'ID de l'utilisateur
+     */
+    public function getId(): string {
+        // Remplacez 'id' par l'attribut contenant l'email de l'utilisateur
+        return $this->email;
+    }
+
+    /*
+     * Méthode qui permet de récupérer l'objet UserAuthentifie de l'utilisateur connecté
+     */
+    public static function getUser(): ?UserAuthentifie {
+        if (self::isUserConnected()) {
+            if (isset($_SESSION['User'])) {
+                return unserialize($_SESSION['User']);
+            }
+        }
+        return null;
+    }
 
     /*
      * Méthode qui permet de suivre un utilisateur entré en paramètre
@@ -142,19 +162,10 @@ class UserAuthentifie extends User{
             $db = ConnectionFactory::makeConnection();
 
             //on regarde si this suis déjà l'utilisateur
-            $sql = "SELECT COUNT(*) FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonné = :idAbonné";
-            //préparation des données 
-            $stmt = $db->prepare($sql);
-            $idsuiv =  $userToFollow->__get('id');
-            $idabo = $this->__get('id');
-            //attribution des paramètres
-            $stmt->bindParam(':idSuivi', $idsuiv);
-            $stmt->bindParam(':idAbonné', $idabo);
-            //exécution
-            $stmt->execute();
+            $res = $this->etreAbonneUser($userToFollow);
 
             // Si la requête renvoie 0, cela signifie que la relation de suivi n'existe pas encore, l'utilisateur va follow
-            if ($stmt->fetchColumn() == 0) {
+            if (!$res) {
                 // La relation de suivi n'existe pas encore, nous pouvons donc l'ajouter
                 $sql = "INSERT INTO Abonnement (idSuivi, idAbonné) VALUES (:idSuivi, :idAbonné)";
             } else {//unfollow
@@ -162,6 +173,8 @@ class UserAuthentifie extends User{
                 $sql = "DELETE FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonné = :idAbonné";
             }
             $stmt = $db->prepare($sql);
+            $idsuiv =  $userToFollow->__get('id');
+            $idabo = $this->__get('id');
             $stmt->bindParam(':idSuivi', $idsuiv);
             $stmt->bindParam(':idAbonné', $idabo); 
 
@@ -174,6 +187,44 @@ class UserAuthentifie extends User{
         }
 
     }
+
+    /*
+     * Méthode qui permet de savoir si l'utilisateur connecté suit l'utilisateur entré en paramètre
+     */
+    public function etreAbonneUser(User $userToFollow):bool{
+        $db = ConnectionFactory::makeConnection();
+
+        //on regarde si this suis déjà l'utilisateur
+        $sql = "SELECT COUNT(*) FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonne = :idAbonne";
+        //préparation des données
+        $stmt = $db->prepare($sql);
+        $idsuiv =  $userToFollow->__get('id');
+        $idabo = $this->__get('id');
+        //attribution des paramètres
+        $stmt->bindParam(':idSuivi', $idsuiv);
+        $stmt->bindParam(':idAbonne', $idabo);
+        //exécution
+        $stmt->execute();
+        return !$stmt->fetchColumn() == 0;
+    }
+     /*
+     * Méthode qui permet de savoir si l'utilisateur connecté suit tag entré en paramètre
+     */
+    public function etreAbonneTag(int $idTag):bool{
+        $db = ConnectionFactory::makeConnection();
+
+        $sql = "SELECT COUNT(*) FROM AbonnementTag WHERE idTag = :idTag AND email = :email";
+            //préparation des données 
+            $stmt = $db->prepare($sql);
+            $email = $this->__get('email');
+            //attribution des paramètres
+            $stmt->bindParam(':idTag', $idTag);
+            $stmt->bindParam(':email', $email);
+            //exécution
+            $stmt->execute();
+        return !$stmt->fetchColumn() == 0;
+    }
+
     /**
      * Methode qui permet de suivre un Tag
      */
@@ -181,20 +232,11 @@ class UserAuthentifie extends User{
         // si l'utilisateur est identifié
         if (self::isUserConnected()) {
             $db = ConnectionFactory::makeConnection();
-
-            //on regarde si this suis déjà le tag
-            $sql = "SELECT COUNT(*) FROM AbonnementTag WHERE idTag = :idTag AND email = :email";
-            //préparation des données 
-            $stmt = $db->prepare($sql);
-            $email = $this->__get('id');
-            //attribution des paramètres
-            $stmt->bindParam(':idTag', $idTag);
-            $stmt->bindParam(':email', $email);
-            //exécution
-            $stmt->execute();
+            $email = $this->__get('email');
+            $abo = $this->etreAbonneTag($idTag);
 
             // Si la requête renvoie 0, cela signifie que la relation de suivi n'existe pas encore, l'utilisateur va follow
-            if ($stmt->fetchColumn() == 0) {
+            if (!$abo) {
                 $sql = "INSERT INTO AbonnementTag (idTag,email) VALUES (:idTag, :email)";
             }else{
                 // La relation de suivi existe déjà, l'utilisateur va unfollow:
