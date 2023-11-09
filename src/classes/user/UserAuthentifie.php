@@ -211,17 +211,15 @@ class UserAuthentifie extends User{
     public function etreAbonneTag(int $idTag):bool{
         $db = ConnectionFactory::makeConnection();
 
-        //on regarde si this suis déjà l'utilisateur
-        $sql = "SELECT COUNT(*) FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonne = :idAbonne";
-        //préparation des données
-        $stmt = $db->prepare($sql);
-        $idsuiv =  $userToFollow->__get('id');
-        $idabo = $this->__get('id');
-        //attribution des paramètres
-        $stmt->bindParam(':idSuivi', $idsuiv);
-        $stmt->bindParam(':idAbonne', $idabo);
-        //exécution
-        $stmt->execute();
+        $sql = "SELECT COUNT(*) FROM AbonnementTag WHERE idTag = :idTag AND email = :email";
+            //préparation des données 
+            $stmt = $db->prepare($sql);
+            $email = $this->__get('email');
+            //attribution des paramètres
+            $stmt->bindParam(':idTag', $idTag);
+            $stmt->bindParam(':email', $email);
+            //exécution
+            $stmt->execute();
         return !$stmt->fetchColumn() == 0;
     }
 
@@ -232,20 +230,11 @@ class UserAuthentifie extends User{
         // si l'utilisateur est identifié
         if (self::isUserConnected()) {
             $db = ConnectionFactory::makeConnection();
-
-            //on regarde si this suis déjà le tag
-            $sql = "SELECT COUNT(*) FROM AbonnementTag WHERE idTag = :idTag AND email = :email";
-            //préparation des données 
-            $stmt = $db->prepare($sql);
-            $email = $this->__get('id');
-            //attribution des paramètres
-            $stmt->bindParam(':idTag', $idTag);
-            $stmt->bindParam(':email', $email);
-            //exécution
-            $stmt->execute();
+            $email = $this->__get('email');
+            $abo = $this->etreAbonneTag($idTag);
 
             // Si la requête renvoie 0, cela signifie que la relation de suivi n'existe pas encore, l'utilisateur va follow
-            if ($stmt->fetchColumn() == 0) {
+            if (!$abo) {
                 $sql = "INSERT INTO AbonnementTag (idTag,email) VALUES (:idTag, :email)";
             }else{
                 // La relation de suivi existe déjà, l'utilisateur va unfollow:
