@@ -214,6 +214,25 @@ class UserAuthentifie extends User{
         $stmt->execute();
         return !$stmt->fetchColumn() == 0;
     }
+     /*
+     * Méthode qui permet de savoir si l'utilisateur connecté suit tag entré en paramètre
+     */
+    public function etreAbonneTag(int $idTag):bool{
+        $db = ConnectionFactory::makeConnection();
+
+        //on regarde si this suis déjà l'utilisateur
+        $sql = "SELECT COUNT(*) FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonne = :idAbonne";
+        //préparation des données
+        $stmt = $db->prepare($sql);
+        $idsuiv =  $userToFollow->__get('id');
+        $idabo = $this->__get('id');
+        //attribution des paramètres
+        $stmt->bindParam(':idSuivi', $idsuiv);
+        $stmt->bindParam(':idAbonne', $idabo);
+        //exécution
+        $stmt->execute();
+        return !$stmt->fetchColumn() == 0;
+    }
 
     /**
      * Methode qui permet de suivre un Tag
