@@ -46,7 +46,7 @@ class ListeTouiteAction extends Action {
                     array_push($tags, $row2['libelle']);
                 }
             }
-            array_push($touiteAafficher, new Touite(new UserAuthentifie($row["email"]),  $row["idTouite"]));
+            array_push($touiteAafficher, new Touite($row["idTouite"]));
         }
         $html = (new ListTouite($touiteAafficher))->afficher();
 

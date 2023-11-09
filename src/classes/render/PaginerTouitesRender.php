@@ -26,7 +26,7 @@ class PaginerTouitesRender
         $arrT = array();
         foreach ($this->touites as $t){
             //count = 1 element
-            if ($count<=$numpage*self::TOUITE_MAX_COUNT){
+            if ($count<$numpage*self::TOUITE_MAX_COUNT){
                 $count++;
                 continue;
             }
@@ -34,7 +34,7 @@ class PaginerTouitesRender
             array_push($arrT, $t);
 
             //end if count == MAX
-            if (($count++)-($numpage*self::TOUITE_MAX_COUNT) >= self::TOUITE_MAX_COUNT){
+            if (($count++)-($numpage*self::TOUITE_MAX_COUNT) >= self::TOUITE_MAX_COUNT-1){
                 break;
             }
 

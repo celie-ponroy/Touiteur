@@ -9,6 +9,7 @@ use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\DeconnAction;
 use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\SuivreAction;
+use iutnc\touiteur\action\TouiteDeTagAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
 use iutnc\touiteur\action\UserListeTouitesAction;
@@ -72,6 +73,14 @@ class Dispatcher {
                 $UlisteT = new UserListeTouitesAction();
                 $_SESSION['ListAaff'] = serialize($UlisteT);
                 $html = $UlisteT->execute();
+                break;
+            case 'tag_liste_touite':
+                $_SESSION['CurrentPage'] = "tagged_list";
+                $_SESSION['pageCour'] = 0;
+
+                $TaglisteT = new TouiteDeTagAction(1);
+                $_SESSION['ListAaff'] = serialize($TaglisteT);
+                $html = $TaglisteT->execute();
                 break;
 
             case 'suivre_user':
@@ -142,6 +151,7 @@ class Dispatcher {
                         <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.png' > Explore</a><br>
                         <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.png' > Home</a><br>
                         <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/????????' >  Mes Touites</a><br>
+                        <a class='action' href = '?action=tag_liste_touite'><img class='img-action' src='image/????????' >  tag Technologie Touites</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
                     </div>
                    

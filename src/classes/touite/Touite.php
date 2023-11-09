@@ -15,7 +15,7 @@ class Touite{
 
     protected string $texte;
     protected ?string $pathpicture;//contenu du touite
-    protected UserAuthentifie $user ; //l'auteur
+    protected  $user ; //l'auteur
     protected DateTime $date;//date de publication du touite
     protected ?array $tags; // table de tags
 
@@ -27,12 +27,11 @@ class Touite{
      * contructeur
      */
 
-    function __construct(UserAuthentifie $user , int $id ){
+    function __construct(int $id){
         $this->idtouite = $id;
 
-        $this->user = $user;
         $db = ConnectionFactory::makeConnection();
-        $query = 'SELECT texte, idIm , datePublication 
+        $query = 'SELECT texte, idIm , datePublication, email
                 FROM Touite
                 WHERE idTouite = ?';
         $resultset = $db->prepare($query);
@@ -40,6 +39,7 @@ class Touite{
         $resultset->execute();
         $fetch = $resultset->fetch();
         $this->texte = $fetch['texte'];
+        $this->user = new UserAuthentifie($fetch['email']);
         $format = "Y-m-d H:i:s";
         var_dump($fetch['datePublication']);
         $date = DateTime::createFromFormat($format, $fetch['datePublication']);
