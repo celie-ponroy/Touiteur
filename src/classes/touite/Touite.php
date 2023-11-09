@@ -41,11 +41,9 @@ class Touite{
         $this->texte = $fetch['texte'];
         $this->user = new UserAuthentifie($fetch['email']);
         $format = "Y-m-d H:i:s";
-        var_dump($fetch['datePublication']);
         $date = DateTime::createFromFormat($format, $fetch['datePublication']);
         var_dump($date);
         if($date===false){
-            echo 'date aujourdhui';
             $this->date = new \DateTime();
         }else{$this->date = $date ;}
         
