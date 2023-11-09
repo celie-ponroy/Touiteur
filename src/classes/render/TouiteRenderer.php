@@ -47,7 +47,7 @@ class TouiteRenderer implements Renderer{
 
         //ne rentre jamais dans la boucle : $userToFollow est toujours null MODIFIER
         if ($user !== null && $user->getId() !== $userToFollow->getId()) {
-            if ($user->etreAbonne($userToFollow)) {
+            if ($user->etreAbonneUser($userToFollow)) {
                 $followText = 'Unfollow';
             }
 

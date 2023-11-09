@@ -198,7 +198,7 @@ class UserAuthentifie extends User{
     /*
      * Méthode qui permet de savoir si l'utilisateur connecté suit l'utilisateur entré en paramètre
      */
-    public function etreAbonne(User $userToFollow):bool{
+    public function etreAbonneUser(User $userToFollow):bool{
         $db = ConnectionFactory::makeConnection();
 
         //on regarde si this suis déjà l'utilisateur
