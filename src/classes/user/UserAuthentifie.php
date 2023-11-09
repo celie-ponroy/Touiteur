@@ -173,6 +173,8 @@ class UserAuthentifie extends User{
                 $sql = "DELETE FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonné = :idAbonné";
             }
             $stmt = $db->prepare($sql);
+            $idsuiv =  $userToFollow->__get('id');
+            $idabo = $this->__get('id');
             $stmt->bindParam(':idSuivi', $idsuiv);
             $stmt->bindParam(':idAbonné', $idabo); 
 
