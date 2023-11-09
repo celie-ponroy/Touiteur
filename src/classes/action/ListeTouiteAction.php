@@ -3,13 +3,8 @@ declare(strict_types=1);
 namespace iutnc\touiteur\action;
 use iutnc\touiteur\action\Action;
 use  iutnc\touiteur\bd\ConnectionFactory as ConnectionFactory;
-use iutnc\touiteur\render\PaginerTouitesRender;
-use iutnc\touiteur\render\Renderer;
-use iutnc\touiteur\render\TouiteRenderer;
 use iutnc\touiteur\touite\ListTouite;
 use iutnc\touiteur\touite\Touite;
-use iutnc\touiteur\user\User;
-use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
 
 class ListeTouiteAction extends Action {
@@ -30,7 +25,7 @@ class ListeTouiteAction extends Action {
         //initialise le html
         //affiche chaque Touite
         foreach ($resultset->fetchAll() as $row) {
-            // Affiche les hashtags si il y en a
+            /*// Affiche les hashtags si il y en a
             $sql1 = "SELECT t.libelle
             FROM Tag t
             JOIN Tag2Touite t2t ON t.idTag = t2t.idTag
@@ -45,7 +40,7 @@ class ListeTouiteAction extends Action {
                 while ($row2 = $hashtags->fetch(PDO::FETCH_ASSOC)) {
                     array_push($tags, $row2['libelle']);
                 }
-            }
+            }*/
             array_push($touiteAafficher, new Touite($row["idTouite"]));
         }
         $html = (new ListTouite($touiteAafficher))->afficher();

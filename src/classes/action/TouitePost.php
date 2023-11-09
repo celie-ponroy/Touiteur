@@ -1,13 +1,9 @@
 <?php
 declare(strict_types=1);
 namespace iutnc\touiteur\action;
-use iutnc\touiteur\render\Renderer;
-use iutnc\touiteur\render\TouiteRenderer;
 use iutnc\touiteur\touite\Touite;
 use iutnc\touiteur\action\Action;
-use iutnc\touiteur\bd\ConnectionFactory;
-use iutnc\touiteur\user\UserAuthentifie;
-use PDO;
+
 
 class TouitePost extends Action {
    
