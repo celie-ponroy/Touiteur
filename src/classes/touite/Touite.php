@@ -177,6 +177,7 @@ class Touite{
                 $stmt = $db->prepare($insertT2T);
                 $stmt->bindParam(1, $idTag, PDO::PARAM_INT);
                 $stmt->bindParam(2, $idtouite, PDO::PARAM_INT);
+                $stmt->execute();
             }
             
         }

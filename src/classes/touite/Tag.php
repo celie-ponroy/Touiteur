@@ -14,12 +14,12 @@ class Tag{
     function __construct(string $id){
 
         $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT libelle from tag Where idTag = ?';
+        $query = 'SELECT libelle from Tag Where idTag = ?';
         $st = $pdo->prepare($query);
         $st->execute([$id]);
         $libelle = $st->fetch()['libelle'];
 
-        $query = 'SELECT description from tag Where idTag = ?';
+        $query = 'SELECT description from Tag Where idTag = ?';
         $st = $pdo->prepare($query);
         $st->execute([$id]);
         $desciption = $st->fetch()['description'];
