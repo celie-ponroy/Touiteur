@@ -132,6 +132,25 @@ class UserAuthentifie extends User{
     }
 
 
+    /*
+     * Méthode qui permmet de récupérer l'ID de l'utilisateur
+     */
+    public function getId(): string {
+        // Remplacez 'id' par l'attribut contenant l'email de l'utilisateur
+        return $this->email;
+    }
+
+    /*
+     * Méthode qui permet de récupérer l'objet UserAuthentifie de l'utilisateur connecté
+     */
+    public static function getUser(): ?UserAuthentifie {
+        if (self::isUserConnected()) {
+            if (isset($_SESSION['User'])) {
+                return unserialize($_SESSION['User']);
+            }
+        }
+        return null;
+    }
 
     /*
      * Méthode qui permet de suivre un utilisateur entré en paramètre
@@ -175,6 +194,27 @@ class UserAuthentifie extends User{
         }
 
     }
+
+    /*
+     *
+     */
+    public function etreAbonne(User $userToFollow):bool{
+        $db = ConnectionFactory::makeConnection();
+
+        //on regarde si this suis déjà l'utilisateur
+        $sql = "SELECT COUNT(*) FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonne = :idAbonne";
+        //préparation des données
+        $stmt = $db->prepare($sql);
+        $idsuiv =  $userToFollow->__get('id');
+        $idabo = $this->__get('id');
+        //attribution des paramètres
+        $stmt->bindParam(':idSuivi', $idsuiv);
+        $stmt->bindParam(':idAbonne', $idabo);
+        //exécution
+        $stmt->execute();
+        return !$stmt->fetchColumn() == 0;
+    }
+
     /**
      * Methode qui permet de suivre un Tag
      */
