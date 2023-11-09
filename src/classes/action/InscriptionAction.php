@@ -29,7 +29,7 @@ class InscriptionAction extends Action {
 
             $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
             $mdp = password_hash($_POST['pass'], PASSWORD_DEFAULT, ['cost'=> 12]);
-            UserAuthentifie::inscription($nom,$prenom,$email,$mdp);
+            $html = UserAuthentifie::inscription($nom,$prenom,$email,$mdp);
         }
         return $html;
     }

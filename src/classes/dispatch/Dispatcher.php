@@ -9,6 +9,7 @@ use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\DeconnAction;
 use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\SuivreAction;
+use iutnc\touiteur\action\TouiteDeTagAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
 use iutnc\touiteur\action\UserListeTouitesAction;
@@ -57,13 +58,29 @@ class Dispatcher {
                 break;
 
             case 'liste_touite':
+                $_SESSION['CurrentPage'] = "Home";
+                $_SESSION['pageCour']=0;
+
                 $listeT = new ListeTouiteAction();
+                $_SESSION['ListAaff']= serialize($listeT);
                 $html = $listeT->execute();
                 break;
 
             case 'user_liste_touite':
+                $_SESSION['CurrentPage'] = "MesT";
+                $_SESSION['pageCour']=0;
+
                 $UlisteT = new UserListeTouitesAction();
+                $_SESSION['ListAaff'] = serialize($UlisteT);
                 $html = $UlisteT->execute();
+                break;
+            case 'tag_liste_touite':
+                $_SESSION['CurrentPage'] = "tagged_list";
+                $_SESSION['pageCour'] = 0;
+
+                $TaglisteT = new TouiteDeTagAction(1);
+                $_SESSION['ListAaff'] = serialize($TaglisteT);
+                $html = $TaglisteT->execute();
                 break;
 
             case 'suivre_user':
@@ -79,7 +96,26 @@ class Dispatcher {
                     $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
                     $html.= "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
                 }
+                break;
+            case 'page':
+                $_SESSION['pageCour'] =  $_GET['page_num']-1;
+                $listeT = unserialize($_SESSION['ListAaff']);
+                $html = $listeT->execute();
 
+                break;
+
+            case 'next_page':
+                $_SESSION['pageCour'] += 1;
+
+                $listeT = unserialize($_SESSION['ListAaff']);
+                $html = $listeT->execute();
+                break;
+            case 'prev_page':
+
+                $_SESSION['pageCour'] -= 1;
+
+                $listeT = unserialize($_SESSION['ListAaff']);
+                $html = $listeT->execute();
                 break;
         }
 
@@ -112,15 +148,13 @@ class Dispatcher {
                     echo"
 
                     </div>
-
-                    <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.png' > Explore</a><br>
-                    <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.png' > Home</a><br>
-                    <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/????????' >  Mes Touites</a><br>
+                        <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.png' > Explore</a><br>
+                        <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.png' > Home</a><br>
+                        <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/????????' >  Mes Touites</a><br>
+                        <a class='action' href = '?action=tag_liste_touite'><img class='img-action' src='image/????????' >  tag Technologie Touites</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
                     </div>
                    
-
-
                 </nav>
                 
                 <div class='content'>

@@ -4,6 +4,7 @@ declare(strict_types= 1);
 namespace iutnc\touiteur\touite;
 
 use iutnc\touiteur\bd\ConnectionFactory;
+use PDO;
 
 class Tag{
     private $id;
@@ -13,12 +14,12 @@ class Tag{
     function __construct(string $id){
 
         $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT libelle from  Where id = ?';
+        $query = 'SELECT libelle from tag Where idTag = ?';
         $st = $pdo->prepare($query);
         $st->execute([$id]);
         $libelle = $st->fetch()['libelle'];
 
-        $query = 'SELECT nom from Utilisateur Where id = ?';
+        $query = 'SELECT description from tag Where idTag = ?';
         $st = $pdo->prepare($query);
         $st->execute([$id]);
         $desciption = $st->fetch()['description'];
@@ -32,15 +33,22 @@ class Tag{
 
     public function findTaggedTw(){
         $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT idTouite from Touite 
+        $query = 'SELECT Touite.idTouite from Touite 
                     inner join Tag2Touite on Touite.idTouite = Tag2Touite.idTouite  
                     inner join Tag on Tag.idTag = Tag2Touite.idTag
-                    Where tags = ?';
+                    Where Tag.idTag = ?';
 
         $st = $pdo->prepare($query);
         $st->execute([$this->id]);
 
-        return $st->fetchAll();
+
+        $tags = [];
+        $results = $st->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($results as $row) {
+            $tags[] = new Touite($row['idTouite']);
+        }
+
+        return $tags;
     }
     
 }

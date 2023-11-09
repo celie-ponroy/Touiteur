@@ -3,6 +3,7 @@
 namespace iutnc\touiteur\action;
 use iutnc\touiteur\render\Renderer;
 use iutnc\touiteur\render\TouiteRenderer;
+use iutnc\touiteur\touite\ListTouite;
 use iutnc\touiteur\user\UserAuthentifie;
 
 class UserListeTouitesAction extends Action
@@ -22,11 +23,7 @@ class UserListeTouitesAction extends Action
         $html = '';
         if (isset($this->user)){
             $touites = $this->user->getTouites();
-            foreach ($touites as $t){
-                    //affichage (id)
-                    $tmp= new TouiteRenderer($t);
-                    $html.=$tmp->render(Renderer::COMPACT);
-            }
+            $html = (new ListTouite($touites))->afficher();
         }
         return $html;
     }

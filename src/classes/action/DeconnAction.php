@@ -11,7 +11,7 @@ class DeconnAction extends Action
 
     public function execute(): string
     {
-        session_destroy();
+        unset($_SESSION['User']);
         return "disconnected";
     }
 }

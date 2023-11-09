@@ -114,9 +114,10 @@ class UserAuthentifie extends User{
         $st = $pdo->prepare($query);
         $st->execute([$this->email]);
         $res = array();
+
         $user = unserialize($_SESSION['User']);
         foreach($st->fetchAll() as $row){
-            array_push($res,new Touite($user,intval($row["idTouite"])));
+            array_push($res,new Touite(intval($row["idTouite"])));
         }
         return $res;
     }

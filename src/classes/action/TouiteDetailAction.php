@@ -89,6 +89,7 @@ class TouiteDetailAction extends Action {
                     $nbdislike= $row['nb_dislikes'];
                 }
 
+
                 $sql = "SELECT cheminFichier 
                 FROM Image
                 left join Touite on Touite.idIm=Image.idIm
@@ -102,12 +103,11 @@ class TouiteDetailAction extends Action {
 
                 
                 $user = unserialize($_SESSION['User']);
-                $touiteRenderlong = new TouiteRenderer(new Touite($user,$idtouite));//---, $imagepath, $tags, intval($id_touite)
+                $touiteRenderlong = new TouiteRenderer(new Touite($idtouite));//---, $imagepath, $tags, intval($id_touite)
 
                 $html.=$touiteRenderlong->render(Renderer::LONG);
             }
         }
-
         return $html;
     }
 }
