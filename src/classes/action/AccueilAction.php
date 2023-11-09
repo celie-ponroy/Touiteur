@@ -20,15 +20,15 @@ class AccueilAction extends Action {
         $db = ConnectionFactory::makeConnection();
         
         $sql ="SELECT Touite.texte,Touite.idTouite ,Touite.datePublication, Touite.email, NULL as idTag 
-        FROM Touite inner join Abonnement on Touite.email = Abonnement.idSuivi
-        where Abonnement.idAbonne like ?
+        FROM Touite INNER JOIN Abonnement ON Touite.email = Abonnement.idSuivi
+        where Abonnement.idAbonne LIKE ?
         UNION
         SELECT Touite.texte, Touite.idTouite ,Touite.datePublication, Touite.email ,Tag.idTag 
-        FROM Touite inner join Tag2Touite on Tag2Touite.idTouite = Touite.idTouite
-            inner join Tag on Tag2Touite.idTouite = Tag.idTag
-            inner join AbonnementTag on Tag.idTag = AbonnementTag.idTag
-        where AbonnementTag.email like ?
-        order by datePublication;";
+        FROM Touite INNER JOIN Tag2Touite ON Tag2Touite.idTouite = Touite.idTouite
+            INNER JOIN Tag ON Tag2Touite.idTouite = Tag.idTag
+            INNER JOIN AbonnementTag ON Tag.idTag = AbonnementTag.idTag
+        WHERE AbonnementTag.email LIKE ?
+        ORDER BY datePublication;";
     
         $resultset = $db->prepare($sql);
         
