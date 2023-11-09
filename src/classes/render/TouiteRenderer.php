@@ -1,7 +1,9 @@
 <?php
 namespace iutnc\touiteur\render;
 
+use iutnc\touiteur\touite\Note;
 use iutnc\touiteur\touite\Touite;
+use iutnc\touiteur\user\UserAuthentifie;
 class TouiteRenderer implements Renderer{
 
     //déclarations des attributs
@@ -29,7 +31,7 @@ class TouiteRenderer implements Renderer{
      */
     public function renderCompact():string {
         // Code HTML pour l'affichage compact
-
+        $methode = $_SERVER['REQUEST_METHOD'];
                 
         //entete
         $res= '<div class="touite-container"><header class="entete">' .
@@ -49,6 +51,65 @@ class TouiteRenderer implements Renderer{
             }
             $res.='</div>';
         }
+        $user=unserialize($_SESSION["User"]);
+
+        $noter=new Note($user);
+
+        //fonctions du touite
+        if($methode === 'GET'){
+
+        $res.=' <div class="fonctions">
+        <form method="post" action="?action=liste_touite">
+            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
+            '<p>'.$this->touite->__get('nblikes').'</p>' .
+            '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
+            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
+        .'</div>';
+            
+        }elseif ($methode === 'POST') {
+            $action = isset($_POST['action']) ? $_POST['action'] : '';
+            
+            $noteUser=-8;
+            if ($action === 'like'.$this->touite->__get('idtouite')){
+                $noteUser=1;
+             }elseif ($action === 'dislike'.$this->touite->__get('idtouite')) {
+                $noteUser=(-1);
+             }
+
+            $res.=' <div class="fonctions">
+            <form method="post" action="?action=liste_touite">
+            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
+            '<p>';
+          
+            $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
+            $res.=$arraynote[0];
+            //echo $this->touite->__get('idtouite');
+           
+            $res.='</p>';
+
+
+
+
+            $res.='<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
+            '<p>';
+            $res.=$arraynote[1];
+            //echo $this->touite->__get('idtouite');
+            
+            
+            $res.='</p> </form>'
+
+
+
+
+        .'</div>';
+           
+        }
+        
+
+        
+         /*etc....... */
+         
+        
         // Fermez la balise <a> avec ID "compact" ici
         $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">voir plus</a><p class="underline"></p></div><br>';
 
@@ -72,13 +133,15 @@ class TouiteRenderer implements Renderer{
         $res .= '<img class="touite-image" src="'.$this->touite->__get('pathpicture').'" >';
 
         if($this->touite->__get('tags')!==null){
-        $res.='<div class=trend-container>';
-       
-        foreach ($this->touite->__get('tags') as &$t) {
-            $res .= '<a class="trend" href="?action=????????????">#' . $t . '</a>';
-        }
-        $res.='</div>';
-    }
+            $res.='<div class=trend-container>';
+        
+            foreach ($this->touite->__get('tags') as &$t) {
+                $res .= '<a class="trend" href="?action=????????????">#' . $t . '</a>';
+            }
+            $res.='</div>';
+        }   
+
+
         // Fermez la balise <a> avec ID "compact" ici
         $res .= '<p class="underline"></p></div><br>';
 

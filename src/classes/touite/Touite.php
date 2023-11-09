@@ -41,11 +41,11 @@ class Touite{
         $fetch = $resultset->fetch();
         $this->texte = $fetch['texte'];
         $format = "Y-m-d H:i:s";
-        var_dump($fetch['datePublication']);
+        
         $date = DateTime::createFromFormat($format, $fetch['datePublication']);
-        var_dump($date);
+      
         if($date===false){
-            echo 'date aujourdhui';
+  
             $this->date = new \DateTime();
         }else{$this->date = $date ;}
         
@@ -71,6 +71,34 @@ class Touite{
         ///////////////////////////////////recuperer les tags
         $this->tags = null;
         
+
+        //note
+        $query = 'SELECT count(*) as nbnote
+                FROM Note
+                WHERE idTouite = ?
+                group by note
+                order by nbnote DESC';
+
+            $resultset = $db->prepare($query);
+            $resultset->bindParam(1,$this->idtouite, PDO::PARAM_INT);
+            $resultset->execute();
+
+            $row=$resultset->fetch();
+     
+            if($row!=false){
+                $this->nblikes = $row['nbnote'];//like
+                $row=$resultset->fetch();
+                if($row!=false){
+                    $this->nbdislike = $row['nbnote'];//like
+                }else{
+                    $this->nbdislike= 0;
+                }
+            }else{
+                $this->nblikes= 0;
+            }
+            
+            
+        
         
         //array tag
 
@@ -92,8 +120,8 @@ class Touite{
             $resimage = $idimage->fetch();
 
             $idpicture = $resimage["maxid"]+1;
-            echo"<h1>".$idpicture."</h1>";
-            echo $idpicture;
+    
+
 
             /*maj de l'image*/
             $sql ="Insert into Image values(?,null,?);";
@@ -176,13 +204,28 @@ class Touite{
 
     }
 
-
     public function __get($name): mixed{
-      if(property_exists($this, $name)){
-            return $this->$name;
-        }else{
-            echo "Get invalide";
-            return null;
+        if(($name==='ndlikes'||$name==='nbdislike')&&property_exists($this, $name)){
+            if($name==='nblikes'){
+                if(isset($this->nblikes))
+                    return $this->nblikes;
+            }elseif($name==='nbdislike'){
+                if(isset($this->nbdislike))
+                    return $this->nbdislike;
+                
+            }else{
+                return 0;
+            }
+        }elseif(property_exists($this, $name)){
+                return $this->$name;
+        }
+        return null;
+        
+    }
+
+    public function __set($name, mixed $value):void{
+        if (property_exists($this, $name)) {
+            $this->$name = $value;
         }
     }
 
