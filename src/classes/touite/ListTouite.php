@@ -17,7 +17,6 @@ class ListTouite
         $_SESSION['tList'] =  serialize($this->tList);
 
         $_SESSION['pMaxCount'] = ceil(count($this->tList)/PaginerTouitesRender::TOUITE_MAX_COUNT);
-        var_dump(count($this->tList));
         $html = (new PaginerTouitesRender($this->tList))->render($_SESSION['pageCour']);
 
         $html .= "<h2>  Pages:";

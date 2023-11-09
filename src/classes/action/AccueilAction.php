@@ -5,6 +5,7 @@ use iutnc\touiteur\action\Action;
 use  iutnc\touiteur\bd\ConnectionFactory as ConnectionFactory;
 use iutnc\touiteur\user\UserAuthentifie;
 
+/**Class AcceuilAction  */
 class AccueilAction extends Action {
 
 
@@ -12,7 +13,7 @@ class AccueilAction extends Action {
         parent::__construct();
         ConnectionFactory::setConfig("conf/conf.ini");
     }
-    
+    /** cherche les touite des abonements tags et utilisateur */
     public function execute() : string{
         $db = ConnectionFactory::makeConnection();
         
@@ -37,6 +38,7 @@ class AccueilAction extends Action {
             $html.=("@".$row["email"]." : ".$row["texte"])."<br>";
         }
         return $html;
+        
     }
         
 }
