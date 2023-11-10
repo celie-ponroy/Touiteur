@@ -37,7 +37,7 @@ class TouiteRenderer implements Renderer{
     
         //entete
         $res= '<div class="touite-container"><header class="entete">' .
-                '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
+                '<a class="nomuser">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
                 '<i> @' . $this->touite->__get('user')->__get('nom') . ' </i> ' . //identifiant
                 '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
                 '<br> ';
@@ -75,6 +75,7 @@ class TouiteRenderer implements Renderer{
             }
             $res.='</div>';
         }
+
 
             if (isset($_SESSION["User"])){
                 $user=unserialize($_SESSION["User"]);
@@ -115,7 +116,7 @@ class TouiteRenderer implements Renderer{
                 $noteUser=(-1);
              }
 
-             $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
+            $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
 
             $res.=' <div class="fonctions">
             <form method="post" action="?action='.$actionUrl.'">
@@ -163,8 +164,8 @@ class TouiteRenderer implements Renderer{
         }
          /*etc....... */
         // Fermez la balise <a> avec ID "compact" ici
-        $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">voir plus</a>';
-        
+
+        $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">See more</a>';
         $res .=    '</div><br>';
 
         return $res;
@@ -181,12 +182,34 @@ class TouiteRenderer implements Renderer{
 
         $res= '<div class="touite-container"><header class="entete">' .
 
-        '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
+        '<a class="nomuser">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
         '<i> @' . $this->touite->__get('user')->__get('nom') . ' </i> ' . //identifiant
 
         '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
-        '<br> ' .
-        '</header>';
+        '<br> ' ;
+
+        // Bouton Follow/Unfollow
+        $user = UserAuthentifie::getUser();
+        $userToFollow = $this->touite->__get('user');
+        $followText = 'Follow';
+
+
+
+        if ($user !== null && $user->__get('email') !== $userToFollow->__get('email')) {
+            if ($user->etreAbonneUser($userToFollow)) {
+                $followText = 'Unfollow';
+            }
+
+            $formAction = $followText === 'Follow' ? 'Follow' : 'Unfollow';
+
+            $res .= '<form class="follow-form" action="?action=follow&us=' . $userToFollow . '" method="post">'.
+                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                '<button class="follow"  type="submit">' . $followText . '</button>'.
+                '</form>';
+
+        }
+
+        $res .= '</header>';
 
         $res .= '<p class="text">' . htmlspecialchars($this->touite->__get('texte'), ENT_QUOTES) . '</p>';
         $res .= '<img class="touite-image" src="'.$this->touite->__get('pathpicture').'" >';
@@ -215,11 +238,12 @@ class TouiteRenderer implements Renderer{
             '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
             '<p>'.$this->touite->__get('nbdislike').'</p>  </form>';
 
- 
+
             if( $this->touite->appartientUserAuth() ){
                 $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
                     '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
                     '<button class="delete-button" type="submit">' . 'delete' . '</button>'.
+
                     '</form>';
             }
             $res.='</div>';

@@ -18,17 +18,16 @@ class TouitePost extends Action {
 
         if($methode === 'GET'){
             $html = "<form class='Touite' action='?action=touite-post' method='post' enctype='multipart/form-data'>
-                <input type='textarea' placeholder='What is happening?!' name='touite' autocomplete='off'>
+                <input type='textarea' placeholder='What is happening ?!' name='touite' autocomplete='off'>
                 <input type='file' placeholder='<choose file>' name='image'>
-                <button type='submit'>Poster</button>
+                <button type='submit'>Post</button>
                 </form>";
     } else if ($methode === 'POST') {
         // Vérifier si le fichier a été téléchargé avec succès
             $touite = filter_var($_POST['touite'], FILTER_SANITIZE_STRING);
            
-
             // Diviser la chaîne en un tableau en utilisant le dièse comme délimiteur
-            $elements =explode('#', $touite);
+            $elements = explode('#', $touite);
 
 
             // Utiliser preg_match_all pour trouver toutes les occurrences de motifs commençant par #
@@ -61,7 +60,7 @@ class TouitePost extends Action {
             if (!empty($touite)) {
                 $html .= "<h3>Touite x: " . $touite . "</h3>";
             } else {
-                $html .= "<h3>Vous n'avez sélectionné ni une image, ni saisi de texte</h3>";
+                $html .= "<h3>You don't have select any picture and text.</h3>";
             }
         
     }

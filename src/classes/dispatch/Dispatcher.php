@@ -11,10 +11,10 @@ use iutnc\touiteur\action\RechercheAction;
 use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\DeconnAction;
 use iutnc\touiteur\action\InscriptionAction;
-use iutnc\touiteur\action\SuivreAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
 use iutnc\touiteur\action\ProfilAction;
+use iutnc\touiteur\action\RentabiliserAction;
 use iutnc\touiteur\action\UserListeTouitesAction;
 use iutnc\touiteur\action\TouiteDetailAction;
 use iutnc\touiteur\user\UserAdmin;
@@ -61,12 +61,11 @@ class Dispatcher {
                 $touiteEnDetail = new TouiteDetailAction();
                 $html = $touiteEnDetail->execute();
                 break;
-
             case 'touite-post':
                 if (!UserAuthentifie::isUserConnected()){
                     $_SESSION['CurrentPage'] = "PAcc";
-                    $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
-                    $html.= "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
+                    $html = "<h2>To access this page please log in: </h2> <br>";
+                    $html.= "<a class='action' href = '?action=connection'><img  class='img-action' src='image/profile.svg' > Connection </a><br>";
                     break;
                 }
                 $_SESSION['CurrentPage'] = "TPost";
@@ -104,8 +103,10 @@ class Dispatcher {
                     $html = $pageA->execute();
                 }
                 else{
-                    $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
-                    $html.= "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
+                    $html = "<h2>To access this page please log in: </h2> <br>";
+
+                    $html.= "<a class='action' href = '?action=connection'><img  class='img-action' src='image/profile.svg' > Connection </a><br>";
+
                 }
                 break;
             case 'follow':
@@ -141,6 +142,11 @@ class Dispatcher {
             case 'user_narcissique':
                 $profil = new ProfilAction();
                 $html = $profil->execute();
+                break;
+            case 'rentabiliser':
+                $renta = new RentabiliserAction();
+                $html = $renta->execute();
+                break;
         }
 
         echo "<!DOCTYPE html>
@@ -149,7 +155,7 @@ class Dispatcher {
                 <meta charset='UTF-8'>
                 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
                 <meta name='viewport' content='width=device-width', initial-scale='1.0'>
-                <title>Accueil - Touiteur</title>
+                <title>Home - Touiteur</title>
                 <link rel='stylesheet' type='text/css' href='css/index_style.css'>
                 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Pacifico|Dancing+Script|Patrick+Hand|Shadows+Into+Light|Amatic+SC&display=swap'>
             </head>
@@ -160,23 +166,25 @@ class Dispatcher {
             
                 <nav class='navigation'>
 
-                    <a class='logo-action' href='index.php'><img class='imgLogo' src='image/icon-oiseau.png' ><h2 class='logo'>Touiteur</h2></a> 
+                    <a class='logo-action' href='index.php?action=liste_touite'><img class='imgLogo' src='image/icon-oiseau.png' ><h2 class='logo'>Touiteur</h2></a> 
                     <div class='container-action-button'>
                     
 
                         <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.svg' > Home</a><br>
                         <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.svg' > Explore</a><br>";
-
-                if (UserAuthentifie::isUserConnected())
-                      echo  "<a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/mestouites.svg' >  Mes Touites</a><br>";
-                  echo  "<a class='action-post' href = '?action=touite-post'> Post</a><br>
-
+                        if (UserAuthentifie::isUserConnected()){
+                            echo "<a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/mestouites.svg' >  My Touites</a><br>
+                            <a class='action' href = '?action=user_narcissique'><img class='img-action' src='image/profile.svg' >  Profile</a><br>";
+                        }
+                        echo"
+                        
+                    <a class='action-post' href = '?action=touite-post'> Post</a><br>
                     </div>
 
 
                     <div class='connexion'>";
                    if (UserAuthentifie::isUserConnected()){
-                        echo "<a class='action-connect' href = '?action=deconnection'> Deconnection </a><br>"; 
+                        echo "<a class='action-connect' href = '?action=deconnection'> Disconnection </a><br>";
                     }else{
 
                         echo "<a class='fonction-connect' href = '?action=connection'> Connection </a><br>";
@@ -206,11 +214,11 @@ class Dispatcher {
                     </div>
 
                     <div class='list-trends'>
-                        <p>Tendances</p>
+                        <p>Trends</p>
                     </div>
 
                     <div class='other'>
-                        <p>Other</p>
+                        <p>Others</p>
                     </div>
 
                 </div>
