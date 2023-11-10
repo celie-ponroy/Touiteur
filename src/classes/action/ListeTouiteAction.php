@@ -14,6 +14,7 @@ class ListeTouiteAction extends Action {
     }
     
     public function execute() : string{
+        //initialise le html
         $html = "";
         $db = ConnectionFactory::makeConnection();
         $touiteAafficher = array();
@@ -22,7 +23,7 @@ class ListeTouiteAction extends Action {
         $resultset = $db->prepare($sql);
         //exécute la requète sql
         $resultset->execute();
-        //initialise le html
+
         //affiche chaque Touite
         foreach ($resultset->fetchAll() as $row) {
             array_push($touiteAafficher, new Touite($row["idTouite"]));
