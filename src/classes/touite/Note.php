@@ -96,30 +96,30 @@ class Note{
 
 
 
-    static function __getLikeInitial(int $idtouite):array{
+    function __getLikeInitial(int $idtouite):array{
 
         $db = ConnectionFactory::makeConnection();
          //dislikeee
-         $query = 'SELECT count(*) as nbnote
+         $query = 'SELECT note 
          FROM Note
-         WHERE idTouite = ?';
+         WHERE idTouite = ? AND email = ?';
 
 
-         
-         $resultset = $db->prepare($query);
-         $resultset->bindParam(1,$idtouite, PDO::PARAM_INT);
-         $resultset->execute();
+        $email=$this->user->__get('email');
+        $resultset = $db->prepare($query);
+        $resultset->bindParam(1,$idtouite, PDO::PARAM_INT);
+        $resultset->bindParam(2,$email, PDO::PARAM_STR);
+        $resultset->execute();
  
          $row=$resultset->fetch();
- 
          $note=null;
          $like=null;
          $dislike=null;
 
          if($row!=false){
-             $note = $row['nbnote'];//like
+             $note = $row['note'];//like
          }
-
+        
          if($note===1){
             $like='image/like_full.svg';
             $dislike='image/dislike_empty.svg';
@@ -131,9 +131,7 @@ class Note{
             $like='image/like_empty.svg';
             $dislike='image/dislike_empty.svg';
          }
-  
-
- 
+        
         return array($like,$dislike);
     }
     static function getnbLike(int $idtouite):int{
@@ -180,6 +178,7 @@ class Note{
         }
         if($nbdislike===null)
             $nbdislike= 0;
+
     
     return $nbdislike;
     }
