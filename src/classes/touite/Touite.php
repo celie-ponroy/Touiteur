@@ -24,7 +24,7 @@ class Touite{
 
     protected int $nblikes, $nbdislike;
     /**
-     * contructeur
+     * contructeur ( reprends les données dans la base de donnés )
      */
 
     function __construct(int $id){
