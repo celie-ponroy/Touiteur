@@ -145,7 +145,8 @@ class Dispatcher {
                 break;
             case 'rentabiliser':
                 $renta = new RentabiliserAction();
-                $html = $renta->execute();
+                        $html = $renta->execute();
+                
                 break;
         }
 
@@ -175,6 +176,10 @@ class Dispatcher {
                         if (UserAuthentifie::isUserConnected()){
                             echo "<a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/mestouites.svg' >  My Touites</a><br>
                             <a class='action' href = '?action=user_narcissique'><img class='img-action' src='image/profile.svg' >  Profile</a><br>";
+                            $user = unserialize($_SESSION['User']);
+                            if($user->isAdmin()){
+                               echo" <a class='action' href = '?action=rentabiliser'><img class='img-action' src='image/admin.svg' >  Administrator Page</a><br>";
+                            }
                         }
                         echo"
                         

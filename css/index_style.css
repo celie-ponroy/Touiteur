@@ -492,3 +492,11 @@ div.touite-container#text{
     left: 50%;
     transform: translateX(-50%);
 }
+.admin-trend{
+  display: flex;
+  flex-direction: row;
+}
+.admin{
+  display: flex;
+  flex-direction: column;
+}

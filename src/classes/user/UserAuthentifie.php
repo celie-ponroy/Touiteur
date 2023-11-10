@@ -278,6 +278,9 @@ class UserAuthentifie extends User{
         }
         return $res;
     }
+    function isAdmin():bool{
+        return $this->role==2;
+    }
 
     public function __get($name): mixed{
         if(property_exists($this, $name)){
