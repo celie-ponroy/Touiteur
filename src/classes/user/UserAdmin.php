@@ -11,7 +11,7 @@ use PDO;
 class UserAdmin extends UserAuthentifie
 {
     public static int $limite=5;
-    
+
     public function __construct(string $email)
     {
         parent::__construct($email);
