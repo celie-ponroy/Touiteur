@@ -37,7 +37,7 @@ class TouiteRenderer implements Renderer{
     
         //entete
         $res= '<div class="touite-container"><header class="entete">' .
-                '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
+                '<a class="nomuser">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
                 '<i> @' . $this->touite->__get('user')->__get('nom') . ' </i> ' . //identifiant
                 '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
                 '<br> ';
@@ -173,7 +173,7 @@ class TouiteRenderer implements Renderer{
 
         $res= '<div class="touite-container"><header class="entete">' .
 
-        '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
+        '<a class="nomuser" >' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
         '<i> @' . $this->touite->__get('user')->__get('nom') . ' </i> ' . //identifiant
 
         '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date

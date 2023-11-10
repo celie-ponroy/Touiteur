@@ -11,7 +11,6 @@ use iutnc\touiteur\action\RechercheAction;
 use iutnc\touiteur\action\ConnectionAction;
 use iutnc\touiteur\action\DeconnAction;
 use iutnc\touiteur\action\InscriptionAction;
-use iutnc\touiteur\action\SuivreAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
 use iutnc\touiteur\action\ProfilAction;
