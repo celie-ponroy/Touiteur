@@ -69,6 +69,7 @@ class TouiteDetailAction extends Action {
                 $likes->bindParam(':id_touite', $id_touite, PDO::PARAM_INT);
                 $likes->execute();
 
+
                 if ($likes->rowCount() > 0) {
                     $row = $likes->fetch(PDO::FETCH_ASSOC);
                     $nblike=$row['nb_likes'];
@@ -111,9 +112,3 @@ class TouiteDetailAction extends Action {
         return $html;
     }
 }
-
-// Créez une instance de la classe TouiteDetailAction
-$action = new TouiteDetailAction();
-
-// Exécutez l'action
-$html = $action->execute();

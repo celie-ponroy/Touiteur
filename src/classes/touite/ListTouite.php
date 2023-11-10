@@ -20,9 +20,9 @@ class ListTouite
         $_SESSION['pMaxCount'] = ceil(count($this->tList)/PaginerTouitesRender::TOUITE_MAX_COUNT);
         $html = (new PaginerTouitesRender($this->tList))->render($_SESSION['pageCour']);
 
-        $html .= "<h2>  Pages:";
+        $html .= "<h2>";
         if ($_SESSION['pageCour']-1 >= 0) {
-            $html .= " <a class='action' href = '?action=prev_page'> prev </a>";
+            $html .= " <a class='' href = '?action=prev_page'> previous </a>";
         }
 
         $total_pages = $_SESSION['pMaxCount'];
@@ -60,8 +60,9 @@ class ListTouite
 
 
         if ($_SESSION['pageCour']+1 < $_SESSION['pMaxCount']) {
-            $html .=  "<a class='action' href = '?action=next_page'> next </a>";
+            $html .=  "<a class='' href = '?action=next_page'> next </a>";
         }
+
 
 
         $html .= "</h2>";

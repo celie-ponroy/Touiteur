@@ -162,19 +162,11 @@ class UserAuthentifie extends User{
             $db = ConnectionFactory::makeConnection();
 
             //on regarde si this suis déjà l'utilisateur
-            $sql = "SELECT COUNT(*) FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonne = :idAbonne";
-            //préparation des données 
-            $stmt = $db->prepare($sql);
-            $idsuiv =  $userToFollow->__get('email');
-            $idabo = $this->__get('email');
-            //attribution des paramètres
-            $stmt->bindParam(':idSuivi', $idsuiv);
-            $stmt->bindParam(':idAbonne', $idabo);
-            //exécution
-            $stmt->execute();
+
+            $res = $this->etreAbonneUser($userToFollow);
 
             // Si la requête renvoie 0, cela signifie que la relation de suivi n'existe pas encore, l'utilisateur va follow
-            if ($stmt->fetchColumn() == 0) {
+            if (!$res) {
                 // La relation de suivi n'existe pas encore, nous pouvons donc l'ajouter
                 $sql = "INSERT INTO Abonnement (idSuivi, idAbonne) VALUES (:idSuivi, :idAbonne)";
             } else {//unfollow
@@ -182,6 +174,8 @@ class UserAuthentifie extends User{
                 $sql = "DELETE FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonne = :idAbonne";
             }
             $stmt = $db->prepare($sql);
+            $idsuiv =  $userToFollow->__get('email');
+            $idabo = $this->__get('email');
             $stmt->bindParam(':idSuivi', $idsuiv);
             $stmt->bindParam(':idAbonne', $idabo);
 
@@ -200,7 +194,7 @@ class UserAuthentifie extends User{
     /*
      * Méthode qui permet de savoir si l'utilisateur connecté suit l'utilisateur entré en paramètre
      */
-    public function etreAbonne(User $userToFollow):bool{
+    public function etreAbonneUser(User $userToFollow):bool{
         $db = ConnectionFactory::makeConnection();
 
         //on regarde si this suis déjà l'utilisateur
@@ -216,6 +210,23 @@ class UserAuthentifie extends User{
         $stmt->execute();
         return !$stmt->fetchColumn() == 0;
     }
+     /*
+     * Méthode qui permet de savoir si l'utilisateur connecté suit tag entré en paramètre
+     */
+    public function etreAbonneTag(int $idTag):bool{
+        $db = ConnectionFactory::makeConnection();
+
+        $sql = "SELECT COUNT(*) FROM AbonnementTag WHERE idTag = :idTag AND email = :email";
+            //préparation des données 
+            $stmt = $db->prepare($sql);
+            $email = $this->__get('email');
+            //attribution des paramètres
+            $stmt->bindParam(':idTag', $idTag);
+            $stmt->bindParam(':email', $email);
+            //exécution
+            $stmt->execute();
+        return !$stmt->fetchColumn() == 0;
+    }
 
     /**
      * Methode qui permet de suivre un Tag
@@ -225,19 +236,11 @@ class UserAuthentifie extends User{
         if (self::isUserConnected()) {
             $db = ConnectionFactory::makeConnection();
 
-            //on regarde si this suis déjà le tag
-            $sql = "SELECT COUNT(*) FROM AbonnementTag WHERE idTag = :idTag AND email = :email";
-            //préparation des données 
-            $stmt = $db->prepare($sql);
-            $email = $this->email;
-            //attribution des paramètres
-            $stmt->bindParam(':idTag', $idTag);
-            $stmt->bindParam(':email', $email);
-            //exécution
-            $stmt->execute();
+            $email = $this->__get('email');
+            $abo = $this->etreAbonneTag($idTag);
 
             // Si la requête renvoie 0, cela signifie que la relation de suivi n'existe pas encore, l'utilisateur va follow
-            if ($stmt->fetchColumn() == 0) {
+            if (!$abo) {
                 $sql = "INSERT INTO AbonnementTag (idTag,email) VALUES (:idTag, :email)";
             }else{
                 // La relation de suivi existe déjà, l'utilisateur va unfollow:

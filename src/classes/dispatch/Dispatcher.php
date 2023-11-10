@@ -110,7 +110,7 @@ class Dispatcher {
                 (new FollowAction())->execute();
                 break;
             case 'page':
-                $_SESSION['pageCour'] =  $_GET['page_num']-1;
+                $_SESSION['pageCour'] = !isset($_GET['page_num'])  ? $_SESSION['pageCour'] : $_GET['page_num']-1 ;
                 $listeT = unserialize($_SESSION['ListAaff']);
                 $html = $listeT->execute();
                 break;
