@@ -218,12 +218,16 @@ class Dispatcher {
 
                     </div>
 
-                    <div class='list-trends'>
-                        <p>Trends</p>
+                    <div class='list-trends'>";
+                        echo UserAdmin::tendances();
+                        echo "
+
                     </div>
 
                     <div class='other'>
-                        <p>Others</p>
+                        <p>Others";
+                         echo UserAdmin::trouveInfluenceurs();
+                        echo"</p>
                     </div>
 
                 </div>

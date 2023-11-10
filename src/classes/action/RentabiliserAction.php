@@ -15,7 +15,6 @@ class RentabiliserAction extends Action{
         $html .= "<h2>Influencers:</h2>";
         $influ = UserAdmin::trouveInfluenceurs();
         $html .= $influ;
-        $html .= "<h2>Trends:</h2>";
         $html .= UserAdmin::tendances();
        
         return $html;

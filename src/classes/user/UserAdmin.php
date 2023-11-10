@@ -18,14 +18,18 @@ class UserAdmin extends UserAuthentifie
         $sql = "SELECT idSuivi, COUNT(idAbonne) AS followers_count
                 FROM Abonnement
                 GROUP BY idSuivi
-                ORDER BY followers_count DESC";
+                ORDER BY followers_count DESC
+                LIMIT :limite";
 
         $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':limite', UserAdmin::$limite, PDO::PARAM_INT);
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $html = '';
+        $i = 0;
         foreach ($users as $user) {
-            $html .= "<li>User :" . $user['idSuivi'] . " has " . $user['followers_count'] . " followers.</li>";
+            $i++;
+            $html .= "<br> $i - " . $user['idSuivi'] . " has " . $user['followers_count'] . " followers.";
         }
 
         return $html;
@@ -47,16 +51,13 @@ class UserAdmin extends UserAuthentifie
 
         $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $html= '';
-        $html .=  "<div class='admin'>";
-        for ( $i =0 ; $i<UserAdmin::$limite;$i++) {
+        $html .= "<h2>Trends:</h2>";
+        for ( $i = 0 ; $i<UserAdmin::$limite;$i++) {
             $tag = $tags[$i];
-            echo $tag['idTag'];
-            $html .=  "<div class='admin-trend'>";
-            $html .= "<p>".($i+1)." -</p><a class='trend' " . "href=?action=recherche&tag=%23".$tag['libelle']."> #" . $tag['libelle'] ."</a>";
-            $html .= "<p>   Mentions: " . $tag['mention_count'] . "<br/></p>";
-            $html .=  '</div>';
+            $html .= "<h3 class = 'adminT' ><br>".($i+1)." -<a class='trend' " . "href=?action=recherche&tag=%23".$tag['libelle']."> #" . $tag['libelle'] ."</a>";
+            $html .= "   Mentions: " . $tag['mention_count'] . "</h3><br/>";
         }
-        $html .=  '</div>';
+        
         return $html;
     }
 }
