@@ -285,6 +285,9 @@ class Touite{
         return $res."<br>\n".$this-> texte;
     }
 
+    function statistique(){
+        return ($this->nblikes - $this->nbdislike);
+    }
 
 
 

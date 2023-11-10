@@ -22,34 +22,26 @@ use iutnc\touiteur\user\UserAuthentifie;
     public function execute(): string{
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];
-        $user = unserialize($_SERVER['User']);
-        $html .= '<h1> @'.$user->get('email').'</h2>';
-        $html .= '<h2>Abonéss:<h2>';
+        $user = unserialize($_SESSION['User']);
+        $html .= '<h1> @'.$user->__get('email').'</h2>';
+        // affichage de la liste des abonés:
+        $html .= '<h2>Abonés:<h2>';
         $html .= '<div>';;
         $listeabo = $user->listeAbo();
         foreach ($listeabo as $abo) {
             $html .= '<li>'.$abo['prenom'].' '.$abo['nom'].'  @'.$abo['email'].'</li>';
         }
         $html .= '</div>';
-        return $html;
-    }
-    /*
-     * public function execute() : string{
-        $db = ConnectionFactory::makeConnection();
-
-        $sql ="SELECT * FROM Touite
-        right join Abonnement on Touite.email = Abonnement.idSuivi
-        where idAbonné = :email
-        order by Touite.datePublication;";
-        $resultset = $db->prepare($sql);
-        $user = unserialize($_SESSION['User']);
-        $resultset->bindParam(':email', $user->email);
-        $resultset->execute();
-        $html = "";
-        foreach ($resultset->fetchAll() as $row) {
-            $html.=("@".$row["email"]." : ".$row["texte"])."<br>";
+        //affichage des statistiques:
+        $touites = $user->getTouites();
+        $stat = 0;
+        foreach ($touites as $t) {
+            $stat += $t->statistique();
         }
+        $stats = $stat/ count($touites);
+        $html .= "<p> Statistaique moyenne de vos Touites: $stats";
+
+
         return $html;
     }
-     */
 }

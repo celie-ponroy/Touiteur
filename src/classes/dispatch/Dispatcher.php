@@ -14,6 +14,7 @@ use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\SuivreAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
+use iutnc\touiteur\action\ProfilAction;
 use iutnc\touiteur\action\UserListeTouitesAction;
 use iutnc\touiteur\action\TouiteDetailAction;
 use iutnc\touiteur\user\UserAdmin;
@@ -90,11 +91,6 @@ class Dispatcher {
             case 'followTag':
                 (new FollowTagAction())->execute();
                 break;
-
-            case 'suivre_user':
-                $followUser = new SuivreAction();
-                $html = $followUser->execute();
-                break;
             case 'page_accueil':
                 $_SESSION['CurrentPage'] = "PAcc";
                 if(UserAuthentifie::isUserConnected()) {
@@ -136,6 +132,9 @@ class Dispatcher {
             case 'fa2':
                 $html = UserAdmin::trouveInfluenceurs();
                 break;
+            case 'user_narcissique':
+                $profil = new ProfilAction();
+                $html = $profil->execute();
         }
 
         echo "<!DOCTYPE html>
@@ -162,6 +161,7 @@ class Dispatcher {
                         <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.svg' > Home</a><br>
                         <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.svg' > Explore</a><br>
                         <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/mestouites.svg' >  Mes Touites</a><br>
+                        <a class='action' href = '?action=user_narcissique'><img class='img-action' src='image/mestouites.svg' >  Profil</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
                     </div>
 
