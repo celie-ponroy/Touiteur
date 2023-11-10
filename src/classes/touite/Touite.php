@@ -126,9 +126,9 @@ class Touite{
             //sql pour ajouter image dans Image
 
             /*maj de l'image*/
-            $sql ="Insert into Image(description, libelle) values(null,?);";
+            $sql ="Insert into Image(description, cheminFichier) values(null,?);";
             $resultset = $db->prepare($sql);
-            $resultset->bindParam(2,$pathpicture, PDO::PARAM_STR);
+            $resultset->bindParam(1,$pathpicture);
             $resultset->execute();
             $idpicture = $db->lastInsertId();
         }
