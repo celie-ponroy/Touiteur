@@ -38,8 +38,12 @@ use iutnc\touiteur\user\UserAuthentifie;
         foreach ($touites as $t) {
             $stat += $t->statistique();
         }
-        $stats = $stat/ count($touites);
-        $html .= "<br><p> Indice de popularité de vos touites : $stats<br>";
+        $nombret = count($touites);
+        if($nombret!=0){
+            $stat = $stat/ count($touites);    
+        }
+        
+        $html .= "<br><p> Indice de popularité de vos touites : $stat <br>";
 
 
         return $html;

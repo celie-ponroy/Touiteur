@@ -14,6 +14,7 @@ use iutnc\touiteur\action\InscriptionAction;
 use iutnc\touiteur\action\TouitePost;
 use iutnc\touiteur\action\ListeTouiteAction;
 use iutnc\touiteur\action\ProfilAction;
+use iutnc\touiteur\action\RentabiliserAction;
 use iutnc\touiteur\action\UserListeTouitesAction;
 use iutnc\touiteur\action\TouiteDetailAction;
 use iutnc\touiteur\user\UserAdmin;
@@ -60,7 +61,6 @@ class Dispatcher {
                 $touiteEnDetail = new TouiteDetailAction();
                 $html = $touiteEnDetail->execute();
                 break;
-
             case 'touite-post':
                 if (!UserAuthentifie::isUserConnected()){
                     $_SESSION['CurrentPage'] = "PAcc";
@@ -142,6 +142,11 @@ class Dispatcher {
             case 'user_narcissique':
                 $profil = new ProfilAction();
                 $html = $profil->execute();
+                break;
+            case 'rentabiliser':
+                $renta = new RentabiliserAction();
+                $html = $renta->execute();
+                break;
         }
 
         echo "<!DOCTYPE html>

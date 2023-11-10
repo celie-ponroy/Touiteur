@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 namespace iutnc\touiteur\action;
-use Couchbase\ValueRecorder;
 use iutnc\touiteur\action\Action;
 use iutnc\touiteur\touite\ListTouite;
 use iutnc\touiteur\touite\Tag;
