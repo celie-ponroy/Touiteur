@@ -120,24 +120,17 @@ class Touite{
         $date = new \DateTime();
         
 
-        $sql2 = "SELECT max(idIm) as maxid FROM Image;";
         $idpicture = null;
-
         if($pathpicture!=""){
 
             //sql pour ajouter image dans Image
-            $idimage = $db->prepare($sql2);
-            $idimage->execute();
-            $resimage = $idimage->fetch();
-
-            $idpicture = $resimage["maxid"]+1;
 
             /*maj de l'image*/
-            $sql ="Insert into Image values(?,null,?);";
+            $sql ="Insert into Image(description, libelle) values(null,?);";
             $resultset = $db->prepare($sql);
-            $resultset->bindParam(1,$idpicture, PDO::PARAM_INT);
             $resultset->bindParam(2,$pathpicture, PDO::PARAM_STR);
             $resultset->execute();
+            $idpicture = $db->lastInsertId();
         }
         
         /*maj du Touite */
