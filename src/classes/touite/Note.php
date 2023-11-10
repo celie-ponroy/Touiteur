@@ -17,7 +17,7 @@ class Note{
 
 
     //idtouite email note
-    function noterTouite(string $idtouite, int $noteUser):array{
+    function noterTouite(int $idtouite, int $noteUser):array{
 
         //on récupere la potentiel note de l'utilisateur suivant un touite donné  
         $db = ConnectionFactory::makeConnection();
@@ -86,55 +86,17 @@ class Note{
 
         //nb like et dislike
         //likeee
-        $query = 'SELECT count(*) as nbnote
-        FROM Note
-        WHERE idTouite = ?
-        And note =?;';
-        $val=1;
-        $resultset = $db->prepare($query);
-        $resultset->bindParam(1,$idtouite, PDO::PARAM_INT);
-        $resultset->bindParam(2, $val, PDO::PARAM_INT);
-        $resultset->execute();
-
-        $row=$resultset->fetch();
-        
-        $nblikes=null;
-        if($row!=false){
-            $nblikes = $row['nbnote'];//like
-        }
-        if($nblikes===null)
-            $nblikes= 0;
-
+        $nblikes= Note::getnbLike($idtouite);
         //dislikeee
-        $query = 'SELECT count(*) as nbnote
-        FROM Note
-        WHERE idTouite = ?
-        And note =?;';
-        $val=-1;
-        $resultset = $db->prepare($query);
-        $resultset->bindParam(1,$idtouite, PDO::PARAM_INT);
-        $resultset->bindParam(2,$val, PDO::PARAM_INT);
-        $resultset->execute();
-
-        $row=$resultset->fetch();
-
-        $nbdislike=null;
-        if($row!=false){
-            $nbdislike = $row['nbnote'];//like
-        }
-        if($nbdislike===null)
-            $nbdislike= 0;
+        $nbdislike=Note::getnbDislike($idtouite);
 
         return array($nblikes,$nbdislike,$action);
-
-        
-       
     }    
 
 
 
 
-    function __getLikeInitial(int $idtouite):array{
+    static function __getLikeInitial(int $idtouite):array{
 
         $db = ConnectionFactory::makeConnection();
          //dislikeee
@@ -166,10 +128,59 @@ class Note{
             $dislike='image/dislike_full.svg';
          }else{
             $note=null;
+            $like='image/like_empty.svg';
+            $dislike='image/dislike_empty.svg';
          }
   
 
  
-         return array();
+        return array($like,$dislike);
+    }
+    static function getnbLike(int $idtouite):int{
+        $db = ConnectionFactory::makeConnection();
+
+        $query = 'SELECT count(*) as nbnote
+        FROM Note
+        WHERE idTouite = ?
+        And note =?;';
+        $val=1;
+        $resultset = $db->prepare($query);
+        $resultset->bindParam(1,$idtouite, PDO::PARAM_INT);
+        $resultset->bindParam(2, $val, PDO::PARAM_INT);
+        $resultset->execute();
+
+        $row=$resultset->fetch();
+        
+        $nblikes=null;
+        if($row!=false){
+            $nblikes = $row['nbnote'];//like
+        }
+        if($nblikes===null)
+            $nblikes= 0;
+        return $nblikes;
+    }
+    static function getnbDislike(int $idtouite):int{
+        $db = ConnectionFactory::makeConnection();
+
+        $query = 'SELECT count(*) as nbnote
+        FROM Note
+        WHERE idTouite = ?
+        And note =?;';
+        $val=-1;
+        $resultset = $db->prepare($query);
+        $resultset->bindParam(1,$idtouite, PDO::PARAM_INT);
+        $resultset->bindParam(2,$val, PDO::PARAM_INT);
+        $resultset->execute();
+
+        $row=$resultset->fetch();
+
+        $nbdislike=null;
+        if($row!=false){
+            $nbdislike = $row['nbnote'];//like
+        }
+        if($nbdislike===null)
+            $nbdislike= 0;
+    
+    return $nbdislike;
     }
 }

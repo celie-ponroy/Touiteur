@@ -21,7 +21,7 @@ class Touite{
     protected ?array $tags; // table de tags
 
 
-    protected ?int $idtouite;
+    protected int $idtouite;
 
     protected int $nblikes, $nbdislike;
     /**
@@ -252,7 +252,7 @@ class Touite{
             return false;
         $pdo = ConnectionFactory::makeConnection();
 
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM touite WHERE idTouite = :tweetId AND email = :email");
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM Touite WHERE idTouite = :tweetId AND email = :email");
 
         $email= UserAuthentifie::getUser()->__get('email');
         $id = $this->idtouite;
@@ -287,6 +287,9 @@ class Touite{
         return $res."<br>\n".$this-> texte;
     }
 
+    function statistique(){
+        return (Note::getnbLike($this->idtouite) - Note::getnbDislike($this->idtouite));
+    }
 
 
 

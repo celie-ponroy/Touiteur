@@ -278,6 +278,22 @@ class UserAuthentifie extends User{
             }
         }
     }
+    /**renvoi la liste des touiteurs abonées à this */
+    public function listeAbo():array{
+        $db = ConnectionFactory::makeConnection();
+        $sql = "SELECT email , nom, prenom
+        FROM Abonnement inner join Utilisateur on Utilisateur.email = Abonnement.idAbonne
+        WHERE Abonnement.idSuivi = :email ";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->execute();
+        $res = array();
+
+        foreach($stmt->fetchAll() as $row){
+            array_push($res, $row);
+        }
+        return $res;
+    }
 
     public function __get($name): mixed{
         if(property_exists($this, $name)){

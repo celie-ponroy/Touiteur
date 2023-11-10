@@ -87,9 +87,13 @@ class TouiteRenderer implements Renderer{
             
         $res.=' <div class="fonctions">
         <form method="post" action="?action='.$actionUrl.'">
-            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'"><img class="imNote" src="image/like_empty.svg" ></button>' .
+            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">
+            
+            <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[0].'" ></button>'.
+
             '<p>'.$this->touite->__get('nblikes').'</p>' .
-            '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'"><img class="imNote" src="image/dislike_empty.svg" ></button>' .
+            '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">
+            <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" ></button>' .
             '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
         .'</div>';
             
@@ -112,7 +116,7 @@ class TouiteRenderer implements Renderer{
             if($arraynote[2]==='ajouter-like'||$arraynote[2]==='ajouter-like-dislike')
                 $res.= '<img class="imNote" src="image/like_full.svg" >';
             else
-                $res.= '<img class="imNote" src="image/like_empty.svg" >';
+                $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[0].'" >';
             
             $res.='</button><p>';
           
@@ -124,10 +128,11 @@ class TouiteRenderer implements Renderer{
 
 
             $res.='<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">';
-            if($arraynote[2]==='ajouter-dislike'||$arraynote[2]==='ajouter-dislike-like')
+            
+            if($arraynote[2]==='ajouter-dislike'||$arraynote[2]==='ajouter-dislike-like'){
                 $res.= '<img class="imNote" src="image/dislike_full.svg" >';
-            else
-                $res.= '<img class="imNote" src="image/dislike_empty.svg" >';
+            }else
+                $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" >';
             
             $res.='</button><p>';
 
