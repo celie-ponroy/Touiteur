@@ -225,7 +225,7 @@ class Dispatcher {
                     </div>
 
                     <div class='other'>
-                        <p>Others";
+                        <p class='titreTrends'>The most famous :<br>";
                          echo UserAdmin::trouveInfluenceurs();
                         echo"</p>
                     </div>

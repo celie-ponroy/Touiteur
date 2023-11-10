@@ -329,10 +329,19 @@ div.touite-container#text{
   }
   .list-trends {
     background-color: rgb(22,24,28);
-    border-radius: 50px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
+    padding-left: 4%;
+    padding-top: 4%;
+    align-items: stretch;
    
+  }
+
+  div.list-trends{
+    width: 58%;
+    margin-top: 4%;
+
   }
 
   .other p{
@@ -340,7 +349,7 @@ div.touite-container#text{
     border-radius: 50px;
     width: 80%;
   
-    height: 800%; /*modifier*/
+    height: 350%; /*modifier*/
     border-radius: 10px;
     margin-top: 4%;
     padding-left: 10%;
@@ -603,4 +612,55 @@ button.delete-button:hover{
 .adminT{
   display: flex;
   flex-direction: row;
+}
+
+div.list-trends > h3.adminT > p.trend-mention{
+  display: none;
+}
+
+.titreTrends{
+  margin-bottom: 15px;
+  text-align: center;
+  text-decoration: underline;
+  align-items: center;
+}
+
+div.list-trends > h3.adminT >a.trend{
+  width: 50%;
+  padding-top: 10px;
+  padding-left: 5%;
+  text-align: center;
+}
+
+div.content > h3.adminT >a.trend{
+  width: 150px;
+  height: 40%;
+  padding-top: 10px;
+  padding-left: 12%;
+  
+  text-align: center;
+}
+
+div.content > h3.adminT{
+  width: 600px;
+  margin-left: 40%;
+}
+
+div.content > h3.adminT >p.trend-mention{
+  margin-left: 4%;
+}
+
+div.content > h2.titreTrends{
+  margin-top: 10%;
+  margin-bottom: 5%;
+}
+
+div.content > h3.adminT > p.trend-mention{
+  display: flex;
+  align-items: center;
+}
+
+div.other > p.titreTrends{
+  text-decoration: none;
+  text-align: left;
 }
