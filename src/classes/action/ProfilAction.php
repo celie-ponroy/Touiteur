@@ -25,11 +25,11 @@ use iutnc\touiteur\user\UserAuthentifie;
         $user = unserialize($_SESSION['User']);
         $html .= '<h1> @'.$user->__get('email').'</h2>';
         // affichage de la liste des abonés:
-        $html .= '<h2>Abonés:<h2>';
+        $html .= '<h2>Abonnés:<h2>';
         $html .= '<div>';;
         $listeabo = $user->listeAbo();
         foreach ($listeabo as $abo) {
-            $html .= '<li>'.$abo['prenom'].' '.$abo['nom'].'  @'.$abo['email'].'</li>';
+            $html .= '<li>'.$abo['prenom'].' '.$abo['nom'].':  @'.$abo['email'].'</li>';
         }
         $html .= '</div>';
         //affichage des statistiques:
@@ -39,7 +39,7 @@ use iutnc\touiteur\user\UserAuthentifie;
             $stat += $t->statistique();
         }
         $stats = $stat/ count($touites);
-        $html .= "<br><p> Statistaique moyenne de vos Touites: $stats<br>";
+        $html .= "<br><p> Indice de popularité de vos touites : $stats<br>";
 
 
         return $html;
