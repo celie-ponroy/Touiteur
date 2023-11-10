@@ -102,7 +102,7 @@ class TouiteDetailAction extends Action {
                 $res = $resultset->fetch();
 
                 
-                $user = unserialize($_SESSION['User']);
+//                $user = unserialize($_SESSION['User']);
                 $touiteRenderlong = new TouiteRenderer(new Touite($idtouite));//---, $imagepath, $tags, intval($id_touite)
 
                 $html.=$touiteRenderlong->render(Renderer::LONG);

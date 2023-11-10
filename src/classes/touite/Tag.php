@@ -4,6 +4,7 @@ declare(strict_types= 1);
 namespace iutnc\touiteur\touite;
 
 use iutnc\touiteur\bd\ConnectionFactory;
+use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
 
 class Tag{
@@ -31,8 +32,6 @@ class Tag{
         $st->execute([$id]);
         $desciption = $st->fetch()['description'];
 
-
-
         $this->id = $id;
         $this->libelle = $libelle;
         $this->desciption = $desciption;
@@ -49,13 +48,38 @@ class Tag{
         $st->execute([$this->id]);
 
 
-        $tags = [];
+        $tags = array();
         $results = $st->fetchAll(PDO::FETCH_ASSOC);
         foreach ($results as $row) {
-            $tags[] = new Touite($row['idTouite']);
+            array_push($tags,  new Touite($row['idTouite']));
         }
 
         return $tags;
     }
-    
+
+    public function isTagFollowed(UserAuthentifie $user):bool{
+
+        $pdo = ConnectionFactory::makeConnection();
+        $sql = "SELECT COUNT(*) FROM AbonnementTag WHERE email = :email AND idTag = :idTag";
+        $stmt = $pdo->prepare($sql);
+        $email = $user->__get('email');
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':idTag', $this->id);
+
+        $stmt->execute();
+
+        $isSubscribed = $stmt->fetchColumn() > 0;
+
+        return $isSubscribed;
+    }
+
+
+    public function __get($name): mixed{
+        if(property_exists($this, $name)){
+            return $this->$name;
+        }else{
+            echo "Get invalide";
+            return null;
+        }
+    }
 }

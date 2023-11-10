@@ -19,36 +19,55 @@ class RechercheAction extends Action {
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];
 
-        if ($methode === 'POST') {
-            $recherche = filter_var($_POST['research'],FILTER_SANITIZE_STRING);
+        if ($methode === 'POST' && !isset($this->tag)) {
+            $recherche = filter_var($_POST['research'], FILTER_SANITIZE_STRING) ;
             $this->tag = $recherche;
-            //recherche par tag
-    //            $res = '';
-            if($recherche[0] === '#'){
-                $tag = new Tag(substr($recherche, 1));
-                $taggedTouites = $tag->findTaggedTw();
-
-                $html = (new ListTouite($taggedTouites))->afficher();
-            }
-            else{
-                $taggedTouites = new UserAuthentifie($recherche);
-//                var_dump($taggedTouites);
-                $html =  (new ListTouite ($taggedTouites->getTouites()))->afficher();
-
-            }
+            $_SESSION['tag'] = $this->tag;
+            var_dump(1111);
+        }
+        else if($methode === 'GET' && !isset($this->tag)){
+            $recherche =  !isset($_GET['tag']) ?  $_SESSION['tag'] : $_GET['tag'] ;
+            $this->tag = $recherche;
         }
         else{
-            $recherche = $this->tag;
-            $taggedTouites = new UserAuthentifie($recherche);
-            $html =  (new ListTouite ($taggedTouites->getTouites()))->afficher();
+           $recherche = $this->tag;
         }
+
+
+        if($recherche === null || $recherche[0] === '#')
+            $_SESSION['followButton'] = true;
+        else
+            $_SESSION['followButton'] = false;
+
+        if (/*(UserAuthentifie::isUserConnected() && $methode !== 'POST')  || */$_SESSION['followButton'] )  {
+            $t = new  Tag(substr($this->tag, 1));
+            $followText = $t->isTagFollowed(UserAuthentifie::getUser()) ? 'UnFollow' : 'Follow';
+            $html .= '<form class="follow-form" action="?action=followTag&tag=%23' . substr($recherche, 1) . '" method="post">' .
+                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                '<button type="submit">' . "$followText" . '</button>' .
+                '</form>';
+        }
+
+
+        if($recherche[0] === '#'){
+            $_SESSION['followButton'] = true;
+            $tag = new Tag(substr($recherche, 1));
+            $taggedTouites = $tag->findTaggedTw();
+
+            $html .= (new ListTouite($taggedTouites))->afficher();
+        }
+        else{
+            $_SESSION['followButton'] = false;
+            $taggedTouites = new UserAuthentifie($recherche);
+            $html .=  (new ListTouite ($taggedTouites->getTouites()))->afficher();
+
+        }
+        unset($_GET['tag']);
 
     return $html;
 
     }
 
-//    public function __sleep(){
-//        return array('tag');
-//    }
+
 }
 
