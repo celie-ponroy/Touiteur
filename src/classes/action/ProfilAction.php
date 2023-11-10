@@ -17,34 +17,20 @@ use iutnc\touiteur\user\UserAuthentifie;
     }
 
      /*
-      * Affiche le profil de l'utilisateur (son nom, prénom et sa liste de touites)
-      *  et permet de s'abonner à son profil
+      * Affiche le profil de l'utilisateur
       */
     public function execute(): string{
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];
-
-        if($methode ==='GET'){
-            $html =" <form id='f1' action='?action=profil' method='post'>
-            <input type='email' placeholder='<email>' name='email'>
-            <button type='submit'>Valider</button>
-          </form>";
-        }else if ($methode === 'POST') {
-
-            $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
-
-            //verification de la connection
-            if(Auth::authenticate($email, $mdp)){
-                //cas connecté
-                $usAuth = new UserAuthentifie($email);
-                $usAuth->connectUser();
-                $html = "Vous êtes connecté.e ;)";
-                $_SESSION["email"]= $email;
-            } else{
-                //cas échec
-                $html = "La connection a échoué, le mot de passe ou l'adresse mail est incorecte";
-            }
+        $user = unserialize($_SERVER['User']);
+        $html .= '<h1> @'.$user->get('email').'</h2>';
+        $html .= '<h2>Abonéss:<h2>';
+        $html .= '<div>';;
+        $listeabo = $user->listeAbo();
+        foreach ($listeabo as $abo) {
+            $html .= '<li>'.$abo['prenom'].' '.$abo['nom'].'  @'.$abo['email'].'</li>';
         }
+        $html .= '</div>';
         return $html;
     }
     /*
