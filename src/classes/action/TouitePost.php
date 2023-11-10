@@ -26,9 +26,8 @@ class TouitePost extends Action {
         // Vérifier si le fichier a été téléchargé avec succès
             $touite = filter_var($_POST['touite'], FILTER_SANITIZE_STRING);
            
-
             // Diviser la chaîne en un tableau en utilisant le dièse comme délimiteur
-            $elements =explode('#', $touite);
+            $elements = explode('#', $touite);
 
 
             // Utiliser preg_match_all pour trouver toutes les occurrences de motifs commençant par #

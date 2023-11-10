@@ -219,11 +219,11 @@ class Touite{
     public function deleteT():void{
         $pdo = ConnectionFactory::makeConnection();
 
-        $pdo->prepare("DELETE FROM note WHERE idTouite = ?")->execute([$this->idtouite]);
+        $pdo->prepare("DELETE FROM Note WHERE idTouite = ?")->execute([$this->idtouite]);
 
-        $pdo->prepare("DELETE FROM tag2touite WHERE idTouite = ?")->execute([$this->idtouite]);
+        $pdo->prepare("DELETE FROM Tag2Touite WHERE idTouite = ?")->execute([$this->idtouite]);
 
-        $pdo->prepare("DELETE FROM touite WHERE idTouite = ?")->execute([$this->idtouite]);
+        $pdo->prepare("DELETE FROM Touite WHERE idTouite = ?")->execute([$this->idtouite]);
     }
 
     public function __get($name): mixed{

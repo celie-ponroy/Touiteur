@@ -66,7 +66,7 @@ class Dispatcher {
                 if (!UserAuthentifie::isUserConnected()){
                     $_SESSION['CurrentPage'] = "PAcc";
                     $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
-                    $html.= "<a class='action' href = '?action=connection'> Connection </a><br>";
+                    $html.= "<a class='action' href = '?action=connection'><img  class='img-action' src='image/profile.svg' > Connection </a><br>";
                     break;
                 }
                 $_SESSION['CurrentPage'] = "TPost";
@@ -105,7 +105,7 @@ class Dispatcher {
                 }
                 else{
                     $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
-                    $html.= "<a class='action' href = '?action=connection' Connection </a><br>";
+                    $html.= "<a class='action' href = '?action=connection'><img  class='img-action' src='image/profile.svg' > Connection </a><br>";
                 }
                 break;
             case 'follow':
