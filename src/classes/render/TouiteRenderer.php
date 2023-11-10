@@ -275,14 +275,7 @@ class TouiteRenderer implements Renderer{
             '<p>';
             $res.=$arraynote[1];
             //echo $this->touite->__get('idtouite');
-<<<<<<< HEAD
 
-
-            $res.='</p> </form>';
-
-            $res .= '</div>';
-
-=======
             
             
             //*
@@ -297,8 +290,7 @@ class TouiteRenderer implements Renderer{
             }
 
         $res.='</div>';
-           
->>>>>>> dd42c8ac37e6aebff197db0bfd1ca891275f5445
+            
         }
 
         // Fermez la balise <a> avec ID "compact" ici
