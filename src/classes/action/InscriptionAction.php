@@ -24,7 +24,7 @@ class InscriptionAction extends Action {
                     <p>Email address :</p>
                     <input type='email' placeholder='Email address' name='email'>
                     <p>Password :</p>
-                    <input type='password' placeholder='Password name='pass'>
+                    <input type='password' placeholder='Password' name='pass'>
                     <p>Confirm password:</p>
                     <input type='password' placeholder='Confirm password' name='passconfirm'>
 
