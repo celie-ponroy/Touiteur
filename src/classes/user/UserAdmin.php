@@ -51,11 +51,13 @@ class UserAdmin extends UserAuthentifie
 
         $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $html= '';
-        $html .= "<h2>Trends:</h2>";
-        for ( $i = 0 ; $i<UserAdmin::$limite;$i++) {
-            $tag = $tags[$i];
-            $html .= "<h3 class = 'adminT' ><br>".($i+1)." -<a class='trend' " . "href=?action=recherche&tag=%23".$tag['libelle']."> #" . $tag['libelle'] ."</a>";
-            $html .= "   Mentions: " . $tag['mention_count'] . "</h3><br/>";
+        $html .= "<h2 class='titreTrends'>Top Trends</h2>";
+        $i = 0;
+        
+        foreach ($tags as $tag) {
+            $i++;
+            $html .= "<h3 class = 'adminT' ><br>".($i)." -<a class='trend' " . "href=?action=recherche&tag=%23".$tag['libelle']."> #" . $tag['libelle'] ."</a>";
+            $html .= " <p class='trend-mention'>  Mentions: " . $tag['mention_count'] . "</p></h3><br/>";
         }
         
         return $html;
