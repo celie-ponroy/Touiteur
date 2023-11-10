@@ -75,9 +75,8 @@ class TouiteRenderer implements Renderer{
             }
             $res.='</div>';
         }
-        $user=unserialize($_SESSION["User"]);
-
-        $noter=new Note($user);
+        $user = unserialize($_SESSION["User"]);
+        $noter = new Note($user);
 
         //fonctions du touite
         if($methode === 'GET'){
@@ -100,7 +99,7 @@ class TouiteRenderer implements Renderer{
                 $noteUser=(-1);
              }
 
-             $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
+            $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
 
             $res.=' <div class="fonctions">
             <form method="post" action="?action='.$actionUrl.'">
