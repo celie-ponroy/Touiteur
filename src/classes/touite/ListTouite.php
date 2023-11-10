@@ -50,9 +50,9 @@ class ListTouite
 
         for ($i = $start_page; $i <= $end_page; $i++) {
             if ($i == $pCour) {
-                $html .= " <a class='action' href = '?action=page&page_num=". $i ."'>" . "[$i]" . " </a>";
+                $html .= " <a class='paginationcourante' href = '?action=page&page_num=". $i ."'>" . "$i" . "</a>";
             } else {
-                $html .= " <a class='action' href = '?action=page&page_num=". $i ."'>" . $i . " </a>";
+                $html .= " <a class='pagination' href = '?action=page&page_num=". $i ."'>" . $i . " </a>";
             }
         }
 
