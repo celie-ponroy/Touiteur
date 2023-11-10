@@ -5,7 +5,6 @@ namespace iutnc\touiteur\touite;
 
 use DateTime;
 use iutnc\touiteur\bd\ConnectionFactory;
-use iutnc\touiteur\user\User;
 use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
 
@@ -142,78 +141,65 @@ class Touite{
         }
         
         /*maj du Touite */
-            
-        $sql2 = "SELECT max(idTouite) as maxid FROM Touite;";
-
-        $id = $db->prepare($sql2);
-        $id->execute();
-        $res = $id->fetch();
-
-
-        $idtouite=$res["maxid"]+1;
+        
         $datePublication=$date->format('Y-m-d H:i:s');
         $email = $user->__get("email");
         
-        $sql = "INSERT INTO Touite (idTouite,texte,email,idIm, datePublication) 
-                VALUES (:idTouite,:texte,:email,:idIm,:datePubi)";
+        $sql = "INSERT INTO Touite (texte,email,idIm, datePublication) 
+                VALUES (:texte,:email,:idIm,:datePubi)";
         $resultset = $db->prepare($sql);
-        $resultset->bindParam(':idTouite',$idtouite, PDO::PARAM_INT);
         $resultset->bindParam(':texte',$texte, PDO::PARAM_STR);
         $resultset->bindParam(':datePubi',$datePublication, PDO::PARAM_STR);
         $resultset->bindParam(':email',$email, PDO::PARAM_STR);
         $resultset->bindParam(':idIm',$idpicture, PDO::PARAM_INT);
         
         
-        
         //sql pour insert le touite
         
         if ($resultset->execute()) {
-            $html ="touite publié";
-        } else {
-            $html = "INSERT ERROR: " . $resultset->errorInfo()[2];
-        }
-        
-        if(isset($tag)){
-            foreach ($tag as $t) {
-                $lib=$t;
-                //chercher si le tag existe 
-                $sql = "SELECT COUNT(*) as compte  FROM Tag WHERE libelle = ?";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam(1, $lib);
-                $stmt->execute();
-                $tmp = $stmt->fetch();
-                $idTag = 0;
-                //si il existe pas 
-                if($tmp['compte']==0){  
-                    $sql = "SELECT max(idTag) as max FROM Tag";
-                    $stmt = $db->prepare($sql);
-                    $stmt->execute();
-                    $tab = $stmt->fetch();
-                    $idTag = $tab['max'] +1;
-                    //sql pour ajouter les tags dans Tag
-                    $insert = "INSERT INTO Tag(idTag, description , libelle) VALUES (:idTag, :descr, :lib)";
-                    $stmt = $db->prepare($insert);
-                    $stmt->bindParam(':idTag', $idTag);
-                    $stmt->bindParam(':descr', $lib);
-                    $stmt->bindParam(':lib', $lib);
-                    $stmt->execute();
-                }else{
-                    $sql = "SELECT idTag FROM Tag WHERE libelle = ?";
+           $idtouite = $db->lastInsertId();
+            if(isset($tag)){
+                foreach ($tag as $t) {
+                    $lib=$t;
+                    //chercher si le tag existe 
+                    $sql = "SELECT COUNT(*) as compte  FROM Tag WHERE libelle = ?";
                     $stmt = $db->prepare($sql);
                     $stmt->bindParam(1, $lib);
                     $stmt->execute();
-                    $tab = $stmt->fetch();
-                    $idTag = $tab['idTag'] ;
+                    $tmp = $stmt->fetch();
+                    $idTag = 0;
+                    //si il existe pas +
+                    
+                    if($tmp['compte']==0){  
+                        //sql pour ajouter les tags dans Tag
+                        $insert = "INSERT INTO Tag( description , libelle) VALUES ( :descr, :lib)";
+                        $stmt = $db->prepare($insert);
+                        $stmt->bindParam(':descr', $lib);
+                        $stmt->bindParam(':lib', $lib);
+                        $stmt->execute();
+                        $idTag = $db->lastInsertId();
+                    }else{
+                        $sql = "SELECT idTag FROM Tag WHERE libelle = ?";
+                        $stmt = $db->prepare($sql);
+                        $stmt->bindParam(1, $lib);
+                        $stmt->execute();
+                        $tab = $stmt->fetch();
+                        $idTag = $tab['idTag'] ;
+                    }
+                    //sql pour ajouter tag dans Tag2Touite
+                    $insertT2T = "INSERT INTO Tag2Touite (idTag, idTouite) VALUES(?,?);";
+                    $stmt = $db->prepare($insertT2T);
+                    $stmt->bindParam(1, $idTag, PDO::PARAM_INT);
+                    $stmt->bindParam(2, $idtouite, PDO::PARAM_INT);
+                    $stmt->execute();
                 }
-                //sql pour ajouter tag dans Tag2Touite
-                $insertT2T = "INSERT INTO Tag2Touite (idTag, idTouite) VALUES(?,?);";
-                $stmt = $db->prepare($insertT2T);
-                $stmt->bindParam(1, $idTag, PDO::PARAM_INT);
-                $stmt->bindParam(2, $idtouite, PDO::PARAM_INT);
-                $stmt->execute();
             }
-            
+        } else {
+            $html = "INSERT ERROR: " . $resultset->errorInfo()[2];
         }
+            
+            
+        
     }
 
     public function deleteT():void{
