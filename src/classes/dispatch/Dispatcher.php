@@ -30,7 +30,7 @@ class Dispatcher {
             $this->action = '';
         }
     }
-    public function run( ): void {//a modifier
+    public function run( ): void {
 
         $html = '';
         $html_recherche='';
@@ -211,7 +211,7 @@ class Dispatcher {
                     <div class='research'>
 
                         <form  action='?action=recherche' method='post'>
-                        <input type='textarea' placeholder='Chercher' name='research'>
+                        <input type='textarea' placeholder='Search' name='research'>
                         </form>
 
                         $html_recherche

@@ -11,7 +11,9 @@ class FollowAction extends Action
         parent::__construct();
 
     }
-
+    /**
+     * Permet de Follow un User
+     */
     public function execute(): string
     {
         $user2follow = $_GET['us'];

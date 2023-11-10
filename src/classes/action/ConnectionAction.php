@@ -12,6 +12,7 @@ class ConnectionAction extends Action {
     public function __construct(){
         parent::__construct();
     }
+    /**Permet de se connecter */
 
     public function execute() : string{
         $html = "";

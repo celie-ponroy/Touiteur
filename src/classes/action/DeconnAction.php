@@ -8,6 +8,7 @@ class DeconnAction extends Action
     {
         parent::__construct();
     }
+      /**Permet de se s'inscrire */
 
     public function execute(): string
     {

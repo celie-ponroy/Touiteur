@@ -11,6 +11,9 @@ class UserAdmin extends UserAuthentifie
     {
         parent::__construct($email);
     }
+     /**
+     * return String qui affiche les $limite influenceurs les plus suivi
+     */
 
     public static function trouveInfluenceurs():string{
         $pdo = ConnectionFactory::makeConnection();
@@ -34,6 +37,9 @@ class UserAdmin extends UserAuthentifie
 
         return $html;
     }
+    /**
+     * return String qui affiche les $limite tag les plus utilisés
+     */
 
     public static function tendances():string{
         $pdo = ConnectionFactory::makeConnection();
