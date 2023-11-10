@@ -6,6 +6,11 @@ use iutnc\touiteur\user\UserAuthentifie;
 
 class FollowAction extends Action
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+    }
 
     public function execute(): string
     {

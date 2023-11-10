@@ -25,22 +25,16 @@ class TouitePost extends Action {
     } else if ($methode === 'POST') {
         // Vérifier si le fichier a été téléchargé avec succès
             $touite = filter_var($_POST['touite'], FILTER_SANITIZE_STRING);
-           
-            // Diviser la chaîne en un tableau en utilisant le dièse comme délimiteur
-            $elements = explode('#', $touite);
+
 
 
             // Utiliser preg_match_all pour trouver toutes les occurrences de motifs commençant par #
-//            preg_match_all('/#(\w+)/', $touite, $matches);
-            preg_match_all('/#([A-Za-z0-9_]+)/', $touite, $matches);
+            preg_match_all('/#([A-Za-z0-9_]+)/', htmlspecialchars_decode($touite, ENT_QUOTES), $matches);
             // Enlever les dièses (#) de chaque élément de l'Array
-//            $hashtags = array_map(function($match) {
-//                return trim($match, '#');
-//            }, $matches[0]);
+
             $hashtags = array_filter(array_map(function($match) {
                 return trim($match, '#');
             }, $matches[0]), 'strlen');
-
                         
             
             // Gestion de l'image

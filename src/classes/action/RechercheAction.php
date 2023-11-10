@@ -32,44 +32,43 @@ class RechercheAction extends Action {
            $recherche = $this->tag;
         }
 
-        //button follow est cacher si on recherche par users
-        if($recherche === null || $recherche[0] === '#')
-            $_SESSION['followButton'] = true;
-        else
-            $_SESSION['followButton'] = false;
 
+        //recherche par tag
+        if($recherche[0] === '#'){
+            //user peut follow si auth
+            if ( UserAuthentifie::isUserConnected() )  {
+                $t = new  Tag(substr($this->tag, 1));
+                $followText = $t->isTagFollowed(UserAuthentifie::getUser()) ? 'Unfollow ' : 'Follow ';
+                $html .= '<form class="follow-form" action="?action=followTag&tag=%23' . substr($recherche, 1) . '" method="post">' .
+                    '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                    '<button class="followtag-tag" type="submit">' . "$followText".substr($recherche, 1) . '</button>' .
+                    '</form>';
+            }
+            $tag = new Tag(substr($recherche, 1));
+            $taggedTouites = $tag->findTaggedTw();
 
-        if ( UserAuthentifie::isUserConnected() && $_SESSION['followButton'] )  {
-            $t = new  Tag(substr($this->tag, 1));
-            $followText = $t->isTagFollowed(UserAuthentifie::getUser()) ? 'Unfollow' : 'Follow';
-            $html .= '<form class="follow-form" action="?action=followTag&tag=%23' . substr($recherche, 1) . '" method="post">' .
-                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-               
-                '<button class="followtag-tag" type="submit">' . "$followText" . '</button>' .
-                '</form>';
+            $html .= (new ListTouite($taggedTouites))->afficher();
         }
+        //recherche par user
+        else{
+            //user peut follow si auth et n'est pas le meme user
+            if ( UserAuthentifie::isUserConnected() && UserAuthentifie::getUser()->__get('email') !== $recherche)  {
+                $user = new  UserAuthentifie($recherche);
+                $followText = (UserAuthentifie::getUser())->etreAbonneUser($user) ? 'Unfollow ' : 'Follow ';
+                $html .= '<form class="follow-form" action="?action=follow&us=' . $recherche . '" method="post">' .
+                    '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                    '<button class="followtag-tag" type="submit">' . "$followText".substr($recherche, 1) . '</button>' .
+                    '</form>';
+            }
+            if(UserAuthentifie::userExists($recherche)) {
+                $taggedTouites = new UserAuthentifie($recherche);
 
-
-            if($recherche[0] === '#'){
-                $_SESSION['followButton'] = true;
-                $tag = new Tag(substr($recherche, 1));
-                $taggedTouites = $tag->findTaggedTw();
-
-                $html .= (new ListTouite($taggedTouites))->afficher();
+                $html .= (new ListTouite ($taggedTouites->getTouites()))->afficher();
             }
             else{
-                $_SESSION['followButton'] = false;
-                if(UserAuthentifie::userExists($recherche)) {
-                    $taggedTouites = new UserAuthentifie($recherche);
-
-                    $html .= (new ListTouite ($taggedTouites->getTouites()))->afficher();
-                }
-                else{
-                    $html .= 'Nothing was found';
-                }
+                $html .= 'Nothing was found';
             }
-
-
+        }
         unset($_GET['tag']);
 
     return $html;

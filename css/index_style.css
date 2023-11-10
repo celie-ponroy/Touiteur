@@ -322,12 +322,16 @@ div.touite-container#text{
     height: 300px; /*modifier*/
     border-radius: 10px;
     width: 80%;
+
     padding-left: 10%;
     padding-top: 4%;
     margin-top: 4%;
   }
   .list-trends {
-    background-color: transparent;
+    background-color: rgb(22,24,28);
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
    
   }
 
@@ -531,14 +535,7 @@ div.touite-container#text{
     left: 50%;
     transform: translateX(-50%);
 }
-.admin-trend{
-  display: flex;
-  flex-direction: row;
-}
-.admin{
-  display: flex;
-  flex-direction: column;
-}
+
 .container-pagination {
   position: absolute;
   bottom: 0;
@@ -575,7 +572,7 @@ div.touite-container#text{
   font-size: 1.5em;
   padding-top: 5%;
   padding-bottom: 5%;
-  width: auto;
+  width: 350px;
   padding-left: 15px;
   padding-right: 15px;
   text-align: center;
@@ -584,6 +581,7 @@ div.touite-container#text{
   display: flex;
   justify-content: center;
   cursor: pointer;
+  margin-bottom: 40px;
 }
 
 .followtag-tag:hover{
@@ -601,4 +599,8 @@ button.delete-button:hover{
   font-size: 23px;
   color:rgb(220, 0, 0);
   
+}
+.adminT{
+  display: flex;
+  flex-direction: row;
 }

@@ -49,7 +49,7 @@ use iutnc\touiteur\user\UserAuthentifie;
             $stat = $stat/ count($touites);    
         }
         
-        $html .= "<br><p> Popularity index of your touits: $stat <br>";
+        $html .= "<br><p> Popularity indicator of your touites: $stat <br>";
 
 
         return $html;
