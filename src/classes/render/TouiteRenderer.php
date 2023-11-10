@@ -138,7 +138,6 @@ class TouiteRenderer implements Renderer{
 
         $res .= '</header>';
         $res .= '<p class="text">' . html_entity_decode($this->touite->__get('texte'), ENT_QUOTES, 'UTF-8') . '</p>';
-        $res .= '<img class="touite-image" src="'.$this->touite->__get('pathpicture').'" >';
 
 
         if($this->touite->__get('pathpicture')!==''){
@@ -159,24 +158,21 @@ class TouiteRenderer implements Renderer{
 
 
             if (isset($_SESSION["User"])){
-                $user=unserialize($_SESSION["User"]);
-
-                $noter=new Note($user);
+                $noter=new Note(UserAuthentifie::getUser());
             }
 
         //fonctions du touite
         if($methode === 'GET' && UserAuthentifie::isUserConnected()){
-            
         $res.=' <div class="fonctions">
         <form method="post" action="?action=touite-en-detail&id='.$this->touite->__get('idtouite').'">
-            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">
             
+            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">
             <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[0].'" ></button>'.
+            '<p>'.Note::getnbLike($this->touite->__get('idtouite')).'</p>'.
 
-            '<p>'.$this->touite->__get('nblikes').'</p>' .
             '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">
             <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" ></button>' .
-            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>';
+            '<p>'.Note::getnbDislike($this->touite->__get('idtouite')).'</p>  </form>';
 
             if( $this->touite->appartientUserAuth() ){
                 $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
@@ -204,8 +200,9 @@ class TouiteRenderer implements Renderer{
             $res.=' <div class="fonctions">
             <form method="post" action="?action=touite-en-detail&id='.$this->touite->__get('idtouite').'">
             <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">';
-            
-            if($arraynote[2]==='ajouter-like'||$arraynote[2]==='ajouter-like-dislike')
+
+            /*$res.='<img class="imNote" src="image/like_empty.svg" >';*/
+             if($arraynote[2]==='ajouter-like'||$arraynote[2]==='ajouter-like-dislike')
                 $res.= '<img class="imNote" src="image/like_full.svg" >';
             else
                 $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[0].'" >';
@@ -225,7 +222,7 @@ class TouiteRenderer implements Renderer{
                 $res.= '<img class="imNote" src="image/dislike_full.svg" >';
             }else
                 $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" >';
-            
+                /*$res.='<img class="imNote" src="image/dislike_empty.svg" >';*/
             $res.='</button><p>';
 
             $res.=$arraynote[1];

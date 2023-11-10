@@ -207,13 +207,10 @@ class Touite{
 
     public function __get($name): mixed{
         if(($name==='ndlikes'||$name==='nbdislike')&&property_exists($this, $name)){
-            if($name==='nblikes'){
-                if(isset($this->nblikes))
+            if($name==='nblikes'&&isset($this->nblikes)){
                     return $this->nblikes;
-            }elseif($name==='nbdislike'){
-                if(isset($this->nbdislike))
+            }elseif($name==='nbdislike'&&isset($this->nbdislike)){
                     return $this->nbdislike;
-                
             }else{
                 return 0;
             }
