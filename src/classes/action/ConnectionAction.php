@@ -6,13 +6,21 @@ use iutnc\touiteur\auth\Auth;
 use iutnc\touiteur\bd\ConnectionFactory;
 use iutnc\touiteur\user\UserAuthentifie;
 
+/**
+ * Class ConnectionAction
+ */
 class ConnectionAction extends Action {
 
-
+    /**
+     * Constructeur
+     */
     public function __construct(){
         parent::__construct();
     }
-    /**Permet de se connecter */
+    /**
+     * Méthode execuet permet de se connecter
+     * @return string code html
+     */
 
     public function execute() : string{
         $html = "";

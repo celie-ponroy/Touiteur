@@ -7,10 +7,18 @@ use iutnc\touiteur\user\UserAuthentifie;
 
 class RentabiliserAction extends Action{
 
+    /**
+     * Constructeur
+     * @param string|null $tag
+     */
     public function __construct(?string $tag=null){
         parent::__construct();
     }
-    /** renvoi l'affichage du back office */
+
+    /**
+     * Méthode execute renvoie l'affichage du back office
+     * @return string code html
+     */
     public function execute() : string{
         if(UserAuthentifie::isUserConnected()){
             $user = unserialize($_SESSION['User']);
@@ -23,6 +31,7 @@ class RentabiliserAction extends Action{
         }
         
         }else{
+            //si l'utilisateur n'est pas connecté
             $html ="<h1>!!!ACCESS FORBIDEN!!!</h1>" ; 
         }
     return $html;

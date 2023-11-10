@@ -5,12 +5,23 @@ use iutnc\touiteur\action\Action;
 use iutnc\touiteur\bd\ConnectionFactory;
 use iutnc\touiteur\user\UserAuthentifie;
 
+/**
+ * class InscriptionAction
+ */
 class InscriptionAction extends Action {
 
+    /**
+     * Constructeur
+     */
     public function __construct(){
         parent::__construct();
 
     }
+
+    /**
+     * Méthode execute renvoie l'affichage du formulaire d'inscription
+     * @return string code html
+     */
     public function execute() : string{
         $debutform = " <form id='f1' action='?action=inscription' method='post'>
                     <h2>Registration</h2>

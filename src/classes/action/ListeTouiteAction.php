@@ -7,12 +7,23 @@ use iutnc\touiteur\touite\ListTouite;
 use iutnc\touiteur\touite\Touite;
 use PDO;
 
+/**
+ * Class ListeTouiteAction
+ */
+
 class ListeTouiteAction extends Action {
 
+    /**
+     * Constructeur
+     */
     public function __construct(){
         parent::__construct();
     }
-    
+
+    /**
+     * Méthode execute renvoie l'affichage de la liste des touites
+     * @return string code html
+     */
     public function execute() : string{
         //initialise le html
         $html = "";

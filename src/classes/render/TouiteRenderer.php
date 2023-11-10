@@ -5,19 +5,26 @@ use iutnc\touiteur\touite\Note;
 use iutnc\touiteur\touite\Touite;
 use iutnc\touiteur\user\UserAuthentifie;
 
+/**
+ * Class TouiteRenderer
+ */
 class TouiteRenderer implements Renderer{
 
-    //déclarations des attributs
     private Touite $touite;
 
     /**
-     * constructor
+     * Constructeur
+     * @param Touite $touite touite à afficher
      */
     public function __construct(Touite $touite) {
         $this->touite = $touite;
     }
 
-
+    /**
+     * Méthode render qui affiche le touite
+     * @param $selector string sélecteur
+     * @return string le code en fonction du sélecteur
+     */
     public function render($selector):string{
         if($selector===Renderer::COMPACT){
             return $this->renderCompact();
@@ -27,10 +34,13 @@ class TouiteRenderer implements Renderer{
             return "unknow";
         }
     }
+
     /**
-     * function renderCompact : rendu HTML Compact
+     * Méthode renderCompact qui affiche le touite en compact
+     * @return string le code html compact
      */
     public function renderCompact():string {
+
         // Code HTML pour l'affichage compact
         $methode = $_SERVER['REQUEST_METHOD'];
         $actionUrl = $_GET['action'];
@@ -49,6 +59,7 @@ class TouiteRenderer implements Renderer{
 
 
 
+        //si l'utilisateur est connecté et que l'utilisateur connecté n'est pas l'utilisateur du touite
         if ($user !== null && $user->__get('email') !== $userToFollow->__get('email')) {
             if ($user->etreAbonneUser($userToFollow)) {
                 $followText= '<button class="unfollow"  type="submit">Unfollow</button>';
@@ -69,7 +80,7 @@ class TouiteRenderer implements Renderer{
         $tags = $this->touite->__get('tags');
         if($tags!==null){
             $res.='<div class=trend-container>';
-            //tags
+            //on affiche les tags
             foreach ($this->touite->__get('tags') as &$t) {
                 $res .= "<a class='trend' " . "href=?action=recherche&tag=%23$t>#" . $t . '</a>';
             }
@@ -77,6 +88,7 @@ class TouiteRenderer implements Renderer{
         }
 
 
+        //si l'utilisateur est connecté
             if (isset($_SESSION["User"])){
                 $user=unserialize($_SESSION["User"]);
 
@@ -84,7 +96,6 @@ class TouiteRenderer implements Renderer{
             }
 
         //fonctions du touite
-
         $res.=' <div class="fonctions">';    
         //button delete
         if($this->touite->appartientUserAuth()){
@@ -101,9 +112,11 @@ class TouiteRenderer implements Renderer{
     }
 
     /**
-     * function renderLong : rendu HTML Long
+     * Méthode renderLong qui affiche le touite en long
+     * @return string le code html long
      */
     public function renderLong():string {
+
         // Code HTML pour l'affichage compact
         $methode = $_SERVER['REQUEST_METHOD'];
         $actionUrl = $_GET['action'];
@@ -140,23 +153,23 @@ class TouiteRenderer implements Renderer{
         $res .= '<p class="text">' . html_entity_decode($this->touite->__get('texte'), ENT_QUOTES, 'UTF-8') . '</p>';
 
 
+        //si le touite contient une image
         if($this->touite->__get('pathpicture')!==''){
             $res.='<img class="touite-image" src="'.$this->touite->__get('pathpicture').'" >';
                 
         }
 
         $tags = $this->touite->__get('tags');
-        if($tags!==null){
-            $res.='<div class=trend-container>';
+        if($tags!==null) {
+            $res .= '<div class=trend-container>';
 
             foreach ($this->touite->__get('tags') as &$t) {
                 $res .= "<a class='trend' " . "href=?action=recherche&tag=%23$t>#" . $t . '</a>';
             }
-            $res.='</div>';
+            $res .= '</div>';
         }
 
-
-
+        //si l'utilisateur est connecté
             if (isset($_SESSION["User"])){
                 $noter=new Note(UserAuthentifie::getUser());
             }
@@ -174,34 +187,35 @@ class TouiteRenderer implements Renderer{
             <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" ></button>' .
             '<p>'.Note::getnbDislike($this->touite->__get('idtouite')).'</p>  </form>';
 
+        //button delete
             if( $this->touite->appartientUserAuth() ){
                 $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
                     '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                    '<button class="delete-button" type="submit">' . 'delete' . '</button>'.
+                    '<button class="delete-button" type="submit">' . 'Delete' . '</button>'.
                     '</form>';
             }
             $res.='</div>';
-       
-            
+
+        //si l'utilisateur n'est pas connecté
         }elseif ($methode === 'POST' && UserAuthentifie::isUserConnected()) {
             $action = isset($_POST['action']) ? $_POST['action'] : '';
 
             $noteUser=-8;
+            //si l'utilisateur like
             if ($action === 'like'.$this->touite->__get('idtouite')){
                 $noteUser=1;
 
-             }elseif ($action === 'dislike'.$this->touite->__get('idtouite')) {
+             }elseif ($action === 'dislike'.$this->touite->__get('idtouite')) { //si l'utilisateur dislike
                 $noteUser=(-1);
              }
 
-
+            //on modifie la note
             $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
 
             $res.=' <div class="fonctions">
             <form method="post" action="?action=touite-en-detail&id='.$this->touite->__get('idtouite').'">
             <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">';
 
-            /*$res.='<img class="imNote" src="image/like_empty.svg" >';*/
              if($arraynote[2]==='ajouter-like'||$arraynote[2]==='ajouter-like-dislike')
                 $res.= '<img class="imNote" src="image/like_full.svg" >';
             else
@@ -217,7 +231,8 @@ class TouiteRenderer implements Renderer{
 
 
             $res.='<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">';
-            
+
+            //si l'utilisateur a dislike
             if($arraynote[2]==='ajouter-dislike'||$arraynote[2]==='ajouter-dislike-like'){
                 $res.= '<img class="imNote" src="image/dislike_full.svg" >';
             }else
@@ -226,17 +241,14 @@ class TouiteRenderer implements Renderer{
             $res.='</button><p>';
 
             $res.=$arraynote[1];
-            //echo $this->touite->__get('idtouite');
 
-            
-            //*
             $res.='</p> </form>';
 
             //button delete
             if($this->touite->appartientUserAuth()){
             $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
                     '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                    '<button class="delete-button" type="submit">' . 'delete' . '</button>'.
+                    '<button class="delete-button" type="submit">' . 'Delete' . '</button>'.
                     '</form>';
             }
 
@@ -250,8 +262,15 @@ class TouiteRenderer implements Renderer{
 
     }
 
+    /**
+     * Méthode renderListe qui affiche la liste des touites
+     * @param array $touites tableau de touites
+     * @return string le code html
+     */
     public static function renderListe(array $touites):string{
         $html = '';
+
+        //on affiche les touites
         foreach ($touites as $t){
             $html.= (new TouiteRenderer($t))->render(Renderer::COMPACT);
         }

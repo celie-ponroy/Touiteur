@@ -4,13 +4,21 @@ namespace iutnc\touiteur\action;
 use iutnc\touiteur\touite\Touite;
 use iutnc\touiteur\action\Action;
 
-
+/**
+ * Class TouitePost
+ */
 class TouitePost extends Action {
-   
+
+    /**
+     * Constructeur
+     */
     public function __construct(){
         parent::__construct();
     }
-    /**Poste un Touite  */
+    /**
+     * Méthode execute qui affiche le formulaire de touite
+     * Poste un Touite
+     */
     public function execute() : string{
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];

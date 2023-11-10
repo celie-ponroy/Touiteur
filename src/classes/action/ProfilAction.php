@@ -10,13 +10,17 @@ use iutnc\touiteur\user\UserAuthentifie;
  */
  class ProfilAction extends Action{
 
-    //constructeur
+    /**
+     * Constructeur
+     * @param string|null $tag
+     */
 
     public function __construct(){
         parent::__construct();
     }
 
      /*
+      * Méthode execute qui affiche le profil de l'utilisateur
       * Affiche le profil de l'utilisateur
       */
     public function execute(): string{

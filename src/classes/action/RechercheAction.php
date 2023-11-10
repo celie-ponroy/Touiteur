@@ -6,15 +6,26 @@ use iutnc\touiteur\touite\ListTouite;
 use iutnc\touiteur\touite\Tag;
 use iutnc\touiteur\user\UserAuthentifie;
 
+/**
+ * Class RechercheAction
+ */
 class RechercheAction extends Action {
 
     private ?string $tag;
 
+    /**
+     * Constructeur
+     * @param string|null $tag
+     */
     public function __construct(?string $tag=null){
         parent::__construct();
         $this->tag = $tag;
     }
-    
+
+    /**
+     * Méthode execute renvoie l'affichage de la recherche
+     * @return string code html
+     */
     public function execute() : string{
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];

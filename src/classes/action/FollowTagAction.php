@@ -5,9 +5,17 @@ namespace iutnc\touiteur\action;
 use iutnc\touiteur\touite\Tag;
 use iutnc\touiteur\user\UserAuthentifie;
 
+/**
+ * Class FollowTagAction
+ */
+
 class FollowTagAction extends Action
 {
 
+    /**
+     * Méthode execute qui affiche les touites le l'utilisateur
+     * @return string code html
+     */
 
     public function execute(): string
     {

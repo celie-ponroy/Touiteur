@@ -20,36 +20,53 @@ use iutnc\touiteur\action\TouiteDetailAction;
 use iutnc\touiteur\user\UserAdmin;
 use iutnc\touiteur\user\UserAuthentifie;
 
+/**
+ * Class Dispatcher
+ */
 
 class Dispatcher {
     private string $action;
+
+    /**
+     * Constructeur
+     */
     public function __construct( ){
+        //on récupère l'action
         if( isset($_GET['action'])){
             $this->action = $_GET['action'];
         }else{
             $this->action = '';
         }
     }
+
+    /**
+     * Méthode run qui exécute l'action
+     * @return void
+     */
     public function run( ): void {
 
         $html = '';
         $html_recherche='';
+        //on récupère l'action
         switch($this->action){
             case 'deconnection':
                 $_SESSION['CurrentPage'] = "Disconn";
                 $deco = new DeconnAction();
                 $html = $deco->execute();
                 break;
+
             case 'connection':
                 $_SESSION['CurrentPage'] = "Connect";
                 $connection = new ConnectionAction();
                 $html = $connection->execute();
                 break;
+
             case 'inscription':
                 $_SESSION['CurrentPage'] = "Insc";
                 $inscription = new InscriptionAction();
                 $html = $inscription->execute();
                 break;
+
             case 'recherche':
                 $_SESSION['CurrentPage'] = "PRech";
                 $_SESSION['pageCour']=0;
@@ -57,11 +74,14 @@ class Dispatcher {
                 $html = $recherche->execute();
                 $_SESSION['ListAaff'] = serialize($recherche);
                 break;
+
             case 'touite-en-detail':
                 $touiteEnDetail = new TouiteDetailAction();
                 $html = $touiteEnDetail->execute();
                 break;
+
             case 'touite-post':
+                //si l'utilisateur n'est pas connecté on le redirige vers la page de connection
                 if (!UserAuthentifie::isUserConnected()){
                     $_SESSION['CurrentPage'] = "PAcc";
                     $html = "<h2>To access this page please log in: </h2> <br>";
@@ -72,6 +92,7 @@ class Dispatcher {
                 $touitepost = new TouitePost();
                 $html = $touitepost->execute();
                 break;
+
             case 'touite-del':
                 (new DeleteTAction())->execute();
                 break;
@@ -93,11 +114,14 @@ class Dispatcher {
                 $_SESSION['ListAaff'] = serialize($UlisteT);
                 $html = $UlisteT->execute();
                 break;
+
             case 'followTag':
                 (new FollowTagAction())->execute();
                 break;
+
             case 'page_accueil':
                 $_SESSION['CurrentPage'] = "PAcc";
+                //si l'utilisateur est connecté on affiche la page d'accueil
                 if(UserAuthentifie::isUserConnected()) {
                     $pageA = new AccueilAction();
                     $html = $pageA->execute();
@@ -109,13 +133,13 @@ class Dispatcher {
 
                 }
                 break;
+
             case 'follow':
                 (new FollowAction())->execute();
                 break;
+
             case 'page':
-
                 $_SESSION['pageCour'] = !isset($_GET['page_num'])  ? $_SESSION['pageCour'] : $_GET['page_num']-1 ;
-
                 $listeT = unserialize($_SESSION['ListAaff']);
                 $html = $listeT->execute();
                 break;
@@ -126,29 +150,34 @@ class Dispatcher {
                 $listeT = unserialize($_SESSION['ListAaff']);
                 $html = $listeT->execute();
                 break;
-            case 'prev_page':
 
+            case 'prev_page':
                 $_SESSION['pageCour'] -= 1;
 
                 $listeT = unserialize($_SESSION['ListAaff']);
                 $html = $listeT->execute();
                 break;
+
             case 'fa1':
                 $html = UserAdmin::tendances();
                 break;
+
             case 'fa2':
                 $html = UserAdmin::trouveInfluenceurs();
                 break;
+
             case 'user_narcissique':
                 $profil = new ProfilAction();
                 $html = $profil->execute();
                 break;
+
             case 'rentabiliser':
                 $renta = new RentabiliserAction();
                         $html = $renta->execute();
                 
                 break;
         }
+        //Partie HTML
 
         echo "<!DOCTYPE html>
         <html lang = fr>

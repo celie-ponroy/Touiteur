@@ -9,8 +9,15 @@ use iutnc\touiteur\touite\Touite;
 use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
 
+/**
+ * Class TouiteDetailAction
+ */
 class TouiteDetailAction extends Action {
-    /**affiche un Touite en detail */
+
+    /**
+     * Méthode execute qui affiche un Touite en detail
+     * @return string code html
+     */
     public function execute(): string {
         $db = ConnectionFactory::makeConnection();
 
@@ -103,8 +110,6 @@ class TouiteDetailAction extends Action {
                 $resultset->execute();
                 $res = $resultset->fetch();
 
-                
-//                $user = unserialize($_SESSION['User']);
                 $touiteRenderlong = new TouiteRenderer(new Touite($idtouite));//---, $imagepath, $tags, intval($id_touite)
 
                 $html.=$touiteRenderlong->render(Renderer::LONG);

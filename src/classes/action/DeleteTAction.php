@@ -5,9 +5,12 @@ namespace iutnc\touiteur\action;
 use iutnc\touiteur\touite\Touite;
 use iutnc\touiteur\user\UserAuthentifie;
 
+/**
+ * Class DeleteTAction
+ */
 class DeleteTAction extends Action
 {
-    /** 
+    /**
      * Supprime un Touite
     */
     public function execute(): string

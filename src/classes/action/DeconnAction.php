@@ -2,13 +2,23 @@
 declare(strict_types=1);
 namespace iutnc\touiteur\action;
 
+/**
+ * Class DeconnAction
+ */
 class DeconnAction extends Action
 {
+    /**
+     * Constructeur
+     */
     public function __construct()
     {
         parent::__construct();
     }
-      /**Permet de se s'inscrire */
+
+  /**
+   * Méthode execute permet de se s'inscrire
+   * @return string code html
+   */
 
     public function execute(): string
     {

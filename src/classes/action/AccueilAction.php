@@ -7,7 +7,9 @@ use iutnc\touiteur\touite\ListTouite;
 use iutnc\touiteur\touite\Touite;
 use iutnc\touiteur\user\UserAuthentifie;
 
-/**Class AcceuilAction  */
+/**
+ * Class AcceuilAction
+ */
 class AccueilAction extends Action {
 
 
@@ -15,10 +17,14 @@ class AccueilAction extends Action {
         parent::__construct();
         ConnectionFactory::setConfig("conf/conf.ini");
     }
-    /** cherche les touite des abonements tags et utilisateur */
+    /**
+     * Méthode execute qui cherche les touite des abonements tags et utilisateur
+     * @return string code html
+     */
     public function execute() : string{
         $db = ConnectionFactory::makeConnection();
 
+        //requète sql
         $sql ="SELECT Touite.texte, Touite.idTouite, Touite.datePublication, Touite.email, NULL as idTag 
            FROM Touite 
            INNER JOIN Abonnement ON Touite.email = Abonnement.idSuivi
@@ -44,6 +50,7 @@ class AccueilAction extends Action {
         $touiteAafficher = array();
         
         $html = "";
+        //affiche chaque Touite
         foreach ($resultset->fetchAll() as $row) {
             array_push($touiteAafficher, new Touite($row["idTouite"]));
         }
