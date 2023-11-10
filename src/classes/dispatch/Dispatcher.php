@@ -149,7 +149,7 @@ class Dispatcher {
                 <meta charset='UTF-8'>
                 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
                 <meta name='viewport' content='width=device-width', initial-scale='1.0'>
-                <title>Accueil - Touiteur</title>
+                <title>Home - Touiteur</title>
                 <link rel='stylesheet' type='text/css' href='css/index_style.css'>
                 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Pacifico|Dancing+Script|Patrick+Hand|Shadows+Into+Light|Amatic+SC&display=swap'>
             </head>
@@ -160,21 +160,21 @@ class Dispatcher {
             
                 <nav class='navigation'>
 
-                    <a class='logo-action' href='index.php'><img class='imgLogo' src='image/icon-oiseau.png' ><h2 class='logo'>Touiteur</h2></a> 
+                    <a class='logo-action' href='index.php?action=liste_touite'><img class='imgLogo' src='image/icon-oiseau.png' ><h2 class='logo'>Touiteur</h2></a> 
                     <div class='container-action-button'>
                     
 
                         <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.svg' > Home</a><br>
                         <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.svg' > Explore</a><br>
-                        <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/mestouites.svg' >  Mes Touites</a><br>
-                        <a class='action' href = '?action=user_narcissique'><img class='img-action' src='image/mestouites.svg' >  Profil</a><br>
+                        <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/mestouites.svg' >  My Touites</a><br>
+                        <a class='action' href = '?action=user_narcissique'><img class='img-action' src='image/mestouites.svg' >  Profile</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
                     </div>
 
 
                     <div class='connexion'>";
                    if (UserAuthentifie::isUserConnected()){
-                        echo "<a class='action-connect' href = '?action=deconnection'> Deconnection </a><br>"; 
+                        echo "<a class='action-connect' href = '?action=deconnection'> Disconnection </a><br>";
                     }else{
 
                         echo "<a class='fonction-connect' href = '?action=connection'> Connection </a><br>";
@@ -204,11 +204,11 @@ class Dispatcher {
                     </div>
 
                     <div class='list-trends'>
-                        <p>Tendances</p>
+                        <p>Trends</p>
                     </div>
 
                     <div class='other'>
-                        <p>Other</p>
+                        <p>Others</p>
                     </div>
 
                 </div>

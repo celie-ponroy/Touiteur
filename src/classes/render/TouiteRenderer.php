@@ -154,7 +154,7 @@ class TouiteRenderer implements Renderer{
             $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
 //            $res .= '<a  href="?action=touite-del&id=' . $this->touite->__get('idtouite') . '">delete post</a>'.
                 '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                '<button type="submit">' . 'delete post' . '</button>'.
+                '<button type="submit">' . 'Delete post' . '</button>'.
                 '</form>';
         }
         $res .=    '</div><br>';
