@@ -83,68 +83,72 @@ class TouiteRenderer implements Renderer{
             }
 
         //fonctions du touite
-        if($methode === 'GET' && UserAuthentifie::isUserConnected()){
-            
-        $res.=' <div class="fonctions">
-        <form method="post" action="?action='.$actionUrl.'">
-            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">
-            
-            <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[0].'" ></button>'.
+//        if($methode === 'GET' && UserAuthentifie::isUserConnected()){
+//
+//
+//        if (isset($_GET['tag']))
+//            $tag = '%23' . substr($_GET['tag'],1) ;
+//        else
+//            $tag = '';
 
-            '<p>'.$this->touite->__get('nblikes').'</p>' .
-            '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">
-            <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" ></button>' .
-            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
-        .'</div>';
+//        $res.=' <div class="fonctions">
+//        <form method="post" action="?action='.$actionUrl.'&id='.$this->touite->__get('idtouite')."'&tag=".$tag .'">
+//            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">
+//
+//            <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[0].'" ></button>'.
+//
+//            '<p>'.$this->touite->__get('nblikes').'</p>' .
+//            '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">
+//            <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" ></button>' .
+//            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
+//        .'</div>';
             
-        }elseif ($methode === 'POST' && UserAuthentifie::isUserConnected()) {
-            $action = isset($_POST['action']) ? $_POST['action'] : '';
-            
-            $noteUser=-8;
-            if ($action === 'like'.$this->touite->__get('idtouite')){
-                $noteUser=1;
-             }elseif ($action === 'dislike'.$this->touite->__get('idtouite')) {
-                $noteUser=(-1);
-             }
+//        }
+//        elseif ($methode === 'POST' && UserAuthentifie::isUserConnected()) {
+//            $action = isset($_POST['action']) ? $_POST['action'] : '';
+//
+//            $noteUser=-8;
+//            if ($action === 'like'.$this->touite->__get('idtouite')){
+//                $noteUser=1;
+//             }elseif ($action === 'dislike'.$this->touite->__get('idtouite')) {
+//                $noteUser=(-1);
+//             }
+//
+//             $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
 
-             $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
-
-            $res.=' <div class="fonctions">
-            <form method="post" action="?action='.$actionUrl.'">
-            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">';
-            
-            if($arraynote[2]==='ajouter-like'||$arraynote[2]==='ajouter-like-dislike')
-                $res.= '<img class="imNote" src="image/like_full.svg" >';
-            else
-                $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[0].'" >';
-            
-            $res.='</button><p>';
-          
-           
-            $res.=$arraynote[0];
-            //echo $this->touite->__get('idtouite');
-           
-            $res.='</p>';
-
-
-            $res.='<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">';
-            
-            if($arraynote[2]==='ajouter-dislike'||$arraynote[2]==='ajouter-dislike-like'){
-                $res.= '<img class="imNote" src="image/dislike_full.svg" >';
-            }else
-                $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" >';
-            
-            $res.='</button><p>';
-
-            $res.=$arraynote[1];
-            //echo $this->touite->__get('idtouite');
-            
-            
-            $res.='</p> </form>'
-
-        .'</div>';
-           
-        }
+//            $res.=' <div class="fonctions">';
+//            var_dump($actionUrl);
+//            $res .= '<form method="post" action="?action='.$actionUrl.'&id='.$this->touite->__get('idtouite') .'">
+//            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">';
+//
+//            if($arraynote[2]==='ajouter-like'||$arraynote[2]==='ajouter-like-dislike')
+//                $res.= '<img class="imNote" src="image/like_full.svg" >';
+//            else
+//                $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[0].'" >';
+//
+//            $res.='</button><p>';
+//
+//            $res.=$arraynote[0];
+//
+//            $res.='</p>';
+//
+//
+//            $res.='<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">';
+//
+//            if($arraynote[2]==='ajouter-dislike'||$arraynote[2]==='ajouter-dislike-like'){
+//                $res.= '<img class="imNote" src="image/dislike_full.svg" >';
+//            }else
+//                $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" >';
+//
+//            $res.='</button><p>';
+//
+//            $res.=$arraynote[1];
+//            //echo $this->touite->__get('idtouite');
+//
+//            $res.='</p> </form>'
+//
+//        .'</div>';
+//        }
          /*etc....... */
         // Fermez la balise <a> avec ID "compact" ici
         $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">voir plus</a>';
@@ -157,9 +161,8 @@ class TouiteRenderer implements Renderer{
                 '</form>';
         }
         $res .=    '<p class="underline"></p></div><br>';
-
+//        var_dump();
         return $res;
-
     }
 
     /**
