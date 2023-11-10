@@ -1,0 +1,26 @@
+*{
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    color: aliceblue;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+body{
+    margin-top: 20%;
+}
+
+h1{
+    font-size: 4em;
+}
+
+p{
+    font-size: 2em;
+}

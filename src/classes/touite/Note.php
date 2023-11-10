@@ -166,10 +166,12 @@ class Note{
             $dislike='image/dislike_full.svg';
          }else{
             $note=null;
+            $like='image/like_empty.svg';
+            $dislike='image/dislike_empty.svg';
          }
   
 
  
-         return array();
+        return array($like,$dislike);
     }
 }

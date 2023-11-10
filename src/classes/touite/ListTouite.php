@@ -20,7 +20,7 @@ class ListTouite
         $_SESSION['pMaxCount'] = ceil(count($this->tList)/PaginerTouitesRender::TOUITE_MAX_COUNT);
         $html = (new PaginerTouitesRender($this->tList))->render($_SESSION['pageCour']);
 
-        $html .= "<h2>";
+        $html .= "<h2 class='container-pagination'>";
         if ($_SESSION['pageCour']-1 >= 0) {
             $html .= " <a class='pagination' href = '?action=prev_page'> < </a>";
         }

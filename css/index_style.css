@@ -420,4 +420,76 @@ div.touite-container#text{
     text-decoration: underline;
    }
 
+   #f1 {
+    width: 300px;
+    background-color: rgb(18, 18, 18);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 0 auto; /* Centre horizontalement */
+    position: absolute;
+    top: 50%; /* Centre verticalement */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Ajuste la position verticale */
+    text-align: center;   
+}
+
+#f1 h2{
+    text-align: center;
+    background-color:rgb(18, 18, 18);
+    margin-bottom: 20px;
+
+}
+
+#f1 p{
+    text-align:left;
+    background-color:rgb(18, 18, 18);
+    margin-top: 20px;
+
+}
+
+#f1 input[type="email"],
+#f1 input[type="string"],
+#f1 input[type="text"],
+#f1 input[type="password"] {
+    width: 280px;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    
+}
+
+#f1 button {
+    width: 300px;
+    height: 45px;
+    padding: 10px;
+    background-color:#1da1f2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto; /* Ajoutez cette ligne pour centrer horizontalement */
+    display: block; /* Assurez-vous que le bouton occupe toute la largeur disponible */
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+
+#f1 button:hover {
+    background-color:#1472ad;
+}
+
+#f1 .form-error{
+  color: red;
+  text-align: center;
+}
    
+.container-pagination{
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}

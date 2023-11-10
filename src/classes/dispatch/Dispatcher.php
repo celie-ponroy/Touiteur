@@ -144,7 +144,6 @@ class Dispatcher {
                         <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.svg' > Home</a><br>
                         <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.svg' > Explore</a><br>
                         <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/mestouites.svg' >  Mes Touites</a><br>
-                        <a class='action' href = '?action=tag_liste_touite'><img class='img-action' src='image/????????' >  tag Technologie Touites</a><br>
                     <a class='action-post' href = '?action=touite-post'> Post</a><br>
                     </div>
 

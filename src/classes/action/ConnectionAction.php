@@ -23,25 +23,50 @@ class ConnectionAction extends Action {
 
         if($methode ==='GET'){
             $html =" <form id='f1' action='?action=connection' method='post'>
-            <input type='email' placeholder='<email>' name='email'>
-            <input type='text' placeholder='<mdp>' name='mdp'>
-            <button type='submit'>Valider</button>
-          </form>";
+                    <h2>Connexion</h2>
+                    <p>Adresse e-mail :</p>
+                    <input type='email' placeholder='Adresse e-mail' name='email'>
+                    <p>Mot de passe :</p>
+                    <input type='password' placeholder='Mot de passe' name='mdp'>
+                    <button type='submit'>Valider</button>
+                    </form>";
         }else if ($methode === 'POST') {
 
             $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
             $mdp = $_POST['mdp'];
-
-            //verification de la connection
-            if(Auth::authenticate($email, $mdp)){
-                //cas connecté
-                $usAuth = new UserAuthentifie($email);
-                $usAuth->connectUser();
-                $html = "Vous êtes connecté.e ;)";
-                $_SESSION["email"]= $email;
-            } else{
-                //cas échec
-                $html = "La connection a échoué, le mot de passe ou l'adresse mail est incorecte";
+    
+            if(!empty($email)&&!empty($mdp)){
+                //verification de la connection
+                if(Auth::authenticate($email, $mdp)){
+                    //cas connecté
+                    $usAuth = new UserAuthentifie($email);
+                    $usAuth->connectUser();
+                    $html = "Vous êtes connecté.e ;)";
+                    $_SESSION["email"]= $email;
+                    header('Location: index.php?action=liste_touite');
+                } else{
+                    $html =" <form id='f1' action='?action=connection' method='post'>
+                            <h2>Connexion</h2>
+                            <p>Adresse e-mail :</p>
+                            <input type='email' placeholder='Adresse e-mail' name='email'>
+                            <p>Mot de passe :</p>
+                            <input type='password' placeholder='Mot de passe' name='mdp'>
+                            <button type='submit'>Valider</button>
+                            
+                   <p class='form-error'>La connection a échoué, le mot de passe ou l'adresse mail est incorecte.</p>
+                    </form>";
+                }
+            }else{
+                $html =" <form id='f1' action='?action=connection' method='post'>
+                <h2>Connexion</h2>
+                <p>Adresse e-mail :</p>
+                <input type='email' placeholder='Adresse e-mail' name='email'>
+                <p>Mot de passe :</p>
+                <input type='password' placeholder='Mot de passe' name='mdp'>
+                <button type='submit'>Valider</button>
+                
+                <p class='form-error'>Tous les champs doivent être remplis.</p>
+                </form>";
             }
         }
         return $html;
