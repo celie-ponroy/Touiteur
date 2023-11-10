@@ -190,12 +190,11 @@ body {
 .touite-container {
     display: flex;
     flex-direction: column;
-    margin-left: 10px;
     
 }
 
 div.touite-container{
-  border-bottom: 1px solid rgb(113,118,123);
+  border-bottom: 2px solid rgb(113,118,123);
   width: 100%;
 }
 

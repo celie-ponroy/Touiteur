@@ -157,7 +157,7 @@ class TouiteRenderer implements Renderer{
                 '<button type="submit">' . 'delete post' . '</button>'.
                 '</form>';
         }
-        $res .=    '<p class="underline"></p></div><br>';
+        $res .=    '</div><br>';
 
         return $res;
 
@@ -253,7 +253,7 @@ class TouiteRenderer implements Renderer{
         }
 
         // Fermez la balise <a> avec ID "compact" ici
-        $res .= '<p class="underline"></p></div><br>';
+        $res .= '</div><br>';
 
         return $res;
     }
