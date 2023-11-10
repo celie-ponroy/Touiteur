@@ -65,7 +65,6 @@ class TouiteRenderer implements Renderer{
 
         $res .= '</header>';
 
-//        $res .= '<p class="text">' . htmlspecialchars($this->touite->__get('texte'), ENT_QUOTES) . '</p>';
         $res .= '<p class="text">' . html_entity_decode($this->touite->__get('texte'), ENT_QUOTES, 'UTF-8') . '</p>';
         $tags = $this->touite->__get('tags');
         if($tags!==null){
@@ -139,7 +138,6 @@ class TouiteRenderer implements Renderer{
 
         $res .= '</header>';
         $res .= '<p class="text">' . html_entity_decode($this->touite->__get('texte'), ENT_QUOTES, 'UTF-8') . '</p>';
-//        $res .= '<p class="text">' . htmlspecialchars($this->touite->__get('texte'), ENT_QUOTES) . '</p>';
         $res .= '<img class="touite-image" src="'.$this->touite->__get('pathpicture').'" >';
 
 

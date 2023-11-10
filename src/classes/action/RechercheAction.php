@@ -32,7 +32,6 @@ class RechercheAction extends Action {
            $recherche = $this->tag;
         }
 
-
         //recherche par tag
         if($recherche[0] === '#'){
             //user peut follow si auth
@@ -52,7 +51,7 @@ class RechercheAction extends Action {
         //recherche par user
         else{
             //user peut follow si auth et n'est pas le meme user
-            if ( UserAuthentifie::isUserConnected() && UserAuthentifie::getUser()->__get('email') !== $recherche)  {
+            if ( UserAuthentifie::isUserConnected() && UserAuthentifie::getUser()->__get('email') !== $recherche && UserAuthentifie::userExists($recherche))  {
                 $user = new  UserAuthentifie($recherche);
                 $followText = (UserAuthentifie::getUser())->etreAbonneUser($user) ? 'Unfollow ' : 'Follow ';
                 $html .= '<form class="follow-form" action="?action=follow&us=' . $recherche . '" method="post">' .
