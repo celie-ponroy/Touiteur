@@ -33,9 +33,20 @@ body {
 
 /*logo*/
 .logo{
-    font-size: 3em;
+    font-size: 2.6em;
+    padding-top: 15%;
+    margin-left: 3%;
+    font-family:'Amatic SC', cursive;
 }
 
+.imgLogo{
+    margin-top: 10%;
+   }
+
+.logo-action{
+  display: flex;
+  margin-bottom: 15%;
+}
 /*colonne navigation*/
 
 .navigation{
@@ -83,11 +94,13 @@ body {
     width: 250px;
     text-align: center;
     font-weight: bold;
+    margin-top: 15%;
 }
 
 
 /*colonne content*/
 .content{
+    padding-top: 30px;
     color: red;
     display: flex;
     flex-direction: column;
@@ -96,6 +109,7 @@ body {
     width: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
+    
     border-left: 2px solid rgb(113,118,123);
     border-right: 2px solid rgb(113,118,123);
     background-color: black;
@@ -195,6 +209,8 @@ div.touite-container#text{
   
   .touite-container #compact:hover{
     text-decoration: underline;
+    background-color:rgb(22,24,28); ;
+    border-radius: 50px;
   }
 
   .touite-container .arobase{
@@ -203,7 +219,10 @@ div.touite-container#text{
 
   header{
     width: 95%;
-    background-color: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
   }
 
   .text{
@@ -213,6 +232,7 @@ div.touite-container#text{
     margin-bottom: 15px;
     margin-left: 10px;
     text-align: justify;
+    font-size: 1.7em;
    
   }
 
@@ -319,17 +339,85 @@ div.touite-container#text{
     margin-left: 25%;
   }
 
-  div.fonctions{
+  .fonctions{
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
     margin-left: 10px;
+    height: 30px;
+    margin-bottom: 10px;
   }
+  .fonctions form {
+    display: flex;
+    align-items: center;
+}
 
-  div.fonctions button{
-   border:none;
-  }
+.fonctions button{
+  border:none;
+  margin-right: 5px;
+}
+.fonctions p {
+    margin-right: 10px; /* Ajustez la marge selon vos besoins */
+}
 
-  div.fonctions button:hover{
+
+  .fonctions button:hover{
     color:#1da1f2;
    }
 
+   a.pagination{
+    color: aliceblue;
+    font-size: 0.8em;
+   }
+
+   a.paginationcourante{
+    color: aliceblue;
+    font-size: 0.8em;
+    background-color: rgb(29, 155, 240)/*rgb(22, 24, 28)*/;
+    padding: 5px;
+    border-radius: 50px;
+   }
+
+   a.pagination:hover{
+    color: aliceblue;
+    font-size: 0.8em;
+    text-decoration: underline;
+   }
+
+   .follow{
+    background-color: #fff;
+    color:black;
+    border-radius: 50px;
+    border: none;
+    padding: 5px;
+    margin-left: 10px;
+    font-weight: bold;
+   }
+
+
+   .imNote{
+    width: 25px;
+    transition: width 0.3s ease;
+   }
+
+   .imNote:hover{
+    width: 30px;
+    cursor: pointer;
+   }
+
+   .fonctions p{
+    font-size: 1.5em;
+    padding-bottom: 5px;
+   }
+
+   .connexion{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 12%;
+   }
+
+   .fonction-connect:hover{
+    text-decoration: underline;
+   }
+
+   
