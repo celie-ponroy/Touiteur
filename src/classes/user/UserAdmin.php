@@ -6,7 +6,7 @@ use iutnc\touiteur\bd\ConnectionFactory;
 use PDO;
 class UserAdmin extends UserAuthentifie
 {
-
+    public static int $limite=5;
     public function __construct(string $email)
     {
         parent::__construct($email);
@@ -38,15 +38,17 @@ class UserAdmin extends UserAuthentifie
         FROM Tag t
         LEFT JOIN Tag2Touite t2 ON t.idTag = t2.idTag
         GROUP BY t.idTag, t.libelle
-        ORDER BY mention_count DESC";
+        ORDER BY mention_count DESC
+        LIMIT :limite";
 
         $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':limite', UserAdmin::$limite, PDO::PARAM_INT);
         $stmt->execute();
 
         $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $html= '';
         $html .=  "<div class='admin'>";
-        for ( $i =0 ; $i<5;$i++) {
+        for ( $i =0 ; $i<UserAdmin::$limite;$i++) {
             $tag = $tags[$i];
             echo $tag['idTag'];
             $html .=  "<div class='admin-trend'>";
