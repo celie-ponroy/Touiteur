@@ -248,6 +248,8 @@ class Touite{
 
 
     public function appartientUserAuth():bool{
+        if (!UserAuthentifie::isUserConnected())
+            return false;
         $pdo = ConnectionFactory::makeConnection();
 
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM touite WHERE idTouite = :tweetId AND email = :email");

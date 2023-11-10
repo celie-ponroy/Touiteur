@@ -75,12 +75,15 @@ class TouiteRenderer implements Renderer{
             }
             $res.='</div>';
         }
-        $user=unserialize($_SESSION["User"]);
 
-        $noter=new Note($user);
+            if (isset($_SESSION["User"])){
+                $user=unserialize($_SESSION["User"]);
+
+                $noter=new Note($user);
+            }
 
         //fonctions du touite
-        if($methode === 'GET'){
+        if($methode === 'GET' && UserAuthentifie::isUserConnected()){
             
         $res.=' <div class="fonctions">
         <form method="post" action="?action='.$actionUrl.'">
@@ -90,7 +93,7 @@ class TouiteRenderer implements Renderer{
             '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
         .'</div>';
             
-        }elseif ($methode === 'POST') {
+        }elseif ($methode === 'POST' && UserAuthentifie::isUserConnected()) {
             $action = isset($_POST['action']) ? $_POST['action'] : '';
             
             $noteUser=-8;
@@ -178,17 +181,18 @@ class TouiteRenderer implements Renderer{
             $res.='<div class=trend-container>';
         
             foreach ($this->touite->__get('tags') as &$t) {
-                $res .= '<a class="trend" href="?action=????????????">#' . $t . '</a>';
+                $res .= "<a class='trend' " . "href=?action=recherche&tag=%23$t>#" . $t . '</a>';
             }
             $res.='</div>';
         }
+        if (isset($_SESSION["User"])){
+            $user=unserialize($_SESSION["User"]);
 
-        $user=unserialize($_SESSION["User"]);
-
-        $noter=new Note($user);
+            $noter=new Note($user);
+        }
 
         //fonctions du touite
-        if($methode === 'GET'){
+        if($methode === 'GET' && UserAuthentifie::isUserConnected()){
 
         $res.=' <div class="fonctions">
         <form method="post" action="?action='.$actionUrl.'&id='.$this->touite->__get('idtouite').'">
@@ -215,7 +219,6 @@ class TouiteRenderer implements Renderer{
              }elseif ($action === 'dislike'.$this->touite->__get('idtouite')) {
                 $noteUser=(-1);
              }
-             echo'<p>'.$noteUser.'</p>';
 
             $res.=' <div class="fonctions">
             <form method="post" action="?action='.$actionUrl.'&id='.$this->touite->__get('idtouite').'">

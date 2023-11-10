@@ -62,6 +62,12 @@ class Dispatcher {
                 break;
 
             case 'touite-post':
+                if (!UserAuthentifie::isUserConnected()){
+                    $_SESSION['CurrentPage'] = "PAcc";
+                    $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
+                    $html.= "<a class='action' href = '?action=connection'><img src='mon_image.jpg' > Connection </a><br>";
+                    break;
+                }
                 $_SESSION['CurrentPage'] = "TPost";
                 $touitepost = new TouitePost();
                 $html = $touitepost->execute();
@@ -160,9 +166,11 @@ class Dispatcher {
                     
 
                         <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.svg' > Home</a><br>
-                        <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.svg' > Explore</a><br>
-                        <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/mestouites.svg' >  Mes Touites</a><br>
-                    <a class='action-post' href = '?action=touite-post'> Post</a><br>
+                        <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.svg' > Explore</a><br>";
+
+                if (UserAuthentifie::isUserConnected())
+                      echo  "<a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/mestouites.svg' >  Mes Touites</a><br>";
+                  echo  "<a class='action-post' href = '?action=touite-post'> Post</a><br>
                     </div>
 
 
