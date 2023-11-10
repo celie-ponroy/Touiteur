@@ -19,7 +19,9 @@ class User{
             return null;
         }
     }
-
+    function isAdmin():bool{
+        return false;
+    }
 
     function __toString(){
         return $this->email;

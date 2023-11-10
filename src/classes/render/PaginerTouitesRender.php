@@ -7,7 +7,7 @@ use iutnc\touiteur\touite\Touite;
 class PaginerTouitesRender
 {
 
-    public const TOUITE_MAX_COUNT = 4;
+    public const TOUITE_MAX_COUNT = 8;
     public array $touites;
 
     public function __construct(array $touites)

@@ -16,19 +16,19 @@ class InscriptionAction extends Action {
         $methode = $_SERVER['REQUEST_METHOD'];
         if($methode ==='GET'){
             $html =" <form id='f1' action='?action=inscription' method='post'>
-                    <h2>Inscription</h2>
-                    <p>Nom :</p>
-                    <input type='text' placeholder='Nom' name='nom'>
-                    <p>Prénom :</p>
-                    <input type='text' placeholder='Prénom' name='prenom'>
-                    <p>Adresse e-mail :</p>
-                    <input type='email' placeholder='Adresse e-mail' name='email'>
-                    <p>Mot de passe :</p>
-                    <input type='password' placeholder='Mot de passe' name='pass'>
-                    <p>Confirmer mot de passe :</p>
-                    <input type='password' placeholder='Confirmer mot de passe' name='passconfirm'>
+                    <h2>Registration</h2>
+                    <p>Name :</p>
+                    <input type='text' placeholder='Name' name='nom'>
+                    <p>Surname :</p>
+                    <input type='text' placeholder='Surname' name='prenom'>
+                    <p>Email address :</p>
+                    <input type='email' placeholder='Email address' name='email'>
+                    <p>Password :</p>
+                    <input type='password' placeholder='Password name='pass'>
+                    <p>Confirm password:</p>
+                    <input type='password' placeholder='Confirm password' name='passconfirm'>
 
-                    <button type='submit'>Valider</button>
+                    <button type='submit'>Submit</button>
                     </form>";
         }else if ($methode === 'POST') {   
           
@@ -48,37 +48,37 @@ class InscriptionAction extends Action {
                     header('Location: index.php?action=liste_touite');
                 }else{
                     $html =" <form id='f1' action='?action=inscription' method='post'>
-                    <h2>Inscription</h2>
-                    <p>Nom :</p>
-                    <input type='text' placeholder='Nom' name='nom'>
-                    <p>Prénom :</p>
-                    <input type='text' placeholder='Prénom' name='prenom'>
-                    <p>Adresse e-mail :</p>
-                    <input type='email' placeholder='Adresse e-mail' name='email'>
-                    <p>Mot de passe :</p>
-                    <input type='password' placeholder='Mot de passe' name='pass'>
-                    <p>Confirmer mot de passe :</p>
-                    <input type='password' placeholder='Confirmer mot de passe' name='passconfirm'>
-                    <button type='submit'>Valider</button>
-                    <p class='form-error'>Les mots de passes ne correspondent pas.</p>
+                    <h2>Registration</h2>
+                    <p>Name :</p>
+                    <input type='text' placeholder='Name' name='nom'>
+                    <p>Surname :</p>
+                    <input type='text' placeholder='Surname' name='prenom'>
+                    <p>Email address:</p>
+                    <input type='email' placeholder='Email address' name='email'>
+                    <p>Password :</p>
+                    <input type='password' placeholder='Password' name='pass'>
+                    <p>Confirm password :</p>
+                    <input type='password' placeholder='Confirm password' name='passconfirm'>
+                    <button type='submit'>Submit</button>
+                    <p class='form-error'>Passwords do not match.</p>
                     </form>";
                 }
                
             }else{
                 $html =" <form id='f1' action='?action=inscription' method='post'>
-                        <h2>Inscription</h2>
-                        <p>Nom :</p>
-                        <input type='text' placeholder='Nom' name='nom'>
-                        <p>Prénom :</p>
-                        <input type='text' placeholder='Prénom' name='prenom'>
-                        <p>Adresse e-mail :</p>
-                        <input type='email' placeholder='Adresse e-mail' name='email'>
-                        <p>Mot de passe :</p>
-                        <input type='password' placeholder='Mot de passe' name='pass'>
-                        <p>Confirmer mot de passe :</p>
-                        <input type='password' placeholder='Confirmer mot de passe' name='passconfirm'>
-                        <button type='submit'>Valider</button>
-                        <p class='form-error'>Tous les champs doivent être remplis.</p>
+                        <h2>Registration</h2>
+                        <p>Name :</p>
+                        <input type='text' placeholder='Name' name='nom'>
+                        <p>Surname :</p>
+                        <input type='text' placeholder='Surname' name='prenom'>
+                        <p>Email address :</p>
+                        <input type='email' placeholder='Email address' name='email'>
+                        <p>Password :</p>
+                        <input type='password' placeholder='Password' name='pass'>
+                        <p>Confirm password:</p>
+                        <input type='password' placeholder='Confirm password name='passconfirm'>
+                        <button type='submit'>Submit</button>
+                        <p class='form-error'>All fields must be completed.</p>
                         </form>";
             }
         }

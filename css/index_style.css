@@ -12,6 +12,10 @@ body {
     height: 100vh; /* La hauteur de la page occupera 100% de la hauteur de la fenêtre */
     background-color: black;
 }
+
+html {
+  scroll-behavior: smooth;
+}
 /* Barre de défilement principale */
 .content::-webkit-scrollbar {
     width: 12px;
@@ -97,6 +101,9 @@ body {
     margin-top: 15%;
 }
 
+.action-post:hover{
+  background-color:rgb(67, 165, 230) ;
+}
 
 /*colonne content*/
 .content{
@@ -105,11 +112,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
     width: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    
     border-left: 2px solid rgb(113,118,123);
     border-right: 2px solid rgb(113,118,123);
     background-color: black;
@@ -190,12 +195,11 @@ body {
 .touite-container {
     display: flex;
     flex-direction: column;
-    margin-left: 10px;
     
 }
 
 div.touite-container{
-  border-bottom: 1px solid rgb(113,118,123);
+  border-bottom: 2px solid rgb(113,118,123);
   width: 100%;
 }
 
@@ -205,6 +209,10 @@ div.touite-container#text{
   
   .TouiteShow{
     text-align: center;
+  }
+
+  .touite-container #compact{
+    padding-bottom: 5px;
   }
   
   .touite-container #compact:hover{
@@ -330,7 +338,7 @@ div.touite-container#text{
     border-radius: 50px;
     width: 80%;
     padding: 10px;
-    height: 450px; /*modifier*/
+    height: 800%; /*modifier*/
     border-radius: 10px;
   }
 
@@ -368,6 +376,7 @@ div.touite-container#text{
    a.pagination{
     color: aliceblue;
     font-size: 0.8em;
+ 
    }
 
    a.paginationcourante{
@@ -376,6 +385,7 @@ div.touite-container#text{
     background-color: rgb(29, 155, 240)/*rgb(22, 24, 28)*/;
     padding: 5px;
     border-radius: 50px;
+    
    }
 
    a.pagination:hover{
@@ -385,13 +395,40 @@ div.touite-container#text{
    }
 
    .follow{
-    background-color: #fff;
+    border: 2px solid aliceblue;
+    background-color: aliceblue;
     color:black;
     border-radius: 50px;
-    border: none;
     padding: 5px;
     margin-left: 10px;
     font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.8s ease, color 0.3s ease; /* Transition douce pour le fond et la couleur du texte */
+
+   }
+
+   .follow:hover{
+    border: 2px solid aliceblue;
+    background-color: transparent;
+    color:aliceblue;
+    box-shadow: 0 0 20px aliceblue;
+   }
+
+   .unfollow{
+    color:red;
+    border-radius: 50px;
+    border: 2px solid red;
+    padding: 5px;
+    margin-left: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(222, 20, 20, 0.5);
+    transition: box-shadow 0.3s ease, box-shadow 0.3s ease; /* Transition douce pour le fond et la couleur du texte */
+
+   }
+
+   .unfollow:hover{
+    box-shadow: 0 0 20px rgb(255, 0, 0);
    }
 
 
@@ -492,4 +529,75 @@ div.touite-container#text{
     margin-bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
+}
+.admin-trend{
+  display: flex;
+  flex-direction: row;
+}
+.admin{
+  display: flex;
+  flex-direction: column;
+}
+.container-pagination {
+  position: absolute;
+  bottom: 0;
+
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, transparent 1%, black 50%); /* Dégradé vertical de transparent à blanc */
+  box-sizing: border-box; /* Assure que la taille inclut la marge et le rembourrage */
+  width: auto;
+  display: flex;
+  flex-direction: row; /* Permet d'empiler le contenu verticalement */
+  align-items: center; /* Centre horizontalement le contenu */
+  padding-left: 18.48%;
+  padding-right: 18.48%;
+  padding-top: 1%;
+  padding-bottom: 20px;
+}
+
+.container-pagination a{
+  margin-left: 10px;
+}
+
+.followtag-form{
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.followtag-tag{
+  background-color: rgb(29, 155, 240);
+  border-radius: 50px;
+  flex-direction: row;
+  font-size: 1.5em;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  width: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: center;
+  font-weight: bold;
+  border: none;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.followtag-tag:hover{
+  background-color:rgb(67, 165, 230) ;
+}
+
+button.delete-button{
+  margin-bottom: 7px;
+  font-size: 20px;
+  transition: font-size 0.3s ease;
+  
+}
+
+button.delete-button:hover{
+  font-size: 23px;
+  color:rgb(220, 0, 0);
+  
 }

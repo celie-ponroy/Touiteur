@@ -26,22 +26,14 @@ class UserAuthentifie extends User{
 
         $pdo = ConnectionFactory::makeConnection();
 
-        $query = 'SELECT role from Utilisateur Where email = ?';
+        $query = 'SELECT role,nom, prenom from Utilisateur Where email = ?';
         $st = $pdo->prepare($query);
         $st->execute([$email]);
-        $role = $st->fetch()['role'];
+        $fetch = $st->fetch();
 
-        $query = 'SELECT nom from Utilisateur Where email = ?';
-        $st = $pdo->prepare($query);
-        $st->execute([$email]);
-        $nom = $st->fetch()['nom'];
-
-        $query = 'SELECT prenom from Utilisateur Where email = ?';
-        $st = $pdo->prepare($query);
-        $st->execute([$email]);
-        $prenom = $st->fetch()['prenom'];
-
-
+        $role = $fetch['role'];
+        $nom = $fetch['nom'];
+        $prenom = $fetch['prenom'];
 
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -131,14 +123,6 @@ class UserAuthentifie extends User{
         $_SESSION['User'] = serialize($this);
     }
 
-
-    /*
-     * Méthode qui permmet de récupérer l'ID de l'utilisateur
-     */
-    public function getId(): string {
-        // Remplacez 'id' par l'attribut contenant l'email de l'utilisateur
-        return $this->email;
-    }
 
     /*
      * Méthode qui permet de récupérer l'objet UserAuthentifie de l'utilisateur connecté
@@ -293,6 +277,9 @@ class UserAuthentifie extends User{
             array_push($res, $row);
         }
         return $res;
+    }
+    function isAdmin():bool{
+        return $this->role==2;
     }
 
     public function __get($name): mixed{

@@ -37,7 +37,7 @@ class TouiteRenderer implements Renderer{
     
         //entete
         $res= '<div class="touite-container"><header class="entete">' .
-                '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
+                '<a class="nomuser">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
                 '<i> @' . $this->touite->__get('user')->__get('nom') . ' </i> ' . //identifiant
                 '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
                 '<br> ';
@@ -45,20 +45,20 @@ class TouiteRenderer implements Renderer{
         // Bouton Follow/Unfollow
         $user = UserAuthentifie::getUser();
         $userToFollow = $this->touite->__get('user');
-        $followText = 'Follow';
+        $followText= '<button class="follow"  type="submit">Follow</button>';
 
 
 
         if ($user !== null && $user->__get('email') !== $userToFollow->__get('email')) {
             if ($user->etreAbonneUser($userToFollow)) {
-                $followText = 'Unfollow';
+                $followText= '<button class="unfollow"  type="submit">Unfollow</button>';
             }
 
-            $formAction = $followText === 'Follow' ? 'Follow' : 'Unfollow';
+            $formAction = $followText === '<button class="follow"  type="submit">Follow</button>' ? '<button class="follow"  type="submit">Follow</button>' : '<button class="unfollow"  type="submit">Unfollow</button>';
 
             $res .= '<form class="follow-form" action="?action=follow&us=' . $userToFollow . '" method="post">'.
-                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                '<button class="follow"  type="submit">' . $followText . '</button>'.
+                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">'
+                .$followText.
                 '</form>';
 
         }
@@ -76,6 +76,7 @@ class TouiteRenderer implements Renderer{
             $res.='</div>';
         }
 
+
             if (isset($_SESSION["User"])){
                 $user=unserialize($_SESSION["User"]);
 
@@ -91,6 +92,7 @@ class TouiteRenderer implements Renderer{
 //        else
 //            $tag = '';
 
+
 //        $res.=' <div class="fonctions">
 //        <form method="post" action="?action='.$actionUrl.'&id='.$this->touite->__get('idtouite')."'&tag=".$tag .'">
 //            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">
@@ -102,6 +104,7 @@ class TouiteRenderer implements Renderer{
 //            <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" ></button>' .
 //            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
 //        .'</div>';
+
             
 //        }
 //        elseif ($methode === 'POST' && UserAuthentifie::isUserConnected()) {
@@ -115,6 +118,7 @@ class TouiteRenderer implements Renderer{
 //             }
 //
 //             $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
+
 
 //            $res.=' <div class="fonctions">';
 //            var_dump($actionUrl);
@@ -162,6 +166,7 @@ class TouiteRenderer implements Renderer{
         }
         $res .=    '<p class="underline"></p></div><br>';
 //        var_dump();
+
         return $res;
     }
 
@@ -175,12 +180,34 @@ class TouiteRenderer implements Renderer{
 
         $res= '<div class="touite-container"><header class="entete">' .
 
-        '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
+        '<a class="nomuser">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
         '<i> @' . $this->touite->__get('user')->__get('nom') . ' </i> ' . //identifiant
 
         '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
-        '<br> ' .
-        '</header>';
+        '<br> ' ;
+
+        // Bouton Follow/Unfollow
+        $user = UserAuthentifie::getUser();
+        $userToFollow = $this->touite->__get('user');
+        $followText = 'Follow';
+
+
+
+        if ($user !== null && $user->__get('email') !== $userToFollow->__get('email')) {
+            if ($user->etreAbonneUser($userToFollow)) {
+                $followText = 'Unfollow';
+            }
+
+            $formAction = $followText === 'Follow' ? 'Follow' : 'Unfollow';
+
+            $res .= '<form class="follow-form" action="?action=follow&us=' . $userToFollow . '" method="post">'.
+                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                '<button class="follow"  type="submit">' . $followText . '</button>'.
+                '</form>';
+
+        }
+
+        $res .= '</header>';
 
         $res .= '<p class="text">' . htmlspecialchars($this->touite->__get('texte'), ENT_QUOTES) . '</p>';
         $res .= '<img class="touite-image" src="'.$this->touite->__get('pathpicture').'" >';
@@ -207,16 +234,17 @@ class TouiteRenderer implements Renderer{
             <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
             '<p>'.$this->touite->__get('nblikes').'</p>' .
             '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
-            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
-        .'</div>';
+            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>';
 
- 
+
             if( $this->touite->appartientUserAuth() ){
                 $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
                     '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                    '<button type="submit">' . 'delete post' . '</button>'.
+                    '<button class="delete-button" type="submit">' . 'delete' . '</button>'.
+
                     '</form>';
             }
+            $res.='</div>';
         }elseif ($methode === 'POST') {
             $action = isset($_POST['action']) ? $_POST['action'] : '';
             
@@ -248,14 +276,23 @@ class TouiteRenderer implements Renderer{
             //echo $this->touite->__get('idtouite');
             
             
+            //*
             $res.='</p> </form>';
 
-            $res .= '</div>';
+            //button delete
+            if($this->touite->appartientUserAuth()){
+            $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
+                    '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                    '<button class="delete-button" type="submit">' . 'delete' . '</button>'.
+                    '</form>';
+            }
+
+        $res.='</div>';
            
         }
 
         // Fermez la balise <a> avec ID "compact" ici
-        $res .= '<p class="underline"></p></div><br>';
+        $res .= '</div><br>';
 
         return $res;
     }
