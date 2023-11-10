@@ -40,12 +40,11 @@ class RechercheAction extends Action {
 
         if ( UserAuthentifie::isUserConnected() && $_SESSION['followButton'] )  {
             $t = new  Tag(substr($this->tag, 1));
-            $followText = $t->isTagFollowed(UserAuthentifie::getUser()) ? 'Unfollow' : 'Follow';
+            $followText = $t->isTagFollowed(UserAuthentifie::getUser()) ? 'Unfollow ' : 'Follow ';
             $html .= '<form class="follow-form" action="?action=followTag&tag=%23' . substr($recherche, 1) . '" method="post">' .
-                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-               
-                '<button class="followtag-tag" type="submit">' . "$followText" . '</button>' .
-                '</form>';
+                        '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                        '<button class="followtag-tag" type="submit">' . "$followText".substr($recherche, 1) . '</button>' .
+                        '</form>';
         }
 
 
