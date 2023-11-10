@@ -148,7 +148,7 @@ class TouiteRenderer implements Renderer{
         }
          /*etc....... */
         // Fermez la balise <a> avec ID "compact" ici
-        $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">voir plus</a>';
+        $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">See more</a>';
         //button delete
         if($this->touite->appartientUserAuth()){
             $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
