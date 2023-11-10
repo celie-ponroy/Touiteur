@@ -327,9 +327,13 @@ div.touite-container#text{
     height: 300px; /*modifier*/
     border-radius: 10px;
     width: 80%;
+
   }
   .list-trends {
-    background-color: transparent;
+    background-color: rgb(22,24,28);
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
    
   }
 
@@ -530,14 +534,7 @@ div.touite-container#text{
     left: 50%;
     transform: translateX(-50%);
 }
-.admin-trend{
-  display: flex;
-  flex-direction: row;
-}
-.admin{
-  display: flex;
-  flex-direction: column;
-}
+
 .container-pagination {
   position: absolute;
   bottom: 0;
@@ -600,4 +597,8 @@ button.delete-button:hover{
   font-size: 23px;
   color:rgb(220, 0, 0);
   
+}
+.adminT{
+  display: flex;
+  flex-direction: row;
 }
