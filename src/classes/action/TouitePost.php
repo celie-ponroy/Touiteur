@@ -20,7 +20,7 @@ class TouitePost extends Action {
             $html = "<form class='Touite' action='?action=touite-post' method='post' enctype='multipart/form-data'>
                 <input type='textarea' placeholder='What is happening?!' name='touite' autocomplete='off'>
                 <input type='file' placeholder='<choose file>' name='image'>
-                <button type='submit'>Poster</button>
+                <button type='submit'>Post</button>
                 </form>";
     } else if ($methode === 'POST') {
         // Vérifier si le fichier a été téléchargé avec succès
@@ -61,7 +61,7 @@ class TouitePost extends Action {
             if (!empty($touite)) {
                 $html .= "<h3>Touite x: " . $touite . "</h3>";
             } else {
-                $html .= "<h3>Vous n'avez sélectionné ni une image, ni saisi de texte</h3>";
+                $html .= "<h3>You don't have select any picture and text.</h3>";
             }
         
     }
