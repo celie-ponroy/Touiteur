@@ -7,7 +7,9 @@ use iutnc\touiteur\user\UserAuthentifie;
 
 class DeleteTAction extends Action
 {
-
+    /** 
+     * Supprime un Touite
+    */
     public function execute(): string
     {
         $TId = $_GET['id'];

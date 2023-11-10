@@ -29,7 +29,7 @@ class Touite{
 
     function __construct(int $id){
         $this->idtouite = $id;
-
+        //recupere récupère les données
         $db = ConnectionFactory::makeConnection();
         $query = 'SELECT texte, idIm , datePublication, email
                 FROM Touite
@@ -38,17 +38,16 @@ class Touite{
         $resultset->bindParam(1,$id, PDO::PARAM_INT);
         $resultset->execute();
         $fetch = $resultset->fetch();
+        //recupère les données
         $this->texte = $fetch['texte'];
         $this->user = new UserAuthentifie($fetch['email']);
         $format = "Y-m-d H:i:s";
-
-        
         $date = DateTime::createFromFormat($format, $fetch['datePublication']);
       
         if($date===false){
             $this->date = new \DateTime();
         }else{$this->date = $date ;}
-        
+        //recherche le chemin de l'image si le touite possède une image
         $idIm = $fetch['idIm'];
         if($idIm!==NULL){
             $db = ConnectionFactory::makeConnection();
@@ -66,7 +65,8 @@ class Touite{
         }else{
             $this->pathpicture="";
         }
-        
+
+        //recherche le chemin de l'image si le touite possède des tags
         $sqltag="SELECT libelle FROM Tag2Touite INNER JOIN  Tag on Tag.idTag = Tag2Touite.idTag WHERE idTouite = ?";
         $resultset = $db->prepare($sqltag);
         $resultset->bindParam(1,$id);
@@ -106,14 +106,14 @@ class Touite{
             }else{
                 $this->nblikes= 0;
             }
-            
-            
-        
-        
-        //array tag
+
 
 
     }
+    /**
+     * methode publier touite
+     * insere le touite dans la base de données
+     */
     public static function publierTouite(UserAuthentifie $user, string $texte,  ?array $tag=null,?string $pathpicture=""){
         $db = ConnectionFactory::makeConnection();
 
@@ -194,6 +194,7 @@ class Touite{
             
         
     }
+    /**Suprime un Touite */
 
     public function deleteT():void{
         $pdo = ConnectionFactory::makeConnection();
@@ -204,6 +205,7 @@ class Touite{
 
         $pdo->prepare("DELETE FROM Touite WHERE idTouite = ?")->execute([$this->idtouite]);
     }
+    /**getter */
 
     public function __get($name): mixed{
         if(($name==='ndlikes'||$name==='nbdislike')&&property_exists($this, $name)){
@@ -245,7 +247,9 @@ class Touite{
 
         return $count > 0;
     }
-
+    /**
+     * setter 
+     * */
     public function __set($name, mixed $value):void{
         if (property_exists($this, $name)) {
             $this->$name = $value;
@@ -265,7 +269,9 @@ class Touite{
         }
         return $res."<br>\n".$this-> texte;
     }
-
+    /**
+     * Methode qui renvoi l'indice de popularité du Touite
+     */
     function statistique(){
         return (Note::getnbLike($this->idtouite) - Note::getnbDislike($this->idtouite));
     }
