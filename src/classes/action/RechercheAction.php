@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 namespace iutnc\touiteur\action;
+use Couchbase\ValueRecorder;
 use iutnc\touiteur\action\Action;
 use iutnc\touiteur\touite\ListTouite;
 use iutnc\touiteur\touite\Tag;
@@ -23,7 +24,6 @@ class RechercheAction extends Action {
             $recherche = filter_var($_POST['research'], FILTER_SANITIZE_STRING) ;
             $this->tag = $recherche;
             $_SESSION['tag'] = $this->tag;
-            var_dump(1111);
         }
         else if($methode === 'GET' && !isset($this->tag)){
             $recherche =  !isset($_GET['tag']) ?  $_SESSION['tag'] : $_GET['tag'] ;
@@ -39,29 +39,37 @@ class RechercheAction extends Action {
         else
             $_SESSION['followButton'] = false;
 
-        if (/*(UserAuthentifie::isUserConnected() && $methode !== 'POST')  || */$_SESSION['followButton'] )  {
+        if ( UserAuthentifie::isUserConnected() && $_SESSION['followButton'] )  {
             $t = new  Tag(substr($this->tag, 1));
             $followText = $t->isTagFollowed(UserAuthentifie::getUser()) ? 'Unfollow' : 'Follow';
             $html .= '<form class="follow-form" action="?action=followTag&tag=%23' . substr($recherche, 1) . '" method="post">' .
                 '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                '<button type="submit">' . "$followText" . '</button>' .
+                "<h1> Hashtag: #". $t->__get('libelle') ."</h1>".
+                '<button type="submit">' . "$followText" . 'Tag</button>' .
                 '</form>';
         }
 
 
-        if($recherche[0] === '#'){
-            $_SESSION['followButton'] = true;
-            $tag = new Tag(substr($recherche, 1));
-            $taggedTouites = $tag->findTaggedTw();
+            if($recherche[0] === '#'){
+                $_SESSION['followButton'] = true;
+                $tag = new Tag(substr($recherche, 1));
+                $taggedTouites = $tag->findTaggedTw();
 
-            $html .= (new ListTouite($taggedTouites))->afficher();
-        }
-        else{
-            $_SESSION['followButton'] = false;
-            $taggedTouites = new UserAuthentifie($recherche);
-            $html .=  (new ListTouite ($taggedTouites->getTouites()))->afficher();
+                $html .= (new ListTouite($taggedTouites))->afficher();
+            }
+            else{
+                $_SESSION['followButton'] = false;
+                if(UserAuthentifie::userExists($recherche)) {
+                    $taggedTouites = new UserAuthentifie($recherche);
 
-        }
+                    $html .= (new ListTouite ($taggedTouites->getTouites()))->afficher();
+                }
+                else{
+                    $html .= 'Nothing was found';
+                }
+            }
+
+
         unset($_GET['tag']);
 
     return $html;

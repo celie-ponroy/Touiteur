@@ -12,6 +12,7 @@ class DeconnAction extends Action
     public function execute(): string
     {
         unset($_SESSION['User']);
+        header('Location: index.php?action=connection');
         return "disconnected";
     }
 }
