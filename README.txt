@@ -1,4 +1,4 @@
-Ponroy Célie S3D
-Arcelin Nino S3D
-Bistindou Maelle S3D
-Prykhodko Yehor S3D
+Ponroy Célie S3D -> celie-ponroy
+Arcelin Nino S3D -> Nin0A
+Bistindou Maelle S3D -> Maelle26
+Prykhodko Yehor S3D -> YehorPrykhodko
