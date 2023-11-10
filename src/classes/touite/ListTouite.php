@@ -14,6 +14,7 @@ class ListTouite
     }
 
     public function afficher():string{
+      
         $_SESSION['tList'] =  serialize($this->tList);
 
         $_SESSION['pMaxCount'] = ceil(count($this->tList)/PaginerTouitesRender::TOUITE_MAX_COUNT);
@@ -21,17 +22,22 @@ class ListTouite
 
         $html .= "<h2>";
         if ($_SESSION['pageCour']-1 >= 0) {
-            $html .= " <a class='' href = '?action=prev_page'> previous </a>";
+            $html .= " <a class='pagination' href = '?action=prev_page'> < </a>";
         }
 
         for($i=1; $i<$_SESSION['pMaxCount']+1; $i++)
         {
-            $html .= " <a class='' href = '?action=page&page_num=". $i ."'>" . $i . " </a>";
+                if(isset($_GET["page_num"])&&$i==$_GET["page_num"]){
+                    $html .= " <a class='paginationCourante' href = '?action=page&page_num=". $i ."'>" . $i . "</a>";
+                }else{
+                    $html .= " <a class='pagination' href = '?action=page&page_num=". $i ."'>" . $i . " </a>";
+                }
+           
         }
 
 
         if ($_SESSION['pageCour']+1 < $_SESSION['pMaxCount']) {
-            $html .=  "<a class='' href = '?action=next_page'> next </a>";
+            $html .=  "<a class='pagination' href = '?action=next_page'> > </a>";
         }
 
 

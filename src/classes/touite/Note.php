@@ -67,7 +67,7 @@ class Note{
                  
         }
         elseif ($noteUser=== -1&&$note===1) { //cas ou on ajoute un dislike alors qu'il y a un like
-            $action= 'ajouter-dislike-like : noteBD->>'.$note;
+            $action= 'ajouter-dislike-like';
             $sql='UPDATE Note
             SET note = :note
             WHERE email= :email AND idTouite= :idTouite;';
@@ -125,9 +125,51 @@ class Note{
         if($nbdislike===null)
             $nbdislike= 0;
 
-        return array($nblikes,$nbdislike);
+        return array($nblikes,$nbdislike,$action);
 
         
        
     }    
+
+
+
+
+    function __getLikeInitial(int $idtouite):array{
+
+        $db = ConnectionFactory::makeConnection();
+         //dislikeee
+         $query = 'SELECT count(*) as nbnote
+         FROM Note
+         WHERE idTouite = ?';
+
+
+         
+         $resultset = $db->prepare($query);
+         $resultset->bindParam(1,$idtouite, PDO::PARAM_INT);
+         $resultset->execute();
+ 
+         $row=$resultset->fetch();
+ 
+         $note=null;
+         $like=null;
+         $dislike=null;
+
+         if($row!=false){
+             $note = $row['nbnote'];//like
+         }
+
+         if($note===1){
+            $like='image/like_full.svg';
+            $dislike='image/dislike_empty.svg';
+         }elseif($note===-1){
+            $like='image/like_empty.svg';
+            $dislike='image/dislike_full.svg';
+         }else{
+            $note=null;
+         }
+  
+
+ 
+         return array();
+    }
 }
