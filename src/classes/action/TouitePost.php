@@ -31,12 +31,15 @@ class TouitePost extends Action {
 
 
             // Utiliser preg_match_all pour trouver toutes les occurrences de motifs commençant par #
-            preg_match_all('/#(\w+)/', $touite, $matches);
-
+//            preg_match_all('/#(\w+)/', $touite, $matches);
+            preg_match_all('/#([A-Za-z0-9_]+)/', $touite, $matches);
             // Enlever les dièses (#) de chaque élément de l'Array
-            $hashtags = array_map(function($match) {
+//            $hashtags = array_map(function($match) {
+//                return trim($match, '#');
+//            }, $matches[0]);
+            $hashtags = array_filter(array_map(function($match) {
                 return trim($match, '#');
-            }, $matches[0]);
+            }, $matches[0]), 'strlen');
 
                         
             

@@ -18,22 +18,25 @@ class AccueilAction extends Action {
     /** cherche les touite des abonements tags et utilisateur */
     public function execute() : string{
         $db = ConnectionFactory::makeConnection();
-        
-        $sql ="SELECT Touite.texte,Touite.idTouite ,Touite.datePublication, Touite.email, NULL as idTag 
-        FROM Touite INNER JOIN Abonnement ON Touite.email = Abonnement.idSuivi
-        where Abonnement.idAbonne LIKE ?
-        UNION
-        SELECT Touite.texte, Touite.idTouite ,Touite.datePublication, Touite.email ,Tag.idTag 
-        FROM Touite INNER JOIN Tag2Touite ON Tag2Touite.idTouite = Touite.idTouite
-            INNER JOIN Tag ON Tag2Touite.idTouite = Tag.idTag
-            INNER JOIN AbonnementTag ON Tag.idTag = AbonnementTag.idTag
-        WHERE AbonnementTag.email LIKE ?
-        ORDER BY datePublication;";
+
+        $sql ="SELECT Touite.texte, Touite.idTouite, Touite.datePublication, Touite.email, NULL as idTag 
+           FROM Touite 
+           INNER JOIN Abonnement ON Touite.email = Abonnement.idSuivi
+           WHERE Abonnement.idAbonne = ?
+           UNION
+           SELECT Touite.texte, Touite.idTouite, Touite.datePublication, Touite.email, Tag2Touite.idTag 
+           FROM Touite 
+           INNER JOIN Tag2Touite ON Tag2Touite.idTouite = Touite.idTouite
+           INNER JOIN Tag ON Tag2Touite.idTag = Tag.idTag
+           INNER JOIN AbonnementTag ON Tag.idTag = AbonnementTag.idTag
+           WHERE AbonnementTag.email = ?
+           ORDER BY datePublication DESC;";
     
         $resultset = $db->prepare($sql);
         
         $user = unserialize($_SESSION['User']);
         $email=$user->__get('email');
+
         $resultset->bindParam(1,$email );
         $resultset->bindParam(2,$email );
         $resultset->execute();
