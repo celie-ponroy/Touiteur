@@ -227,7 +227,10 @@ class Touite{
     }
 
 
-
+/**
+ * Méthode appartientUserAuth
+ * retourne true si le touite appartient à l'utilisateur authentifié
+ */
     public function appartientUserAuth():bool{
         if (!UserAuthentifie::isUserConnected())
             return false;
