@@ -47,29 +47,31 @@ class TouiteRenderer implements Renderer{
         $userToFollow = $this->touite->__get('user');
         $followText = 'Follow';
 
-        //ne rentre jamais dans la boucle : $userToFollow est toujours null MODIFIER
-        if ($user !== null && $user->getId() !== $userToFollow->getId()) {
+
+
+        if ($user !== null && $user->__get('email') !== $userToFollow->__get('email')) {
             if ($user->etreAbonneUser($userToFollow)) {
                 $followText = 'Unfollow';
             }
 
             $formAction = $followText === 'Follow' ? 'Follow' : 'Unfollow';
 
-            $res .= '<form class="follow-form" action="?action=liste_touite" method="post">
-              
-                <button class="follow "type="submit">' . $followText . '</button>
-            </form>';
+            $res .= '<form class="follow-form" action="?action=follow&us=' . $userToFollow . '" method="post">'.
+                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                '<button class="follow"  type="submit">' . $followText . '</button>'.
+                '</form>';
+
         }
 
         $res .= '</header>';
-
 
         $res .= '<p class="text">' . htmlspecialchars($this->touite->__get('texte'), ENT_QUOTES) . '</p>';
         $tags = $this->touite->__get('tags');
         if($tags!==null){
             $res.='<div class=trend-container>';
+            //tags
             foreach ($this->touite->__get('tags') as &$t) {
-                $res .= '<a class="trend" href="?action=????????????">#' . $t . '</a>';
+                $res .= "<a class='trend' " . "href=?action=recherche&tag=%23$t>#" . $t . '</a>';
             }
             $res.='</div>';
         }
@@ -130,26 +132,28 @@ class TouiteRenderer implements Renderer{
                 $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" >';
             
             $res.='</button><p>';
+
             $res.=$arraynote[1];
             //echo $this->touite->__get('idtouite');
             
             
             $res.='</p> </form>'
 
-
-
-
         .'</div>';
            
         }
-        
-
-        
          /*etc....... */
-         
-        
         // Fermez la balise <a> avec ID "compact" ici
-        $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">voir plus</a><p class="underline"></p></div><br>';
+        $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">voir plus</a>';
+        //button delete
+        if($this->touite->appartientUserAuth()){
+            $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
+//            $res .= '<a  href="?action=touite-del&id=' . $this->touite->__get('idtouite') . '">delete post</a>'.
+                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                '<button type="submit">' . 'delete post' . '</button>'.
+                '</form>';
+        }
+        $res .=    '<p class="underline"></p></div><br>';
 
         return $res;
 
@@ -164,8 +168,10 @@ class TouiteRenderer implements Renderer{
         $actionUrl = $_GET['action'];
 
         $res= '<div class="touite-container"><header class="entete">' .
+
         '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
         '<i> @' . $this->touite->__get('user')->__get('nom') . ' </i> ' . //identifiant
+
         '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
         '<br> ' .
         '</header>';
@@ -196,7 +202,14 @@ class TouiteRenderer implements Renderer{
             '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
             '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
         .'</div>';
-            
+
+ 
+            if( $this->touite->appartientUserAuth() ){
+                $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
+                    '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                    '<button type="submit">' . 'delete post' . '</button>'.
+                    '</form>';
+            }
         }elseif ($methode === 'POST') {
             $action = isset($_POST['action']) ? $_POST['action'] : '';
             
@@ -229,15 +242,11 @@ class TouiteRenderer implements Renderer{
             //echo $this->touite->__get('idtouite');
             
             
-            $res.='</p> </form>'
+            $res.='</p> </form>';
 
-
-
-
-        .'</div>';
+            $res .= '</div>';
            
         }
-
 
         // Fermez la balise <a> avec ID "compact" ici
         $res .= '<p class="underline"></p></div><br>';

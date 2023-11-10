@@ -4,6 +4,7 @@ declare(strict_types= 1);
 namespace iutnc\touiteur\touite;
 
 use iutnc\touiteur\bd\ConnectionFactory;
+use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
 
 class Tag{
@@ -11,20 +12,25 @@ class Tag{
     private $libelle;
     private $desciption;
     
-    function __construct(string $id){
+    function __construct(?string $libelle=null, ?string $id=null){
 
         $pdo = ConnectionFactory::makeConnection();
-        $query = 'SELECT libelle from Tag Where idTag = ?';
-        $st = $pdo->prepare($query);
-        $st->execute([$id]);
-        $libelle = $st->fetch()['libelle'];
-
+        if ($libelle !== null){
+            $query = 'SELECT idTag from Tag Where libelle = ?';
+            $st = $pdo->prepare($query);
+            $st->execute([$libelle]);
+            $id = $st->fetch()['idTag'];
+        }
+        else {
+            $query = 'SELECT libelle from Tag Where idTag = ?';
+            $st = $pdo->prepare($query);
+            $st->execute([$id]);
+            $libelle = $st->fetch()['libelle'];
+        }
         $query = 'SELECT description from Tag Where idTag = ?';
         $st = $pdo->prepare($query);
         $st->execute([$id]);
         $desciption = $st->fetch()['description'];
-
-
 
         $this->id = $id;
         $this->libelle = $libelle;
@@ -42,13 +48,38 @@ class Tag{
         $st->execute([$this->id]);
 
 
-        $tags = [];
+        $tags = array();
         $results = $st->fetchAll(PDO::FETCH_ASSOC);
         foreach ($results as $row) {
-            $tags[] = new Touite($row['idTouite']);
+            array_push($tags,  new Touite($row['idTouite']));
         }
 
         return $tags;
     }
-    
+
+    public function isTagFollowed(UserAuthentifie $user):bool{
+
+        $pdo = ConnectionFactory::makeConnection();
+        $sql = "SELECT COUNT(*) FROM AbonnementTag WHERE email = :email AND idTag = :idTag";
+        $stmt = $pdo->prepare($sql);
+        $email = $user->__get('email');
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':idTag', $this->id);
+
+        $stmt->execute();
+
+        $isSubscribed = $stmt->fetchColumn() > 0;
+
+        return $isSubscribed;
+    }
+
+
+    public function __get($name): mixed{
+        if(property_exists($this, $name)){
+            return $this->$name;
+        }else{
+            echo "Get invalide";
+            return null;
+        }
+    }
 }

@@ -162,21 +162,22 @@ class UserAuthentifie extends User{
             $db = ConnectionFactory::makeConnection();
 
             //on regarde si this suis déjà l'utilisateur
+
             $res = $this->etreAbonneUser($userToFollow);
 
             // Si la requête renvoie 0, cela signifie que la relation de suivi n'existe pas encore, l'utilisateur va follow
             if (!$res) {
                 // La relation de suivi n'existe pas encore, nous pouvons donc l'ajouter
-                $sql = "INSERT INTO Abonnement (idSuivi, idAbonné) VALUES (:idSuivi, :idAbonné)";
+                $sql = "INSERT INTO Abonnement (idSuivi, idAbonne) VALUES (:idSuivi, :idAbonne)";
             } else {//unfollow
                 // La relation de suivi existe déjà
-                $sql = "DELETE FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonné = :idAbonné";
+                $sql = "DELETE FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonne = :idAbonne";
             }
             $stmt = $db->prepare($sql);
-            $idsuiv =  $userToFollow->__get('id');
-            $idabo = $this->__get('id');
+            $idsuiv =  $userToFollow->__get('email');
+            $idabo = $this->__get('email');
             $stmt->bindParam(':idSuivi', $idsuiv);
-            $stmt->bindParam(':idAbonné', $idabo); 
+            $stmt->bindParam(':idAbonne', $idabo);
 
             if ($stmt->execute()) {
                 // Suivi réussi
@@ -188,6 +189,8 @@ class UserAuthentifie extends User{
 
     }
 
+
+
     /*
      * Méthode qui permet de savoir si l'utilisateur connecté suit l'utilisateur entré en paramètre
      */
@@ -198,8 +201,8 @@ class UserAuthentifie extends User{
         $sql = "SELECT COUNT(*) FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonne = :idAbonne";
         //préparation des données
         $stmt = $db->prepare($sql);
-        $idsuiv =  $userToFollow->__get('id');
-        $idabo = $this->__get('id');
+        $idsuiv =  $userToFollow->__get('email');
+        $idabo = $this->__get('email');
         //attribution des paramètres
         $stmt->bindParam(':idSuivi', $idsuiv);
         $stmt->bindParam(':idAbonne', $idabo);
@@ -232,6 +235,7 @@ class UserAuthentifie extends User{
         // si l'utilisateur est identifié
         if (self::isUserConnected()) {
             $db = ConnectionFactory::makeConnection();
+
             $email = $this->__get('email');
             $abo = $this->etreAbonneTag($idTag);
 
@@ -245,7 +249,11 @@ class UserAuthentifie extends User{
                 
             }
             $stmt = $db->prepare($sql);
-            $stmt->bindParam(':idtag', $idTag);
+
+
+            $idT = (int)$idTag;
+            var_dump($idT);
+            $stmt->bindParam(':idTag',$idT);
             $stmt->bindParam(':email', $email); 
 
             if ($stmt->execute()) {
@@ -256,6 +264,31 @@ class UserAuthentifie extends User{
                 //throw exception
                 throw new AbonnementException();
             }
+        }
+    }
+    /**renvoi la liste des touiteurs abonées à this */
+    public function listeAbo():array{
+        $db = ConnectionFactory::makeConnection();
+        $sql = "SELECT email , nom, prenom
+        FROM Abonnement inner join Utilisateur on Utilisateur.email = Abonnement.idAbonne
+        WHERE Abonnement.idSuivi = :email ";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->execute();
+        $res = array();
+
+        foreach($stmt->fetchAll() as $row){
+            array_push($res, $row);
+        }
+        return $res;
+    }
+
+    public function __get($name): mixed{
+        if(property_exists($this, $name)){
+            return $this->$name;
+        }else{
+            echo "Get invalide";
+            return null;
         }
     }
 }

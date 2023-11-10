@@ -5,6 +5,7 @@ namespace iutnc\touiteur\touite;
 
 use DateTime;
 use iutnc\touiteur\bd\ConnectionFactory;
+use iutnc\touiteur\user\User;
 use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
 
@@ -20,7 +21,7 @@ class Touite{
     protected ?array $tags; // table de tags
 
 
-    protected ?int $idtouite;
+    protected int $idtouite;
 
     protected int $nblikes, $nbdislike;
     /**
@@ -213,8 +214,16 @@ class Touite{
             }
             
         }
-            
+    }
 
+    public function deleteT():void{
+        $pdo = ConnectionFactory::makeConnection();
+
+        $pdo->prepare("DELETE FROM note WHERE idTouite = ?")->execute([$this->idtouite]);
+
+        $pdo->prepare("DELETE FROM tag2touite WHERE idTouite = ?")->execute([$this->idtouite]);
+
+        $pdo->prepare("DELETE FROM touite WHERE idTouite = ?")->execute([$this->idtouite]);
     }
 
     public function __get($name): mixed{
@@ -236,6 +245,26 @@ class Touite{
         
     }
 
+
+
+    public function appartientUserAuth():bool{
+        $pdo = ConnectionFactory::makeConnection();
+
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM Touite WHERE idTouite = :tweetId AND email = :email");
+
+        $email= UserAuthentifie::getUser()->__get('email');
+        $id = $this->idtouite;
+
+        $stmt->bindParam(':tweetId', $id);
+        $stmt->bindParam(':email', $email);
+
+        $stmt->execute();
+
+        $count = $stmt->fetchColumn();
+
+        return $count > 0;
+    }
+
     public function __set($name, mixed $value):void{
         if (property_exists($this, $name)) {
             $this->$name = $value;
@@ -255,6 +284,11 @@ class Touite{
         }
         return $res."<br>\n".$this-> texte;
     }
+
+    function statistique(){
+        return (Note::getnbLike($this->idtouite) - Note::getnbDislike($this->idtouite));
+    }
+
 
 
 }
