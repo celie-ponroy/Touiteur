@@ -230,7 +230,7 @@ class TouiteRenderer implements Renderer{
             '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
         .'</div>';
 
- 
+
             if( $this->touite->appartientUserAuth() ){
                 $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
                     '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
