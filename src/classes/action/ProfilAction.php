@@ -25,11 +25,17 @@ use iutnc\touiteur\user\UserAuthentifie;
         $user = unserialize($_SESSION['User']);
         $html .= '<h1> @'.$user->__get('email').'</h2>';
         // affichage de la liste des abonés:
+
         $html .= '<h2>Follower(s):<h2>';
         $html .= '<div>';;
         $listeabo = $user->listeAbo();
+        $avoirabo = false;
         foreach ($listeabo as $abo) {
+            $avoirabo = true;
             $html .= '<li>'.$abo['prenom'].' '.$abo['nom'].':  @'.$abo['email'].'</li>';
+        }
+        if(!$avoirabo){
+            $html .= "<p>You don't have any yet</p>";
         }
         $html .= '</div>';
         //affichage des statistiques:

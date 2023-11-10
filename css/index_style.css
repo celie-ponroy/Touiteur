@@ -524,6 +524,21 @@ div.touite-container#text{
   text-align: center;
 }
    
+.container-pagination{
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.admin-trend{
+  display: flex;
+  flex-direction: row;
+}
+.admin{
+  display: flex;
+  flex-direction: column;
+}
 .container-pagination {
   position: absolute;
   bottom: 0;

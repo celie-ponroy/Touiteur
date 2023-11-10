@@ -6,7 +6,7 @@ use iutnc\touiteur\bd\ConnectionFactory;
 use PDO;
 class UserAdmin extends UserAuthentifie
 {
-
+    public static int $limite=5;
     public function __construct(string $email)
     {
         parent::__construct($email);
@@ -25,7 +25,7 @@ class UserAdmin extends UserAuthentifie
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $html = '';
         foreach ($users as $user) {
-            $html .= "User " . $user['idSuivi'] . " has " . $user['followers_count'] . " followers.<br/>";
+            $html .= "<li>User :" . $user['idSuivi'] . " has " . $user['followers_count'] . " followers.</li>";
         }
 
         return $html;
@@ -35,19 +35,28 @@ class UserAdmin extends UserAuthentifie
         $pdo = ConnectionFactory::makeConnection();
 
         $sql = "SELECT t.idTag, t.libelle, COUNT(t2.idTouite) AS mention_count
-        FROM tag t
-        LEFT JOIN tag2touite t2 ON t.idTag = t2.idTag
+        FROM Tag t
+        LEFT JOIN Tag2Touite t2 ON t.idTag = t2.idTag
         GROUP BY t.idTag, t.libelle
-        ORDER BY mention_count DESC";
+        ORDER BY mention_count DESC
+        LIMIT :limite";
 
         $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':limite', UserAdmin::$limite, PDO::PARAM_INT);
         $stmt->execute();
 
         $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $html= '';
-        foreach ($tags as $tag) {
-            $html .= "Tag: " . $tag['libelle'] . " - Mentions: " . $tag['mention_count'] . "<br/>";
+        $html .=  "<div class='admin'>";
+        for ( $i =0 ; $i<UserAdmin::$limite;$i++) {
+            $tag = $tags[$i];
+            echo $tag['idTag'];
+            $html .=  "<div class='admin-trend'>";
+            $html .= "<p>".($i+1)." -</p><a class='trend' " . "href=?action=recherche&tag=%23".$tag['libelle']."> #" . $tag['libelle'] ."</a>";
+            $html .= "<p>   Mentions: " . $tag['mention_count'] . "<br/></p>";
+            $html .=  '</div>';
         }
+        $html .=  '</div>';
         return $html;
     }
 }
