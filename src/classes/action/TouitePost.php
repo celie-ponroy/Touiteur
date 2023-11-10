@@ -56,6 +56,7 @@ class TouitePost extends Action {
             
             if (!empty($touite)) {
                 $html .= "<h3>Touite x: " . $touite . "</h3>";
+                header('Location: index.php?action=liste_touite');
             } else {
                 $html .= "<h3>You don't have select any picture and text.</h3>";
             }
