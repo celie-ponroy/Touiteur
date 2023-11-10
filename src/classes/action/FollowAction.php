@@ -19,9 +19,10 @@ class FollowAction extends Action
         $user2follow = $_GET['us'];
         $userA = UserAuthentifie::getUser();
         $userA->followUser(new UserAuthentifie($user2follow));
-
-        if (isset($_POST['redirect_to'])) {
-            header('Location: ' . $_POST['redirect_to']);
+        $urlAvant = filter_var($_POST['redirect_to'], FILTER_SANITIZE_URL);
+        //retourne sur url d'avant
+        if (isset($urlAvant) ){
+            header('Location: ' . $urlAvant);
             exit;
         }
         return '';

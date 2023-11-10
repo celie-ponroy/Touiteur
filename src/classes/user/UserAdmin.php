@@ -4,15 +4,21 @@ namespace iutnc\touiteur\user;
 
 use iutnc\touiteur\bd\ConnectionFactory;
 use PDO;
+
+/**
+ * Classe UserAdmin
+ */
 class UserAdmin extends UserAuthentifie
 {
     public static int $limite=5;
+    
     public function __construct(string $email)
     {
         parent::__construct($email);
     }
      /**
-     * return String qui affiche les $limite influenceurs les plus suivi
+      * Méthode trouveInfleunceurs qui retourne les $limite influenceurs les plus suivis
+     * @return String qui affiche les $limite influenceurs les plus suivis
      */
 
     public static function trouveInfluenceurs():string{
