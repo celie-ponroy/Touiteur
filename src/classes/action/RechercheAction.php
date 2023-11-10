@@ -19,12 +19,12 @@ class RechercheAction extends Action {
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];
 
-        if ($methode === 'POST' && !isset($this->tag)) {
-            $recherche = filter_var($_POST['research'], FILTER_SANITIZE_STRING) ;
+        if ($methode === 'POST') {
+            $recherche = filter_var($_POST['research'], FILTER_SANITIZE_STRING);
             $this->tag = $recherche;
             $_SESSION['tag'] = $this->tag;
         }
-        else if($methode === 'GET' && !isset($this->tag)){
+        else if($methode === 'GET' && $this->tag === null){
             $recherche =  !isset($_GET['tag']) ?  $_SESSION['tag'] : $_GET['tag'] ;
             $this->tag = $recherche;
         }
@@ -32,11 +32,12 @@ class RechercheAction extends Action {
            $recherche = $this->tag;
         }
 
-
+        //button follow est cacher si on recherche par users
         if($recherche === null || $recherche[0] === '#')
             $_SESSION['followButton'] = true;
         else
             $_SESSION['followButton'] = false;
+
 
         if ( UserAuthentifie::isUserConnected() && $_SESSION['followButton'] )  {
             $t = new  Tag(substr($this->tag, 1));
