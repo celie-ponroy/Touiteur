@@ -30,7 +30,7 @@ class Dispatcher {
             $this->action = '';
         }
     }
-    public function run( ): void {//a modifier
+    public function run( ): void {
 
         $html = '';
         $html_recherche='';

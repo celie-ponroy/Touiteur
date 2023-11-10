@@ -10,7 +10,7 @@ class RentabiliserAction extends Action{
     public function __construct(?string $tag=null){
         parent::__construct();
     }
-    
+    /** renvoi l'affichage du back office */
     public function execute() : string{
         if(UserAuthentifie::isUserConnected()){
             $user = unserialize($_SESSION['User']);
