@@ -10,14 +10,13 @@ class UserListeTouitesAction extends Action
 {
     private UserAuthentifie $user;
 
-    // заменить для любого юзера
     public function __construct()
     {
         parent::__construct();
         $user = unserialize($_SESSION['User']);
         $this->user = $user;
     }
-
+    /** affiche les touites le l'utilisateur*/
     public function execute(): string
     {
         $html = '';

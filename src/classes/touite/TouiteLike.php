@@ -43,30 +43,6 @@ class TouiteLike
     }
 
 
-//    public function modifNote(){
-//        //like
-//        if() {
-//            select...
-//            if select exist
-//                if note == 1
-//                    delete note
-//                if note == -1
-//                    note = 1
-//            else if !exist
-//                insert 1
-//        }
-//        //dislike
-//        elseif (){
-//            select...
-//            if select exist
-//                if note == 1
-//                delete note
-//                if note == -1
-//                note = 1
-//            else if !exist
-//            insert 1
-//        }
-//    }
 
 
 }

@@ -10,6 +10,7 @@ use iutnc\touiteur\user\UserAuthentifie;
 use PDO;
 
 class TouiteDetailAction extends Action {
+    /**affiche un Touite en detail */
     public function execute(): string {
         $db = ConnectionFactory::makeConnection();
 

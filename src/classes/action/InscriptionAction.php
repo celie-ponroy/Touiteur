@@ -42,16 +42,16 @@ class InscriptionAction extends Action {
                 if($_POST['pass']===$_POST['passconfirm']){
                     try {
                         $html = UserAuthentifie::inscription($nom, $prenom, $email, $mdp1);
+                        $usAuth = new UserAuthentifie($email);
+                        $usAuth->connectUser();
+                        $_SESSION["email"]= $email;
+                        header('Location: index.php?action=liste_touite');
                     }catch(\PDOException $ex){
-                        
                         $html =$debutform."
-                    <p class='form-error'>User arleady sign in.</p>
-                    </form>";
+                        <p class='form-error'>User arleady sign in.</p>
+                        </form>";
                     }
-                    $usAuth = new UserAuthentifie($email);
-                    $usAuth->connectUser();
-                    $_SESSION["email"]= $email;
-                    header('Location: index.php?action=liste_touite');
+                    
                 }else{
                     $html =$debutform."
                     <p class='form-error'>Passwords do not match.</p>

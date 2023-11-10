@@ -10,7 +10,7 @@ class TouitePost extends Action {
     public function __construct(){
         parent::__construct();
     }
-    
+    /**Poste un Touite  */
     public function execute() : string{
         $html = "";
         $methode = $_SERVER['REQUEST_METHOD'];
