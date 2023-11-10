@@ -177,8 +177,30 @@ class TouiteRenderer implements Renderer{
         '<i> @' . $this->touite->__get('user')->__get('nom') . ' </i> ' . //identifiant
 
         '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
-        '<br> ' .
-        '</header>';
+        '<br> ' ;
+
+        // Bouton Follow/Unfollow
+        $user = UserAuthentifie::getUser();
+        $userToFollow = $this->touite->__get('user');
+        $followText = 'Follow';
+
+
+
+        if ($user !== null && $user->__get('email') !== $userToFollow->__get('email')) {
+            if ($user->etreAbonneUser($userToFollow)) {
+                $followText = 'Unfollow';
+            }
+
+            $formAction = $followText === 'Follow' ? 'Follow' : 'Unfollow';
+
+            $res .= '<form class="follow-form" action="?action=follow&us=' . $userToFollow . '" method="post">'.
+                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                '<button class="follow"  type="submit">' . $followText . '</button>'.
+                '</form>';
+
+        }
+
+        $res .= '</header>';
 
         $res .= '<p class="text">' . htmlspecialchars($this->touite->__get('texte'), ENT_QUOTES) . '</p>';
         $res .= '<img class="touite-image" src="'.$this->touite->__get('pathpicture').'" >';
@@ -212,7 +234,7 @@ class TouiteRenderer implements Renderer{
             if( $this->touite->appartientUserAuth() ){
                 $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
                     '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                    '<button type="submit">' . 'delete post' . '</button>'.
+                    '<button type="submit">' . 'Delete post' . '</button>'.
                     '</form>';
             }
         }elseif ($methode === 'POST') {

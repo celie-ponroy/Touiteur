@@ -11,6 +11,7 @@ use iutnc\touiteur\user\UserAuthentifie;
 
 ConnectionFactory::setConfig('conf/conf.ini');
 
+
 $disp = new Dispatcher();
 $disp->run();
    
