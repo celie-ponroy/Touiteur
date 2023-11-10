@@ -37,6 +37,7 @@ class Tag{
         $this->desciption = $desciption;
     }
 
+    /*retourn les touites associes a this (tag) */
     public function findTaggedTw(){
         $pdo = ConnectionFactory::makeConnection();
         $query = 'SELECT Touite.idTouite from Touite 
@@ -57,6 +58,7 @@ class Tag{
         return $tags;
     }
 
+    /* retourne true si this (tag) followed par $user */
     public function isTagFollowed(UserAuthentifie $user):bool{
 
         $pdo = ConnectionFactory::makeConnection();
