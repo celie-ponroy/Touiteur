@@ -45,20 +45,20 @@ class TouiteRenderer implements Renderer{
         // Bouton Follow/Unfollow
         $user = UserAuthentifie::getUser();
         $userToFollow = $this->touite->__get('user');
-        $followText = 'Follow';
+        $followText= '<button class="follow"  type="submit">Follow</button>';
 
 
 
         if ($user !== null && $user->__get('email') !== $userToFollow->__get('email')) {
             if ($user->etreAbonneUser($userToFollow)) {
-                $followText = 'Unfollow';
+                $followText= '<button class="unfollow"  type="submit">Unfollow</button>';
             }
 
-            $formAction = $followText === 'Follow' ? 'Follow' : 'Unfollow';
+            $formAction = $followText === '<button class="follow"  type="submit">Follow</button>' ? '<button class="follow"  type="submit">Follow</button>' : '<button class="unfollow"  type="submit">Unfollow</button>';
 
             $res .= '<form class="follow-form" action="?action=follow&us=' . $userToFollow . '" method="post">'.
-                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                '<button class="follow"  type="submit">' . $followText . '</button>'.
+                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">'
+                .$followText.
                 '</form>';
 
         }
@@ -94,8 +94,16 @@ class TouiteRenderer implements Renderer{
             '<p>'.$this->touite->__get('nblikes').'</p>' .
             '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">
             <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" ></button>' .
-            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
-        .'</div>';
+            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>';
+
+            if( $this->touite->appartientUserAuth() ){
+                $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
+                    '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                    '<button class="delete-button" type="submit">' . 'delete' . '</button>'.
+                    '</form>';
+            }
+            $res.='</div>';
+       
             
         }elseif ($methode === 'POST' && UserAuthentifie::isUserConnected()) {
             $action = isset($_POST['action']) ? $_POST['action'] : '';
@@ -139,23 +147,24 @@ class TouiteRenderer implements Renderer{
             $res.=$arraynote[1];
             //echo $this->touite->__get('idtouite');
             
-            
-            $res.='</p> </form>'
+            //*
+            $res.='</p> </form>';
 
-        .'</div>';
+            //button delete
+            if($this->touite->appartientUserAuth()){
+            $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
+                    '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                    '<button class="delete-button" type="submit">' . 'delete' . '</button>'.
+                    '</form>';
+            }
+
+        $res.='</div>';
            
         }
          /*etc....... */
         // Fermez la balise <a> avec ID "compact" ici
         $res .= '<a id="compact" class="TouiteShow" href="?action=touite-en-detail&id=' . $this->touite->__get('idtouite') . '">voir plus</a>';
-        //button delete
-        if($this->touite->appartientUserAuth()){
-            $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
-//            $res .= '<a  href="?action=touite-del&id=' . $this->touite->__get('idtouite') . '">delete post</a>'.
-                '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                '<button type="submit">' . 'delete post' . '</button>'.
-                '</form>';
-        }
+        
         $res .=    '</div><br>';
 
         return $res;
@@ -204,16 +213,16 @@ class TouiteRenderer implements Renderer{
             <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
             '<p>'.$this->touite->__get('nblikes').'</p>' .
             '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
-            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
-        .'</div>';
+            '<p>'.$this->touite->__get('nbdislike').'</p>  </form>';
 
  
             if( $this->touite->appartientUserAuth() ){
                 $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
                     '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                    '<button type="submit">' . 'delete post' . '</button>'.
+                    '<button class="delete-button" type="submit">' . 'delete' . '</button>'.
                     '</form>';
             }
+            $res.='</div>';
         }elseif ($methode === 'POST') {
             $action = isset($_POST['action']) ? $_POST['action'] : '';
             
@@ -245,9 +254,18 @@ class TouiteRenderer implements Renderer{
             //echo $this->touite->__get('idtouite');
             
             
+            //*
             $res.='</p> </form>';
 
-            $res .= '</div>';
+            //button delete
+            if($this->touite->appartientUserAuth()){
+            $res .= '<form class="follow-form" action="?action=touite-del&id=' . $this->touite->__get('idtouite'). '" method="post">'.
+                    '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
+                    '<button class="delete-button" type="submit">' . 'delete' . '</button>'.
+                    '</form>';
+            }
+
+        $res.='</div>';
            
         }
 
