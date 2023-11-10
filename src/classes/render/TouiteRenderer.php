@@ -75,21 +75,30 @@ class TouiteRenderer implements Renderer{
             }
             $res.='</div>';
         }
-        $user = unserialize($_SESSION["User"]);
-        $noter = new Note($user);
+
+
+            if (isset($_SESSION["User"])){
+                $user=unserialize($_SESSION["User"]);
+
+                $noter=new Note($user);
+            }
 
         //fonctions du touite
-        if($methode === 'GET'){
+        if($methode === 'GET' && UserAuthentifie::isUserConnected()){
             
         $res.=' <div class="fonctions">
         <form method="post" action="?action='.$actionUrl.'">
-            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'"><img class="imNote" src="image/like_empty.svg" ></button>' .
+            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">
+            
+            <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[0].'" ></button>'.
+
             '<p>'.$this->touite->__get('nblikes').'</p>' .
-            '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'"><img class="imNote" src="image/dislike_empty.svg" ></button>' .
+            '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">
+            <img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" ></button>' .
             '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
         .'</div>';
             
-        }elseif ($methode === 'POST') {
+        }elseif ($methode === 'POST' && UserAuthentifie::isUserConnected()) {
             $action = isset($_POST['action']) ? $_POST['action'] : '';
             
             $noteUser=-8;
@@ -108,7 +117,7 @@ class TouiteRenderer implements Renderer{
             if($arraynote[2]==='ajouter-like'||$arraynote[2]==='ajouter-like-dislike')
                 $res.= '<img class="imNote" src="image/like_full.svg" >';
             else
-                $res.= '<img class="imNote" src="image/like_empty.svg" >';
+                $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[0].'" >';
             
             $res.='</button><p>';
           
@@ -120,10 +129,11 @@ class TouiteRenderer implements Renderer{
 
 
             $res.='<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">';
-            if($arraynote[2]==='ajouter-dislike'||$arraynote[2]==='ajouter-dislike-like')
+            
+            if($arraynote[2]==='ajouter-dislike'||$arraynote[2]==='ajouter-dislike-like'){
                 $res.= '<img class="imNote" src="image/dislike_full.svg" >';
-            else
-                $res.= '<img class="imNote" src="image/dislike_empty.svg" >';
+            }else
+                $res.= '<img class="imNote" src="'.$noter->__getLikeInitial($this->touite->__get('idtouite'))[1].'" >';
             
             $res.='</button><p>';
 
@@ -177,17 +187,18 @@ class TouiteRenderer implements Renderer{
             $res.='<div class=trend-container>';
         
             foreach ($this->touite->__get('tags') as &$t) {
-                $res .= '<a class="trend" href="?action=????????????">#' . $t . '</a>';
+                $res .= "<a class='trend' " . "href=?action=recherche&tag=%23$t>#" . $t . '</a>';
             }
             $res.='</div>';
         }
+        if (isset($_SESSION["User"])){
+            $user=unserialize($_SESSION["User"]);
 
-        $user=unserialize($_SESSION["User"]);
-
-        $noter=new Note($user);
+            $noter=new Note($user);
+        }
 
         //fonctions du touite
-        if($methode === 'GET'){
+        if($methode === 'GET' && UserAuthentifie::isUserConnected()){
 
         $res.=' <div class="fonctions">
         <form method="post" action="?action='.$actionUrl.'&id='.$this->touite->__get('idtouite').'">
@@ -214,7 +225,6 @@ class TouiteRenderer implements Renderer{
              }elseif ($action === 'dislike'.$this->touite->__get('idtouite')) {
                 $noteUser=(-1);
              }
-             echo'<p>'.$noteUser.'</p>';
 
             $res.=' <div class="fonctions">
             <form method="post" action="?action='.$actionUrl.'&id='.$this->touite->__get('idtouite').'">

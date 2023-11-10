@@ -25,6 +25,7 @@ class UserAuthentifie extends User{
         $this->email = $email;
 
         $pdo = ConnectionFactory::makeConnection();
+
         $query = 'SELECT role from Utilisateur Where email = ?';
         $st = $pdo->prepare($query);
         $st->execute([$email]);
@@ -115,7 +116,6 @@ class UserAuthentifie extends User{
         $st->execute([$this->email]);
         $res = array();
 
-        $user = unserialize($_SESSION['User']);
         foreach($st->fetchAll() as $row){
             array_push($res,new Touite(intval($row["idTouite"])));
         }
@@ -189,6 +189,18 @@ class UserAuthentifie extends User{
 
     }
 
+
+    public static function userExists($uEmail):bool{
+        $pdo = ConnectionFactory::makeConnection();
+
+        $stmt = $pdo->prepare("SELECT * FROM Utilisateur WHERE email = :email");
+        $stmt->bindParam(':email', $uEmail);
+
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+
+    }
 
 
     /*
