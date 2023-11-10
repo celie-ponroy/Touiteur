@@ -38,7 +38,7 @@ class TouiteRenderer implements Renderer{
         //entete
         $res= '<div class="touite-container"><header class="entete">' .
                 '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
-                '<i> @' . $this->touite->__get('user')->__get('nom') . '</i>' . //identifiant
+                '<i> @' . $this->touite->__get('user')->__get('nom') . ' </i> ' . //identifiant
                 '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
                 '<br> ';
 
@@ -58,8 +58,9 @@ class TouiteRenderer implements Renderer{
 
             $res .= '<form class="follow-form" action="?action=follow&us=' . $userToFollow . '" method="post">'.
                 '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                '<button type="submit">' . $followText . '</button>'.
+                '<button class="follow"  type="submit">' . $followText . '</button>'.
                 '</form>';
+
         }
 
         $res .= '</header>';
@@ -83,9 +84,9 @@ class TouiteRenderer implements Renderer{
             
         $res.=' <div class="fonctions">
         <form method="post" action="?action='.$actionUrl.'">
-            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
+            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'"><img class="imNote" src="image/like_empty.svg" ></button>' .
             '<p>'.$this->touite->__get('nblikes').'</p>' .
-            '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
+            '<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'"><img class="imNote" src="image/dislike_empty.svg" ></button>' .
             '<p>'.$this->touite->__get('nbdislike').'</p>  </form>'
         .'</div>';
             
@@ -99,20 +100,34 @@ class TouiteRenderer implements Renderer{
                 $noteUser=(-1);
              }
 
+             $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
+
             $res.=' <div class="fonctions">
             <form method="post" action="?action='.$actionUrl.'">
-            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
-            '<p>';
+            <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">';
+            
+            if($arraynote[2]==='ajouter-like'||$arraynote[2]==='ajouter-like-dislike')
+                $res.= '<img class="imNote" src="image/like_full.svg" >';
+            else
+                $res.= '<img class="imNote" src="image/like_empty.svg" >';
+            
+            $res.='</button><p>';
           
-            $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
+           
             $res.=$arraynote[0];
             //echo $this->touite->__get('idtouite');
            
             $res.='</p>';
 
 
-            $res.='<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">Dislike</button>' .
-            '<p>';
+            $res.='<button type="submit" name="action" value="dislike'.$this->touite->__get('idtouite').'">';
+            if($arraynote[2]==='ajouter-dislike'||$arraynote[2]==='ajouter-dislike-like')
+                $res.= '<img class="imNote" src="image/dislike_full.svg" >';
+            else
+                $res.= '<img class="imNote" src="image/dislike_empty.svg" >';
+            
+            $res.='</button><p>';
+
             $res.=$arraynote[1];
             //echo $this->touite->__get('idtouite');
             
@@ -148,8 +163,10 @@ class TouiteRenderer implements Renderer{
         $actionUrl = $_GET['action'];
 
         $res= '<div class="touite-container"><header class="entete">' .
-        '<a class="nomuser" href="?action=???????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
-        '<i> @' . $this->touite->__get('user')->__get('nom') . '</i>' . //identifiant
+
+        '<a class="nomuser" href="?action=???????????">' . $this->touite->__get('user')->__get('prenom').'</a>' . //nom
+        '<i> @' . $this->touite->__get('user')->__get('nom') . ' </i> ' . //identifiant
+
         '<strong class="date"> · ' . $this->touite->__get('date')->format('d M. H:i') . '</strong>' . //date
         '<br> ' .
         '</header>';

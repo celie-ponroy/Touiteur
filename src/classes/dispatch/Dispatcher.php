@@ -110,7 +110,9 @@ class Dispatcher {
                 (new FollowAction())->execute();
                 break;
             case 'page':
+
                 $_SESSION['pageCour'] = !isset($_GET['page_num'])  ? $_SESSION['pageCour'] : $_GET['page_num']-1 ;
+
                 $listeT = unserialize($_SESSION['ListAaff']);
                 $html = $listeT->execute();
                 break;
@@ -144,6 +146,7 @@ class Dispatcher {
                 <meta name='viewport' content='width=device-width', initial-scale='1.0'>
                 <title>Accueil - Touiteur</title>
                 <link rel='stylesheet' type='text/css' href='css/index_style.css'>
+                <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Pacifico|Dancing+Script|Patrick+Hand|Shadows+Into+Light|Amatic+SC&display=swap'>
             </head>
             <body>
 
@@ -152,31 +155,26 @@ class Dispatcher {
             
                 <nav class='navigation'>
 
-                    <h2 class='logo'><a href='index.php'><img src='mon_image.jpg' >Touiteur</a></h2> 
+                    <a class='logo-action' href='index.php'><img class='imgLogo' src='image/icon-oiseau.png' ><h2 class='logo'>Touiteur</h2></a> 
                     <div class='container-action-button'>
+                    
+
+                        <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.svg' > Home</a><br>
+                        <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.svg' > Explore</a><br>
+                        <a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/mestouites.svg' >  Mes Touites</a><br>
+                    <a class='action-post' href = '?action=touite-post'> Post</a><br>
+                    </div>
+
+
                     <div class='connexion'>";
                    if (UserAuthentifie::isUserConnected()){
-                        echo "<a class='action' href = '?action=deconnection'> Deconnection </a><br>"; 
+                        echo "<a class='action-connect' href = '?action=deconnection'> Deconnection </a><br>"; 
                     }else{
 
-                        echo "<a class='action' href = '?action=connection'> Connection </a><br>";
-                        echo"<a class='action' href = '?action=inscription'><img src='mon_image.jpg' > Inscription </a><br>";
+                        echo "<a class='fonction-connect' href = '?action=connection'> Connection </a><br>";
+                        echo"<a class='fonction-connect' href = '?action=inscription'> Inscription </a><br>";
                     }
-                    echo"
-
-                    </div>
-                        <a class='action' href = '?action=page_accueil'><img class='img-action' src='image/loupe.png' > Explore</a><br>
-                        <a class='action' href = '?action=liste_touite'> <img class='img-action' src='image/home.png' > Home</a><br>";
-
-
-
-                   if (UserAuthentifie::isUserConnected()){
-                       echo "<a class='action' href = '?action=user_liste_touite'><img class='img-action' src='image/????????' >  Mes Touites</a><br>";
-                   }
-                    echo "<a class='action-post' href = '?action=touite-post'> Post</a><br>
-                            <a class='action' href = '?action=fa1'> tend </a><br>
-                            <a class='action' href = '?action=fa2'> inf </a><br>
-                    </div>
+                    echo "</div>
                    
                 </nav>
                 
