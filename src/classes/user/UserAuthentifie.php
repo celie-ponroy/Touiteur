@@ -8,6 +8,10 @@ use iutnc\touiteur\bd\ConnectionFactory;
 use iutnc\touiteur\excetion\AbonnementException;
 use iutnc\touiteur\touite\Touite;
 
+/**
+ * class UserAuthentifie
+ */
+
 class UserAuthentifie extends User{
 
     /**
@@ -19,6 +23,8 @@ class UserAuthentifie extends User{
     /**
      * Constructeur
      * on récupère les informations de la base de donées pour initialiser les attributs
+     * @param string $email l'email de l'utilisateur
+     * @return void
      */
 
     public function __construct(string $email){
@@ -41,18 +47,26 @@ class UserAuthentifie extends User{
     }
 
     /**
-     * Methode permetant d'inscrire un User dans la base de données 
+     * Methode permetant d'inscrire un User dans la base de données
+     * @param string $nom le nom de l'utilisateur
+     * @param string $prenom le prenom de l'utilisateur
+     * @param string $email l'email de l'utilisateur
+     * @param string $mdp le mot de passe de l'utilisateur
+     * @return string le message de confirmation de l'inscription
      */
     public static function inscription(string $nom , string $prenom , string $email, string $mdp):string {
         $role = 1;//le User n'est pas admin par défault
 
+        //connexion a la base de donées
         $pdo = ConnectionFactory::makeConnection();
 
+        //on regarde si l'utilisateur existe déjà
         $query = "INSERT INTO Utilisateur (nom, prenom, password, email, role) VALUES (:nom, :prenom, :mdp, :email, :role)";
 
 
         $stmt = $pdo->prepare($query);
 
+        //attribution des paramètres
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':prenom', $prenom);
 
@@ -60,6 +74,7 @@ class UserAuthentifie extends User{
         $stmt->bindParam(':mdp', $mdp);
         $stmt->bindParam(':role', $role);
 
+        //exécution
         if ($stmt->execute()) {
             $html = " ajout user<br> Email:".$email.", Nom:".$nom." Prenom:".$prenom;
         } else {
@@ -68,8 +83,9 @@ class UserAuthentifie extends User{
         return $html;
     }
 
-    /*
-     * Méthode qui permet de vérifier que l'utilisateur est authentifié
+    /**
+     * Méthode isUserConnected qui permet de vérifier que l'utilisateur est authentifié
+     * @return bool true si l'utilisateur est authentifié
      */
     public static function isUserConnected(): bool
     {
@@ -77,16 +93,17 @@ class UserAuthentifie extends User{
     }
 
 
-/*
- * Méthode qui permet de récupérer les touites d'un utilisateur
+/**
+ * Méthode getTouite qui permet de récupérer les touites d'un utilisateur
+ * @return array tableau de touites
  */
 
- /*     Left join Tag2Touite on Tag2Touite.idTouite=Touite.idTouite
-                    Left join Tag on Tag.idTag=Tag2Touite.idTag */
     public function getTouites(){
+
         //connexion a la base de donées
         $pdo = ConnectionFactory::makeConnection();
-        /*creation array tag */
+
+        //création aray de tags
         $query = 'SELECT * from Tag
         Left join Tag2Touite on Tag2Touite.idTag=Tag.idTag
         Left join Touite on Touite.idTouite=Tag2Touite.idTouite
@@ -96,10 +113,13 @@ class UserAuthentifie extends User{
         $st = $pdo->prepare($query);
         $st->execute([$this->email]);
         $tags = array();
+
+        //on récupère les tags
         foreach($st->fetchAll() as $row){
         array_push($tags,$row["libelle"]);
         }
-        /*creation du touite */
+
+        //cration du touite
         $query = 'SELECT * from Touite
                     Left join Image on Touite.idIm=Image.idIm
                     Where email = ?';
@@ -108,6 +128,7 @@ class UserAuthentifie extends User{
         $st->execute([$this->email]);
         $res = array();
 
+        //on récupère les touites
         foreach($st->fetchAll() as $row){
             array_push($res,new Touite(intval($row["idTouite"])));
         }
@@ -116,16 +137,18 @@ class UserAuthentifie extends User{
 
 
 
-    /*
-     * Méthode qui permet de connecter un utilisateur
+    /**
+     * Méthode connectUser qui permet de connecter un utilisateur
+     * @return void
      */
     public function connectUser(){
         $_SESSION['User'] = serialize($this);
     }
 
 
-    /*
-     * Méthode qui permet de récupérer l'objet UserAuthentifie de l'utilisateur connecté
+    /**
+     * Méthode getUser qui permet de récupérer l'objet UserAuthentifie de l'utilisateur connecté
+     * @return UserAuthentifie|null l'utilisateur connecté
      */
     public static function getUser(): ?UserAuthentifie {
         if (self::isUserConnected()) {
@@ -136,12 +159,16 @@ class UserAuthentifie extends User{
         return null;
     }
 
-    /*
-     * Méthode qui permet de suivre un utilisateur entré en paramètre
+    /**
+     * Méthode followUser qui permet de suivre un utilisateur entré en paramètre
+     * @param User $userToFollow l'utilisateur à suivre
+     * @return bool true si le suivi a été effectué
      */
     public function followUser(User $userToFollow) {
+
         // si l'utilisateur est identifié
         if (self::isUserConnected()) {
+
             // Ajoutez une entrée dans la table Abonnement pour enregistrer la relation de suivi.
             $db = ConnectionFactory::makeConnection();
 
@@ -163,6 +190,7 @@ class UserAuthentifie extends User{
             $stmt->bindParam(':idSuivi', $idsuiv);
             $stmt->bindParam(':idAbonne', $idabo);
 
+            //exécution
             if ($stmt->execute()) {
                 // Suivi réussi
                 return true;
@@ -174,9 +202,17 @@ class UserAuthentifie extends User{
     }
 
 
+    /**
+     * Méthode userExists qui permet de savoir si un utilisateur existe
+     * @param $uEmail string l'email de l'utilisateur
+     * @return bool true si l'utilisateur existe
+     */
     public static function userExists($uEmail):bool{
+
+        //connexion a la base de donées
         $pdo = ConnectionFactory::makeConnection();
 
+        //on regarde si l'utilisateur existe déjà
         $stmt = $pdo->prepare("SELECT * FROM Utilisateur WHERE email = :email");
         $stmt->bindParam(':email', $uEmail);
 
@@ -187,27 +223,36 @@ class UserAuthentifie extends User{
     }
 
 
-    /*
-     * Méthode qui permet de savoir si l'utilisateur connecté suit l'utilisateur entré en paramètre
+    /**
+     * Méthode etreAbonnerUser qui permet de savoir si l'utilisateur connecté suit l'utilisateur entré en paramètre
+     * @param User $userToFollow l'utilisateur à suivre
+     * @return bool true si l'utilisateur connecté suit l'utilisateur entré en paramètre
      */
     public function etreAbonneUser(User $userToFollow):bool{
+
+        //connexion a la base de donées
         $db = ConnectionFactory::makeConnection();
 
         //on regarde si this suis déjà l'utilisateur
         $sql = "SELECT COUNT(*) FROM Abonnement WHERE idSuivi = :idSuivi AND idAbonne = :idAbonne";
+
         //préparation des données
         $stmt = $db->prepare($sql);
         $idsuiv =  $userToFollow->__get('email');
         $idabo = $this->__get('email');
+
         //attribution des paramètres
         $stmt->bindParam(':idSuivi', $idsuiv);
         $stmt->bindParam(':idAbonne', $idabo);
+
         //exécution
         $stmt->execute();
         return !$stmt->fetchColumn() == 0;
     }
-     /*
-     * Méthode qui permet de savoir si l'utilisateur connecté suit tag entré en paramètre
+     /**
+     * Méthode etreAbonneTag qui permet de savoir si l'utilisateur connecté suit tag entré en paramètre
+      * @param int $idTag l'id du tag
+      * @return bool true si l'utilisateur connecté suit le tag entré en paramètre
      */
     public function etreAbonneTag(int $idTag):bool{
         $db = ConnectionFactory::makeConnection();
@@ -225,9 +270,13 @@ class UserAuthentifie extends User{
     }
 
     /**
-     * Methode qui permet de suivre un Tag
+     * Methode followTag qui permet de suivre un Tag
+     * @param int $idTag l'id du tag
+     * @return bool true si le suivi a été effectué
+     * @throws AbonnementException si le suivi n'a pas été effectué
      */
     public function followTag(int $idTag) {
+
         // si l'utilisateur est identifié
         if (self::isUserConnected()) {
             $db = ConnectionFactory::makeConnection();
@@ -262,9 +311,18 @@ class UserAuthentifie extends User{
             }
         }
     }
-    /**renvoi la liste des touiteurs abonées à this */
+
+
+    /**
+     * Méthode listeAbo qui permet de récupérer la liste des tags suivis par l'utilisateur
+     * @return array tableau de tags
+     */
     public function listeAbo():array{
+
+        //connexion a la base de donées
         $db = ConnectionFactory::makeConnection();
+
+        //création array de tags
         $sql = "SELECT email , nom, prenom
         FROM Abonnement inner join Utilisateur on Utilisateur.email = Abonnement.idAbonne
         WHERE Abonnement.idSuivi = :email ";
@@ -273,15 +331,26 @@ class UserAuthentifie extends User{
         $stmt->execute();
         $res = array();
 
+        //on récupère les touites
         foreach($stmt->fetchAll() as $row){
             array_push($res, $row);
         }
         return $res;
     }
+
+    /**
+     * Méthode isAdmin qui renvoie true si l'utilisateur est un administrateur
+     * @return bool true si l'utilisateur est un administrateur
+     */
     function isAdmin():bool{
         return $this->role==2;
     }
 
+    /**
+     * Méthode __get qui permet de récupérer la valeur d'un attribut
+     * @param $name string nom de la propriété
+     * @return mixed la valeur de l'attribut
+     */
     public function __get($name): mixed{
         if(property_exists($this, $name)){
             return $this->$name;
