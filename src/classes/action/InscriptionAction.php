@@ -12,10 +12,7 @@ class InscriptionAction extends Action {
 
     }
     public function execute() : string{
-        $html = "";
-        $methode = $_SERVER['REQUEST_METHOD'];
-        if($methode ==='GET'){
-            $html =" <form id='f1' action='?action=inscription' method='post'>
+        $debutform = " <form id='f1' action='?action=inscription' method='post'>
                     <h2>Registration</h2>
                     <p>Name :</p>
                     <input type='text' placeholder='Name' name='nom'>
@@ -27,9 +24,11 @@ class InscriptionAction extends Action {
                     <input type='password' placeholder='Password' name='pass'>
                     <p>Confirm password:</p>
                     <input type='password' placeholder='Confirm password' name='passconfirm'>
-
-                    <button type='submit'>Submit</button>
-                    </form>";
+                     <button type='submit'>Submit</button>";
+        $html = "";
+        $methode = $_SERVER['REQUEST_METHOD'];
+        if($methode ==='GET'){
+            $html =$debutform."</form>";
         }else if ($methode === 'POST') {   
           
             $nom = filter_var($_POST['nom'],FILTER_SANITIZE_STRING);
@@ -41,43 +40,26 @@ class InscriptionAction extends Action {
             if(!empty($email)&&!empty($mdp1)&&!empty($_POST['passconfirm'])&&!empty($nom)&&!empty($prenom)){
                 
                 if($_POST['pass']===$_POST['passconfirm']){
-                    $html = UserAuthentifie::inscription($nom,$prenom,$email,$mdp1);
+                    try {
+                        $html = UserAuthentifie::inscription($nom, $prenom, $email, $mdp1);
+                    }catch(\PDOException $ex){
+                        
+                        $html =$debutform."
+                    <p class='form-error'>User arleady sign in.</p>
+                    </form>";
+                    }
                     $usAuth = new UserAuthentifie($email);
                     $usAuth->connectUser();
                     $_SESSION["email"]= $email;
                     header('Location: index.php?action=liste_touite');
                 }else{
-                    $html =" <form id='f1' action='?action=inscription' method='post'>
-                    <h2>Registration</h2>
-                    <p>Name :</p>
-                    <input type='text' placeholder='Name' name='nom'>
-                    <p>Surname :</p>
-                    <input type='text' placeholder='Surname' name='prenom'>
-                    <p>Email address:</p>
-                    <input type='email' placeholder='Email address' name='email'>
-                    <p>Password :</p>
-                    <input type='password' placeholder='Password' name='pass'>
-                    <p>Confirm password :</p>
-                    <input type='password' placeholder='Confirm password' name='passconfirm'>
-                    <button type='submit'>Submit</button>
+                    $html =$debutform."
                     <p class='form-error'>Passwords do not match.</p>
                     </form>";
                 }
                
             }else{
-                $html =" <form id='f1' action='?action=inscription' method='post'>
-                        <h2>Registration</h2>
-                        <p>Name :</p>
-                        <input type='text' placeholder='Name' name='nom'>
-                        <p>Surname :</p>
-                        <input type='text' placeholder='Surname' name='prenom'>
-                        <p>Email address :</p>
-                        <input type='email' placeholder='Email address' name='email'>
-                        <p>Password :</p>
-                        <input type='password' placeholder='Password' name='pass'>
-                        <p>Confirm password:</p>
-                        <input type='password' placeholder='Confirm password name='passconfirm'>
-                        <button type='submit'>Submit</button>
+                $html =$debutform."
                         <p class='form-error'>All fields must be completed.</p>
                         </form>";
             }
