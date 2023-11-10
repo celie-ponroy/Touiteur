@@ -11,7 +11,6 @@ class FollowTagAction extends Action
 
     public function execute(): string
     {
-        var_dump(11111111111111111111111111);
        $user = UserAuthentifie::getUser();
 
         $tagLibel = substr($_GET['tag'], 1);

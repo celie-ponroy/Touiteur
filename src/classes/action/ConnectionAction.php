@@ -23,12 +23,12 @@ class ConnectionAction extends Action {
 
         if($methode ==='GET'){
             $html =" <form id='f1' action='?action=connection' method='post'>
-                    <h2>Connexion</h2>
-                    <p>Adresse e-mail :</p>
-                    <input type='email' placeholder='Adresse e-mail' name='email'>
-                    <p>Mot de passe :</p>
-                    <input type='password' placeholder='Mot de passe' name='mdp'>
-                    <button type='submit'>Valider</button>
+                    <h2>Connection</h2>
+                    <p>Email address :</p>
+                    <input type='email' placeholder='Email address' name='email'>
+                    <p>Password :</p>
+                    <input type='password' placeholder='Password' name='mdp'>
+                    <button type='submit'>Submit</button>
                     </form>";
         }else if ($methode === 'POST') {
 
@@ -46,26 +46,26 @@ class ConnectionAction extends Action {
                     header('Location: index.php?action=liste_touite');
                 } else{
                     $html =" <form id='f1' action='?action=connection' method='post'>
-                            <h2>Connexion</h2>
-                            <p>Adresse e-mail :</p>
-                            <input type='email' placeholder='Adresse e-mail' name='email'>
+                            <h2>Connection</h2>
+                            <p>Email address :</p>
+                            <input type='email' placeholder='Email address' name='email'>
                             <p>Mot de passe :</p>
-                            <input type='password' placeholder='Mot de passe' name='mdp'>
-                            <button type='submit'>Valider</button>
+                            <input type='password' placeholder='Password' name='mdp'>
+                            <button type='submit'>Submit</button>
                             
-                   <p class='form-error'>La connection a échoué, le mot de passe ou l'adresse mail est incorecte.</p>
+                   <p class='form-error'>The connection failed, the password or email address is incorrect.</p>
                     </form>";
                 }
             }else{
                 $html =" <form id='f1' action='?action=connection' method='post'>
-                <h2>Connexion</h2>
-                <p>Adresse e-mail :</p>
-                <input type='email' placeholder='Adresse e-mail' name='email'>
-                <p>Mot de passe :</p>
-                <input type='password' placeholder='Mot de passe' name='mdp'>
-                <button type='submit'>Valider</button>
+                <h2>Connection</h2>
+                <p>Email address :</p>
+                <input type='email' placeholder='Email address' name='email'>
+                <p>Password :</p>
+                <input type='password' placeholder='Password' name='mdp'>
+                <button type='submit'>Submit</button>
                 
-                <p class='form-error'>Tous les champs doivent être remplis.</p>
+                <p class='form-error'>All fields must be completed.</p>
                 </form>";
             }
         }

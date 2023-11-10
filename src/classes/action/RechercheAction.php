@@ -43,8 +43,8 @@ class RechercheAction extends Action {
             $followText = $t->isTagFollowed(UserAuthentifie::getUser()) ? 'Unfollow' : 'Follow';
             $html .= '<form class="follow-form" action="?action=followTag&tag=%23' . substr($recherche, 1) . '" method="post">' .
                 '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                "<h1> Hashtag: #". $t->__get('libelle') ."</h1>".
-                '<button type="submit">' . "$followText" . 'Tag</button>' .
+               
+                '<button class="followtag-tag" type="submit">' . "$followText" . '</button>' .
                 '</form>';
         }
 

@@ -18,7 +18,7 @@ class TouitePost extends Action {
 
         if($methode === 'GET'){
             $html = "<form class='Touite' action='?action=touite-post' method='post' enctype='multipart/form-data'>
-                <input type='textarea' placeholder='What is happening?!' name='touite' autocomplete='off'>
+                <input type='textarea' placeholder='What is happening ?!' name='touite' autocomplete='off'>
                 <input type='file' placeholder='<choose file>' name='image'>
                 <button type='submit'>Post</button>
                 </form>";

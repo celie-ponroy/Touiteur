@@ -64,7 +64,7 @@ class Dispatcher {
             case 'touite-post':
                 if (!UserAuthentifie::isUserConnected()){
                     $_SESSION['CurrentPage'] = "PAcc";
-                    $html = "<h2>Pour acceder à cette page veillez vous connecter:</h2> <br>";
+                    $html = "<h2>To access this page please log in: </h2> <br>";
                     $html.= "<a class='action' href = '?action=connection'><img  class='img-action' src='image/profile.svg' > Connection </a><br>";
                     break;
                 }
@@ -103,7 +103,7 @@ class Dispatcher {
                     $html = $pageA->execute();
                 }
                 else{
-                    $html = "<h2>Pour acceder à cette page veillez vous connecter: </h2> <br>";
+                    $html = "<h2>To access this page please log in: </h2> <br>";
 
                     $html.= "<a class='action' href = '?action=connection'><img  class='img-action' src='image/profile.svg' > Connection </a><br>";
 

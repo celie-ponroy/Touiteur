@@ -25,7 +25,8 @@ use iutnc\touiteur\user\UserAuthentifie;
         $user = unserialize($_SESSION['User']);
         $html .= '<h1> @'.$user->__get('email').'</h2>';
         // affichage de la liste des abonés:
-        $html .= '<h2>Followers:<h2>';
+
+        $html .= '<h2>Follower(s):<h2>';
         $html .= '<div>';;
         $listeabo = $user->listeAbo();
         $avoirabo = false;
@@ -48,7 +49,7 @@ use iutnc\touiteur\user\UserAuthentifie;
             $stat = $stat/ count($touites);    
         }
         
-        $html .= "<br><p> Indice de popularité de vos touites : $stat <br>";
+        $html .= "<br><p> Popularity index of your touits: $stat <br>";
 
 
         return $html;
