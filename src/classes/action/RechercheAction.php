@@ -51,16 +51,16 @@ class RechercheAction extends Action {
         //recherche par user
         else{
             //user peut follow si auth et n'est pas le meme user
-            if ( UserAuthentifie::isUserConnected() && UserAuthentifie::getUser()->__get('email') !== $recherche && UserAuthentifie::userExists($recherche))  {
-                $user = new  UserAuthentifie($recherche);
+            if ( UserAuthentifie::isUserConnected() && UserAuthentifie::getUser()->__get('email') !== $this->tag && UserAuthentifie::userExists($this->tag))  {
+                $user = new  UserAuthentifie($this->tag);
                 $followText = (UserAuthentifie::getUser())->etreAbonneUser($user) ? 'Unfollow ' : 'Follow ';
-                $html .= '<form class="follow-form" action="?action=follow&us=' . $recherche . '" method="post">' .
+                $html .= '<form class="follow-form" action="?action=follow&us=' . $this->tag . '" method="post">' .
                     '<input type="hidden" name="redirect_to" value="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) . '">' .
-                    '<button class="followtag-tag" type="submit">' . "$followText".substr($recherche, 1) . '</button>' .
+                    '<button class="followtag-tag" type="submit"> '. "$followText". $this->tag  . '</button>' .
                     '</form>';
             }
-            if(UserAuthentifie::userExists($recherche)) {
-                $taggedTouites = new UserAuthentifie($recherche);
+            if(UserAuthentifie::userExists($this->tag)) {
+                $taggedTouites = new UserAuthentifie($this->tag);
 
                 $html .= (new ListTouite ($taggedTouites->getTouites()))->afficher();
             }
