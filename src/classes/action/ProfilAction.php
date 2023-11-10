@@ -39,7 +39,7 @@ use iutnc\touiteur\user\UserAuthentifie;
             $stat += $t->statistique();
         }
         $stats = $stat/ count($touites);
-        $html .= "<p> Statistaique moyenne de vos Touites: $stats";
+        $html .= "<br><p> Statistaique moyenne de vos Touites: $stats<br>";
 
 
         return $html;
