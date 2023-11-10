@@ -84,6 +84,7 @@ class TouiteRenderer implements Renderer{
             }
 
         //fonctions du touite
+
 //        if($methode === 'GET' && UserAuthentifie::isUserConnected()){
 //
 //
@@ -214,7 +215,7 @@ class TouiteRenderer implements Renderer{
 
         if($this->touite->__get('tags')!==null){
             $res.='<div class=trend-container>';
-        
+
             foreach ($this->touite->__get('tags') as &$t) {
                 $res .= "<a class='trend' " . "href=?action=recherche&tag=%23$t>#" . $t . '</a>';
             }
@@ -247,11 +248,11 @@ class TouiteRenderer implements Renderer{
             $res.='</div>';
         }elseif ($methode === 'POST') {
             $action = isset($_POST['action']) ? $_POST['action'] : '';
-            
+
             $noteUser=-8;
             if ($action === 'like'.$this->touite->__get('idtouite')){
                 $noteUser=1;
-                
+
              }elseif ($action === 'dislike'.$this->touite->__get('idtouite')) {
                 $noteUser=(-1);
              }
@@ -260,11 +261,11 @@ class TouiteRenderer implements Renderer{
             <form method="post" action="?action='.$actionUrl.'&id='.$this->touite->__get('idtouite').'">
             <button type="submit" name="action" value="like'.$this->touite->__get('idtouite').'">Like</button>' .
             '<p>';
-          
+
             $arraynote=$noter->noterTouite($this->touite->__get('idtouite'), $noteUser);
-           
+
             $res.=$arraynote[0];
-           
+
             $res.='</p>';
 
 
@@ -274,6 +275,7 @@ class TouiteRenderer implements Renderer{
             '<p>';
             $res.=$arraynote[1];
             //echo $this->touite->__get('idtouite');
+
             
             
             //*
@@ -288,7 +290,7 @@ class TouiteRenderer implements Renderer{
             }
 
         $res.='</div>';
-           
+            
         }
 
         // Fermez la balise <a> avec ID "compact" ici
